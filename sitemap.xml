@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://mmmmchong.github.io/cn/shellcode/</loc>
+    
+    <lastmod>2023-02-13</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://mmmmchong.github.io/categories/index.html</loc>
     
     <lastmod>2023-02-12</lastmod>
@@ -119,6 +126,13 @@
   
   <url>
     <loc>https://mmmmchong.github.io/categories/BOOK/</loc>
+    <lastmod>2023-02-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://mmmmchong.github.io/categories/HGAME/</loc>
     <lastmod>2023-02-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
