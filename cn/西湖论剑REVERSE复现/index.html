@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/tags/C语言/">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/西湖论剑REVERSE复现/">
   <title>
     
-      Welcome to my blog
+      西湖论剑REVERSE复现 - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -250,9 +250,9 @@
           
           
           <li>
-            <a href="/archive/">
+            <a href="/tags/">
               
-              归档
+              标签
               
               
             </a>
@@ -261,9 +261,9 @@
           
           
           <li>
-            <a href="/tags/">
+            <a href="/archive/">
               
-              标签
+              归档
               
               
             </a>
@@ -339,9 +339,9 @@
     }
 
     header.intro-header {
-       /*page*/
-        background-image: var(--intro-header-background-image-url-page);
-        /* background-image: url('/img/header_img/'); */
+       /*post*/
+        background-image: var(--intro-header-background-image-url-post);
+        /* background-image: url(''); */
       
     }
 
@@ -363,10 +363,40 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="site-heading">
-            <h1>Welcome</h1>
-            <!--<hr class="small">-->
-            <span class="subheading">to humb1e&#39;s blog</span>
+          <div class="post-heading">
+            <div class="tags">
+              
+            </div>
+            <h1>西湖论剑REVERSE复现</h1>
+            <h2 class="subheading"></h2>
+            <span class="meta">
+              Posted by Humb1e on
+              2023-02-14
+            </span>
+
+
+            
+            <!-- WordCount start -->
+            <div class="blank_box"></div>
+            <span class="meta">
+              Estimated Reading Time <span class="post-count">1</span> Minutes
+            </span>
+            <div class="blank_box"></div>
+            <span class="meta">
+              Words <span class="post-count">390</span> In Total
+            </span>
+            <div class="blank_box"></div>
+            <!-- WordCount end -->
+            
+            
+            <!-- 不蒜子统计 start -->
+            <span class="meta" id="busuanzi_container_page_pv">
+              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+            </span>
+            <!-- 不蒜子统计 end -->
+            
+
+
           </div>
           
         </div>
@@ -391,291 +421,240 @@
 	Friends Blog、
 	anchorjs、
 	) -->
-		<!-- Main Content -->
-<div class="container">
-  <div class="row">
-    
+		<!-- Modify by Yu-Hsuan Yen -->
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-    <!-- USE SIDEBAR -->
-    <!-- Post Container -->
-    <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
+        <h1 id="Baby-RE"><a href="#Baby-RE" class="headerlink" title="Baby_RE"></a>Baby_RE</h1><p>载入ida，32位程序</p>
+<p>main函数里只有一个</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214191056074.png" alt="image-20230214191056074"></p>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</a>检索调用线程的最后错误代码值。</p>
+<p>但是我们可以用一个字符串定位法来找到程序的逻辑</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214191248591.png" alt="image-20230214191248591"></p>
+<p>有一个input</p>
+<p>双击，交叉引用跟进</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214191406601.png" alt="image-20230214191406601"></p>
+<p>发现了读入函数的程序，该程序限定了输入只能是0-9的数字</p>
+<p>交叉引用跟进sub_401170</p>
+<p>最终找到</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214191958670.png" alt="image-20230214191958670"></p>
+<p>（这一步是官方wp里的，他直接找到了所有的相关的加密函数，然而我自己做的时候是对str等一直交叉引用才找全了所有的加密函数）</p>
+<p>这几个函数都长这样</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214192254312.png" alt="image-20230214192254312"></p>
+<p><a href="[atexit | Microsoft Learn](https://learn.microsoft.com/zh-cn/cpp/c-runtime-library/reference/atexit?view=msvc-170">atexit</a>)可以把函数推送到要执行的函数堆栈，所以假如有多个atexit，那么函数执行的顺序是后进先出，即写在更后面的函数会先运行</p>
+<p>当然这道题这样分析函数顺序非常麻烦，官方wp提供了一种思路：每一个程序都下一个断点，调试之后就知道函数运行的顺序了。</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214193243524.png" alt="image-20230214193243524"></p>
+<p>这是第一个，也就是获取输入的函数</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214193335647.png" alt="image-20230214193335647"></p>
+<p>第二个函数对一个数组进行了取反操作</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214193544277.png" alt="image-20230214193544277"></p>
+<p>取反之后就是01234567</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214193618139.png" alt="image-20230214193618139"></p>
+<p>之后是一个比较复杂的函数暂时搁置</p>
+<p><img src="C:\Users\muchong\AppData\Roaming\Typora\typora-user-images\image-20230214193650380.png" alt="image-20230214193650380"></p>
+<p>之后的这个函数很有意思，有着大量的“=”符号</p>
+<p>所以我们很容易联想到base系列的加密</p>
+<p>但是我们可以发现他的密码表就是之前的01234567数组</p>
+<p>其实这是一个base8加密</p>
 
-      <!-- Main Content -->
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-0 col-md-10 col-md-offset-1">
-      <!-- 归档列表 -->
 
-      
-
-      <!-- 归档列表 -->
-      
-      <div class="one-tag-list">
-        <span class="fa fa-calendar-times-o listing-seperator" id="2023">
-          <span class="tag-text">2023</span>
-        </span>
-        <ul>
+        <hr>
+        <!-- Pager -->
+        <ul class="pager">
           
-          <li>
-            02-13
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/shellcode/" style="color: #0085a1">
-              <span>
-                shellcode
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
           
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/程序员的自我修养/" style="color: #0085a1">
-              <span>
-                程序员的自我修养
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/汇编语言/" style="color: #0085a1">
-              <span>
-                汇编语言
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/suanfa/" style="color: #0085a1">
-              <span>
-                CTF逆向常见算法
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/kumisc/" style="color: #0085a1">
-              <span>
-                kumisc
-                
-                -- cn
-                
-              </span>
-            </a>
+          <li class="next">
+            <a href="/cn/shellcode/" data-toggle="tooltip" data-placement="top" title="shellcode">Next Post &rarr;</a>
           </li>
           
         </ul>
+
+        
+        <!-- tip start -->
+        <!-- tip -->
+<!-- tip start -->
+<div class="tip">
+  <p>
+    
+      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+    
+  </p>
+</div>
+<!-- tip end -->
+
+        <!-- tip end -->
+        
+
+        
+        <!-- Sharing Srtart -->
+        <!-- Social Social Share Post -->
+<!-- Docs:https://github.com/overtrue/share.js -->
+
+<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
+  <ul class="list-inline text-center social-share-ul">
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-twitter">
+        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a class="social-share-icon icon-wechat">
+        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-weibo">
+        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-qq">
+        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=西湖论剑REVERSE复现&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/西湖论剑REVERSE复现/">
+        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- css & js -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
+<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+        <!-- Sharing End -->
+        
+        <hr>
+
+        <!-- comments start -->
+        <!-- 1. gitalk comment -->
+
+
+<!-- 2. gitment comment -->
+
+
+<!-- 3. disqus comment -->
+
+
+        <!-- comments end -->
+        <hr>
+
       </div>
-      
-    </div>
-  </div>
-</div>
 
+      <!-- Catalog: Tabe of Content -->
+      <!-- Table of Contents -->
 
-      <!-- 如果开启评论功能 -->
-      
-    </div>
-
-    <!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
     
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">目录</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Baby-RE"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Baby_RE</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+
+
+      <!-- Sidebar Container -->
+      <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
         <!-- Featured Tags -->
+        
+        <section>
+          <!-- no hr -->
+          <h5>
+            <a href="/tags/">特色标签</a>
+          </h5>
+          <div class="tags">
+            
+          </div>
+        </section>
+        
 
-<section>
-  <h5><a href="/tags/">特色标签</a></h5>
-  <div class="tags">
-    
-    
-    <a href="/tags/#HGAME" title="HGAME" rel="1">HGAME</a>
-    
-    
-    
-    <a href="/tags/#REVERSE" title="REVERSE" rel="3">REVERSE</a>
-    
-    
-    
-    <a href="/tags/#汇编语言" title="汇编语言" rel="1">汇编语言</a>
-    
-    
-    
-    <a href="/tags/#C语言" title="C语言" rel="1">C语言</a>
-    
-    
-    
-    <a href="/tags/#PE结构" title="PE结构" rel="1">PE结构</a>
-    
-    
-  </div>
-</section>
-
-
-        <hr>
-    
-        <!-- Short About -->
-<section class="visible-md visible-lg">
-  <h5><a href="/about/">关于自己</a></h5>
-  <div class="short-about">
-
-    
-    <img id="avatar_pic" src="/img/avatar/t.jpg" alt="avatar_pic" style="box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
-    -moz-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
-    -webkit-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);" />
-    
-
-    
-    <p>漏洞挖掘/逆向工程</p>
-    
-
-    <!-- SNS Link -->
-    <ul class="list-inline">
-      
-
-      
-      <li>
-        <a target="_blank" href="https://github.com/mmmmchong">
-          <span class="fa-stack fa-lg">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-          </span>
-        </a>
-      </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-    </ul>
-  </div>
-</section>
-
-        <hr>
-    
-        <!-- RECENT POSTS -->
-
-<h5><a href="/">最近博文</a></h5>
-<div class="widget">
-  <ul>
-    
-    <a href="../../cn/shellcode/">
-      <li>shellcode</li>
-    </a>
-    
-    <a href="../../cn/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/">
-      <li>程序员的自我修养</li>
-    </a>
-    
-    <a href="../../cn/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">
-      <li>汇编语言</li>
-    </a>
-    
-    <a href="../../cn/suanfa/">
-      <li>CTF逆向常见算法</li>
-    </a>
-    
-    <a href="../../cn/kumisc/">
-      <li>kumisc</li>
-    </a>
-    
-  </ul>
-</div>
-
-
-        <hr>
-    
         <!-- Friends Blog -->
-
-<h5><a href="/">链友</a></h5>
-<ul class="list-inline">
-  
-  <li><a href="https://l0tus.vip/" target="_blank">L0tus</a></li>
-  
-  <li><a href="http://gtg.ink/" target="_blank">gtg</a></li>
-  
-  <li><a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a></li>
-  
-</ul>
-
-
+        
         <hr>
-    
-        <!-- Archives -->
+        <h5>链友</h5>
+        <ul class="list-inline">
 
-<h5><a href="/archives/">archives</a></h5>
-<div class="widget">
-  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2023/02/">February 2023</a><span class="archive-list-count">5</span></li></ul>
-</div>
-
-
-        <hr>
-    
-        <!-- Categories -->
-
-<h5><a href="/categories/">categories</a></h5>
-<div class="widget">
-  <ul>
-    
-    <a href="/categories/#REVERSE">
-      <li>REVERSE</li>
-    </a>
-    
-    <a href="/categories/#BOOK">
-      <li>BOOK</li>
-    </a>
-    
-    <a href="/categories/#HGAME">
-      <li>HGAME</li>
-    </a>
-    
-  </ul>
-</div>
-
-
-        <hr>
-    
-</div>
-
-
-    
+          
+          <li>
+            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
+          </li>
+          
+          <li>
+            <a href="http://gtg.ink/" target="_blank">gtg</a>
+          </li>
+          
+          <li>
+            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
   </div>
-</div>
+</article>
+
+
+
+<!-- anchorjs start -->
+<!-- async load function -->
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script type="text/javascript">
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  };
+</script>
+<script type="text/javascript">
+  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
+  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'left',
+      // icon: 'ℬ'
+      icon: '❡'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+<!-- anchorjs end -->
+
 
 
 		<!-- Footer (contains ThemeColor、viewer) -->

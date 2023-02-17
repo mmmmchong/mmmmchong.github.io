@@ -133,7 +133,7 @@
   <link rel="canonical" href="https://mmmmchong.github.io/cn/程序员的自我修养/">
   <title>
     
-      程序员的自我修养 - Welcome to my blog
+      程序员的自我修养（1-3章） - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -250,9 +250,9 @@
           
           
           <li>
-            <a href="/archive/">
+            <a href="/tags/">
               
-              归档
+              标签
               
               
             </a>
@@ -261,9 +261,9 @@
           
           
           <li>
-            <a href="/tags/">
+            <a href="/archive/">
               
-              标签
+              归档
               
               
             </a>
@@ -366,12 +366,12 @@
           <div class="post-heading">
             <div class="tags">
               
-              <a class="tag" href="/tags/#C语言" title="C语言">C语言</a>
+              <a class="tag" href="/tags/#C语言底层机制" title="C语言底层机制">C语言底层机制</a>
               
-              <a class="tag" href="/tags/#PE结构" title="PE结构">PE结构</a>
+              <a class="tag" href="/tags/#编译器" title="编译器">编译器</a>
               
             </div>
-            <h1>程序员的自我修养</h1>
+            <h1>程序员的自我修养（1-3章）</h1>
             <h2 class="subheading"></h2>
             <span class="meta">
               Posted by Humb1e on
@@ -435,30 +435,25 @@
 
         <p>这是一本关于链接、装载和库的书，大概揭示了各种程序运行的背后发生了什么</p>
 <p>和汇编语言类似属于比较底层的知识点</p>
-<h3 id="接口">接口</h3>
-<p>在计算机上，各个层级之间是无法直接交互的，所以各个层之间的通信必须要借助特定的协议</p>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p>在计算机上，各个层级之间是无法直接交互的，所以各个层之间的通信必须要借助特定的协议</p>
 <p>各个层级之间的通信协议就叫做接口</p>
 <p><strong>API</strong>（application programming interface） <strong>应用程序编程接口</strong></p>
 <p>这样一个接口可以让计算机上的应用程序可以在操作系统上跑起来，相当于应用程序与操作系统的接口</p>
 <p>运行库使用操作系统提供的<strong>系统调用接口</strong>，常以<strong>软件中断</strong>的形式提供（如Linux中的0x80）</p>
 <p>继续向下，操作系统对于硬件来说也是上层的，所以需要一个接口，这个接口一般叫做<strong>硬件规格</strong></p>
-<h4 id="硬盘的结构">硬盘的结构</h4>
-<p>硬盘的基本存储单位为扇区（sector），每一个扇区一般为512字节</p>
-<h2 id="虚拟地址的产生">虚拟地址的产生</h2>
-<p>在早期的计算机中，所有的程序都是直接跑在物理内存上的</p>
+<h4 id="硬盘的结构"><a href="#硬盘的结构" class="headerlink" title="硬盘的结构"></a>硬盘的结构</h4><p>硬盘的基本存储单位为扇区（sector），每一个扇区一般为512字节</p>
+<h2 id="虚拟地址的产生"><a href="#虚拟地址的产生" class="headerlink" title="虚拟地址的产生"></a>虚拟地址的产生</h2><p>在早期的计算机中，所有的程序都是直接跑在物理内存上的</p>
 <p>但是这样的运行方式有一些问题：</p>
 <p>1.内存地址不隔离：所有的程序都是直接访问物理内存，那么可以轻易的修改其他程序的内容，安全系数低；并且有bug的程序会造成很大的破坏</p>
 <p>2.内存的使用效率很低：早期的计算机的物理内存是非常小的，所以很多程序同时占用内存的话会出现无法运行的情况</p>
 <p>3.内存地址的不确定性：有过之前汇编指令的知识可以知道，在汇编语言中有一些直接跳转语句，是根据我们输入的固定的地址跳转的，如果每次运行时的地址不同那么必然会对程序的编写造成麻烦（这里也涉及到重定向的问题）</p>
 <p>有了问题，于是虚拟地址就出现了</p>
 <p>我们把程序给出的地址看作虚拟地址，通过某种映射的方法把这些地址映射到物理地址上，只要我们完善了这一个映射过程，那么就可以保障任意一个程序所能够访问的物理地址和另一个程序互不重叠，也就达到了地址空间隔离的效果</p>
-<h3 id="分段（segmentation）">分段（segmentation）</h3>
-<p>把程序所需要的内存空间大小的虚拟地址映射到某个物理地址</p>
+<h3 id="分段（segmentation）"><a href="#分段（segmentation）" class="headerlink" title="分段（segmentation）"></a>分段（segmentation）</h3><p>把程序所需要的内存空间大小的虚拟地址映射到某个物理地址</p>
 <p>映射函数由软件提供</p>
 <p>实际的操作由硬件负责</p>
 <p>这个操作解决了地之间的隔离，解决了上述1.3问题，但是第二个问题仍无法解决，因为实际的内存大小没有发生改变，如果有两个占用很大内存的程序进出仍然需要对很大部分的内存进行修改，速度依然很慢，于是就产生了分页的技术</p>
-<h3 id="分页（paging）">分页（paging）</h3>
-<p>分页的基本方法是把地址空间人为地等分成固定大小地页，其中每一页地大小由硬件决定，或者硬件支持各种大小的页，由操作系统自己选大小</p>
+<h3 id="分页（paging）"><a href="#分页（paging）" class="headerlink" title="分页（paging）"></a>分页（paging）</h3><p>分页的基本方法是把地址空间人为地等分成固定大小地页，其中每一页地大小由硬件决定，或者硬件支持各种大小的页，由操作系统自己选大小</p>
 <p>把一个进程的虚拟地址分割为页，把常用的数据和代码也装载到内存中，把不常用的代码和数据保存到磁盘中</p>
 <p>在磁盘中的页暂时处于未使用的状态，我们把物理内存中的页叫做物理页（PP）虚拟空间中的页叫做（VP）磁盘中的叫做（DP）</p>
 <p>有的虚拟页中的有相同的，那么便可以映射到同一物理页，这样就实现了内存共享</p>
@@ -467,8 +462,7 @@
 <p>同时页也可以起到保护的作用，每一个页都可以设置权限属性，谁可以修改，谁可以访问都可以设置，并且只有操作系统有权限修改这些属性，那么操作系统就可以保护自己了。</p>
 <p>虚拟存储需要硬件的支持，毕竟前面说了，映射函数是软件负责的，实际操作靠硬件，一般都是靠一个MMU（memory management unit）的部件来实现页映射</p>
 <p>MMU可以把虚拟地址转换成物理地址，一般MMU都会集成在CPU内部</p>
-<h2 id="线程">线程</h2>
-<p>线程（thread）</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程（thread）</p>
 <p>有时也被称为轻量级进程</p>
 <p>是程序执行流的最小单元</p>
 <p>一个标准的线程由线程ID、当前指令指针（PC）、寄存器集合和堆栈组成。通常意义上，一个进程由一个或多个线程组成，各个线程之间共享程序的内存空间及一些进程级的资源。</p>
@@ -484,11 +478,10 @@
 <p>优先级高的线程会先运行，Windows可以通过BOOL WINAPTI SETTHREADPRIORITY来设置</p>
 <p>Linux可以通过pthread库设置</p>
 <p>但是避免有的线程优先级过低导致无法运行，所以有的线程长时间未运行就会被操作系统提升优先级</p>
-<h3 id="线程安全">线程安全</h3>
-<p>多个线程同时访问共享数据可能会造成比较严重得后果</p>
+<h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><p>多个线程同时访问共享数据可能会造成比较严重得后果</p>
 <p>假如两个线程同时运行</p>
 <p>i++;</p>
-<p>i–;</p>
+<p>i—;</p>
 <p>并且访问得数据是一样的话，那么最后可能会导致结果出错，因为自增（++）操作的汇编指令不止一条，所以可能运行一半就被打断。</p>
 <p>我们把单指令的操作称为<strong>原子的</strong>（atomic），这样一定程度上就可以避免出错，很多体系也提供了一系列的原子指令。</p>
 <p>但是在一些比较复杂的情况下，原子指令是不够用的。</p>
@@ -498,14 +491,11 @@
 <p>可重入：表示一个函数没有被执行完，由于各种原因需要再次进入该函数，就叫做重入</p>
 <p>重入是需要条件的。</p>
 <p>（第一章结束了 希望做到一天一章吧 这个写了一章就废了两千字左右，比汇编更加底层了 并且知识点也更加细碎了）</p>
-<h2 id="编译与链接">编译与链接</h2>
-<p>ps:呃，第二章有一百多页，今天先看个一半编译吧：）</p>
-<h4 id="被隐藏的过程">被隐藏的过程</h4>
-<p>集成开发环境IDE，它其实一步就完成了编译和链接的过程，这样的过程被称为<strong>构建</strong></p>
+<h2 id="编译与链接"><a href="#编译与链接" class="headerlink" title="编译与链接"></a>编译与链接</h2><p>ps:呃，第二章有一百多页，今天先看个一半编译吧：）</p>
+<h4 id="被隐藏的过程"><a href="#被隐藏的过程" class="headerlink" title="被隐藏的过程"></a>被隐藏的过程</h4><p>集成开发环境IDE，它其实一步就完成了编译和链接的过程，这样的过程被称为<strong>构建</strong></p>
 <p>其实.c文件到可执行文件需要四个过程</p>
-<p>预处理—&gt;编译—&gt;汇编—&gt;链接</p>
-<h4 id="预处理">预处理</h4>
-<p>$gcc -E hello.c -o hello .i</p>
+<p>预处理—-&gt;编译—-&gt;汇编—-&gt;链接</p>
+<h4 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h4><p>$gcc -E hello.c -o hello .i</p>
 <p>-E表示只进行预编译</p>
 <p>预编译主要处理.c文件中的以“#”开头的预编译指令</p>
 <p>比如#include</p>
@@ -518,15 +508,13 @@
 <p>6.保留所有的#pragma编译器指令</p>
 <p><img src="image-20230110184210155.png" alt="image-20230110184210155"></p>
 <p>不怎么好看哈哈</p>
-<h4 id="编译">编译</h4>
-<p>编译做一系列的词法分析，语法分析，语义分析以及优化后生产相应的汇编代码文件</p>
+<h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>编译做一系列的词法分析，语法分析，语义分析以及优化后生产相应的汇编代码文件</p>
 <p>$gcc -S hello.i -o hello.s</p>
 <p>现在版本的gcc把预编译和编译合并为一个步骤，使用一个叫做cc1的程序来完成这个步骤。</p>
 <p>所以说直接$cc1 hello.c也是可行的</p>
 <p><img src="image-20230110184234256.png" alt="image-20230110184234256"></p>
 <p>可以看到这已经是大概的汇编程序了</p>
-<h4 id="汇编">汇编</h4>
-<p>汇编器是把汇编代码转变为机器码</p>
+<h4 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h4><p>汇编器是把汇编代码转变为机器码</p>
 <p>基本上就是一一翻译</p>
 <p>$gcc -c hello.c -o hello.o</p>
 <p>这里可以发现，这是一步到位的.c直接到了.o（Object File）</p>
@@ -536,37 +524,31 @@
 <p>Linux直接告知无法打开二进制文件</p>
 <p>我尝试./运行</p>
 <p>但是被告知权限不够</p>
-<p>于是我$chmod 777 hello.o</p>
+<p>于是我$chmod 777 hello.o </p>
 <p>之后还是无法运行</p>
 <p>只能贴一张它二进制下的图了</p>
 <p><img src="image-20230110185638462.png" alt="image-20230110185638462"></p>
-<h4 id="链接">链接</h4>
-<p>我们可能会很异或，为什么输出了机器码的文件，但是却不能运行，需要一个链接的过程</p>
+<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p>我们可能会很异或，为什么输出了机器码的文件，但是却不能运行，需要一个链接的过程</p>
 <p>呃，链接如果不管地址，命令大概是这样的</p>
 <p>$ld -static crt1.o crti.o crtbeingT.o hello.o -start -group -lgcc -lgcc_eh -lc-end-group crtend.o crtn.o</p>
 <p>可以看到，要链接一大堆文件才行</p>
 <p>在解读这些乱七八糟的东西之前，我们先看一看编译器做了些什么</p>
-<h4 id="编译器做了些什么">编译器做了些什么</h4>
-<p>简单来讲，编译器把高级语言变成了机器语言</p>
+<h4 id="编译器做了些什么"><a href="#编译器做了些什么" class="headerlink" title="编译器做了些什么"></a>编译器做了些什么</h4><p>简单来讲，编译器把高级语言变成了机器语言</p>
 <p>编译有6步：</p>
-<p>扫描–&gt;语法分析–&gt;语义分析–&gt;源代码优化–&gt;代码生成–&gt;目标代码优化</p>
-<h4 id="扫描-语法分析">扫描+语法分析</h4>
-<p>这两个操作几乎是同步的把源代码扫进去，把源码中不同的字符分割成各种记号，大概有：关键词，标识符，字面量（数字，字符串等），特殊符号（加号，等号）</p>
-<h4 id="语法分析">语法分析</h4>
-<p>语法分析采用上下文无关语法，由语法分析器执行产生语法树</p>
+<p>扫描—&gt;语法分析—&gt;语义分析—&gt;源代码优化—&gt;代码生成—&gt;目标代码优化</p>
+<h4 id="扫描-语法分析"><a href="#扫描-语法分析" class="headerlink" title="扫描+语法分析"></a>扫描+语法分析</h4><p>这两个操作几乎是同步的把源代码扫进去，把源码中不同的字符分割成各种记号，大概有：关键词，标识符，字面量（数字，字符串等），特殊符号（加号，等号）</p>
+<h4 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h4><p>语法分析采用上下文无关语法，由语法分析器执行产生语法树</p>
 <p>语法树就是以表达式为节点的树</p>
 <p><img src="image-20230110190938992.png" alt="image-20230110190938992"></p>
 <p>这样的一个过程，我们可以确定各种运算的优先级，比如*的节点在+之上。</p>
 <p>并且可以区分同一符号的不同含义，比如说*可以代表乘法和取内容。</p>
 <p>如果出现了表达式不合法，或者括号不匹配，表达式缺少操作符类的错误，就会报语法分析错误阶段的错误</p>
-<h4 id="语义分析">语义分析</h4>
-<p>我们知道我们写的代码中有些错误编译器是无法发现的</p>
+<h4 id="语义分析"><a href="#语义分析" class="headerlink" title="语义分析"></a>语义分析</h4><p>我们知道我们写的代码中有些错误编译器是无法发现的</p>
 <p>比如说我们让两个指针相乘，在静态上并没有错误，但这是无意义的</p>
 <p>编译器所能分析的语义是静态语义，这是指在编译器可以确定地语义，与之对应的有动态语义，也就是只有在运行期才能确定的语义</p>
 <p>静态语义有声明和类型的匹配，类型的转换</p>
 <p><img src="image-20230110191517611.png" alt="image-20230110191517611"></p>
-<h4 id="中间语言生成">中间语言生成</h4>
-<p>中间语言生成实际上就是优化，现代编译器会进行一系列的优化，往往在源码级别会有一个优化</p>
+<h4 id="中间语言生成"><a href="#中间语言生成" class="headerlink" title="中间语言生成"></a>中间语言生成</h4><p>中间语言生成实际上就是优化，现代编译器会进行一系列的优化，往往在源码级别会有一个优化</p>
 <p>比如说2+6这样一个操作就可以被优化，但是编译器并不是人脑，不知道这个可以被优化为8</p>
 <p>这就是中间代码的作用，比较常见的是采取三地址码的形式和P-代码的形式</p>
 <p>最基本的三地址码是</p>
@@ -581,8 +563,7 @@
 <p>我们多用了几个临时变量t1,t2,t3</p>
 <p>这样的优化之后程序就会把2+6的结果算出来得到t1=8，然后直接把t1替换为8</p>
 <p>这样还省去了一个t3</p>
-<h4 id="目标代码生成与优化">目标代码生成与优化</h4>
-<p>源码级优化器产生中间代码之后的过程都属于编译器的后端</p>
+<h4 id="目标代码生成与优化"><a href="#目标代码生成与优化" class="headerlink" title="目标代码生成与优化"></a>目标代码生成与优化</h4><p>源码级优化器产生中间代码之后的过程都属于编译器的后端</p>
 <p>主要包括代码生成器和目标代码优化器</p>
 <p>代码生成器就是把中间代码转换成目标机器代码</p>
 <p>这个过程很依靠目标机器，毕竟不同机器有不同的字长，寄存器，数据类型，浮点操作</p>
@@ -590,47 +571,41 @@
 <p>代码优化就是对上述汇编语言进行优化，比如选择合理的寻址方式，使用位移来代替乘法运算，删除多余的指令等。</p>
 <p>但是这样的操作之后我们的变量仍然没有确定地址</p>
 <p>确定地址是链接干的事</p>
-<h4 id="重定位">重定位</h4>
-<p>以前的程序员都是手打孔（手搓二进制）的悲催生物，所以涉及到地址的跳转都是很复杂的事情，假如说程序的地址改变了，那么孔就要重新打，这种重新计算各个目标地址的操作就是重定位</p>
+<h4 id="重定位"><a href="#重定位" class="headerlink" title="重定位"></a>重定位</h4><p>以前的程序员都是手打孔（手搓二进制）的悲催生物，所以涉及到地址的跳转都是很复杂的事情，假如说程序的地址改变了，那么孔就要重新打，这种重新计算各个目标地址的操作就是重定位</p>
 <p>当然不能忍受这样的酷刑了，于是人们发明了汇编</p>
 <p>汇编中跳转只需要jmp就行了</p>
 <p>jmp foo（假设）</p>
 <p>那么我们不需要输入foo的地址，这事编译器会去做的</p>
 <p>符号这个概念也迅速普及了，它用来代表一个地址</p>
-<h4 id="链接-2">链接</h4>
-<p>有了汇编之后，代码的生产力就被大大提高了，于是又越来越多的代码被生产出来，人们想能不能把一些不同功能的代码打包起来，作为一个模块，方便复用，比如说把函数和变量打包在一个.c文件中</p>
+<h4 id="链接-1"><a href="#链接-1" class="headerlink" title="链接"></a>链接</h4><p>有了汇编之后，代码的生产力就被大大提高了，于是又越来越多的代码被生产出来，人们想能不能把一些不同功能的代码打包起来，作为一个模块，方便复用，比如说把函数和变量打包在一个.c文件中</p>
 <p>现代软件开发更加了，动辄百万行代码，于是这样的包越来越重要了，各个模块之间互相依赖又独立。</p>
 <p>在一个程序被分割成多个模块之后，模块之间如何组合形成一个单一的程序是一个问题，模块之间如何组合的问题其实就是模块之间如何通信的问题，最常见的属于c的模块通信又两种方法，一种是模块间的函数调用，另一种是模块间的变量访问。这二者都需要知道被访问对象的地址，也就是模块间符号的引用。</p>
 <p>这样模块之间的拼接过程也就是<strong>链接</strong></p>
-<h4 id="模块装载——静态链接">模块装载——静态链接</h4>
-<p>链接的过程已经讲了，需要找地址的</p>
+<h4 id="模块装载——静态链接"><a href="#模块装载——静态链接" class="headerlink" title="模块装载——静态链接"></a>模块装载——静态链接</h4><p>链接的过程已经讲了，需要找地址的</p>
 <p>于是就有：</p>
-<p>地址和空间分配–&gt;符号决议–&gt;重定位</p>
+<p>地址和空间分配—&gt;符号决议—&gt;重定位</p>
 <p>（符号决议有时也被叫做符号绑定，决议倾向于静态链接，绑定倾向于动态链接）</p>
 <p>最基本的静态链接就是每个模块的源代码文件.c经过编译器编译成为目标文件.o，目标文件.o和库一起链接形成最终可执行文件</p>
 <p>而最常见的库就是运行时库</p>
 <p>其实链接很大一部分工作就是找地址，你要用那一块模块中的功能，但是地址有时不确定的，并且有可能发生改变，那么就需要修改地址，入手肯定不能处理这样庞大的工作量，链接就会帮我们做这样的重定向工作。</p>
-<h2 id="目标文件（-o）里有什么">目标文件（.o）里有什么</h2>
-<p>确实，从广义上看目标文件和可执行文件是一致的，都是机器码</p>
+<h2 id="目标文件（-o）里有什么"><a href="#目标文件（-o）里有什么" class="headerlink" title="目标文件（.o）里有什么"></a>目标文件（.o）里有什么</h2><p>确实，从广义上看目标文件和可执行文件是一致的，都是机器码</p>
 <p>除了<strong>可执行文件</strong>（Windows下的.exe Linux下的.elf）按照<strong>可执行文件格式</strong>存储</p>
-<p><strong>动态链接库</strong>（Windows下的.dll <a target="_blank" rel="noopener" href="http://xn--Linux-gi1hr13v.so">Linux下的.so</a>） <strong>静态链接库</strong>（Windows下的.lib Linux下的.a）也都按<strong>可执行文件格式</strong>存储</p>
+<p><strong>动态链接库</strong>（Windows下的.dll Linux下的.so） <strong>静态链接库</strong>（Windows下的.lib Linux下的.a）也都按<strong>可执行文件格式</strong>存储</p>
 <p>Windows下这类文件都按PE-COFF(common file format)存储</p>
 <p>Linux下按ELF格式存储</p>
 <p>但是Linux下的静态链接库有所不同，他把很多文件捆绑起来形成一个文件，再加上一些索引</p>
 <p>ELF文件标准中ELF格式的文件被分为了四类：</p>
-<p><strong>可重定位文件（relocatable file）</strong>：包含代码和数据，<a target="_blank" rel="noopener" href="http://xn--onq8ax5yba891pdb65bn3fb8fpvfh01czi1a7qw2ebh64i.so">可以被用来链接成可执行文件或者.so</a>，静态链接库被归为这一类（实例：Linux的.o Windows的.obj）</p>
+<p><strong>可重定位文件（relocatable file）</strong>：包含代码和数据，可以被用来链接成可执行文件或者.so，静态链接库被归为这一类（实例：Linux的.o Windows的.obj）</p>
 <p><strong>可执行文件（executable file）</strong>：就是直接可执行，Linux下没有也不需要扩展名 （实例/bin/bash文件 windows下的exe）</p>
-<p><strong>共享目标文件（shared object file）</strong>：包含代码和数据。有两种使用：与其他.o和.so链接成为新的目标文件；动态链接器把几个.so文件与可执行文件结合作为进程映像的一部分来执行（实例：<a target="_blank" rel="noopener" href="http://xn--Linux-m81m.so">Linux的.so</a> Windows下的.dll）</p>
-<h3 id="目标文件是怎么样的">目标文件是怎么样的</h3>
-<p>目标文件中肯定包含了：代码，数据 之后也被添加了符号表，调试信息，字符串</p>
+<p><strong>共享目标文件（shared object file）</strong>：包含代码和数据。有两种使用：与其他.o和.so链接成为新的目标文件；动态链接器把几个.so文件与可执行文件结合作为进程映像的一部分来执行（实例：Linux的.so Windows下的.dll）</p>
+<h3 id="目标文件是怎么样的"><a href="#目标文件是怎么样的" class="headerlink" title="目标文件是怎么样的"></a>目标文件是怎么样的</h3><p>目标文件中肯定包含了：代码，数据 之后也被添加了符号表，调试信息，字符串</p>
 <p>目标文件把他们按类别存储为<strong>节</strong>也叫<strong>段</strong></p>
 <p>目标文件大概长这样：</p>
-<p>File header  --&gt;文件头</p>
-<p>.text section  --&gt;代码段(sometimes .code)</p>
-<p>.data section  --&gt;数据段</p>
-<p>.bss section  --&gt;</p>
-<h4 id="文件头">文件头</h4>
-<p>描述整个文件的文件属性，包括是否可执行，是静态链接函数动态链接及入口地址（可执行文件），目标硬件，目标操作系统等信息</p>
+<p>File header  —&gt;文件头</p>
+<p>.text section  —&gt;代码段(sometimes .code)</p>
+<p>.data section  —&gt;数据段</p>
+<p>.bss section  —&gt;</p>
+<h4 id="文件头"><a href="#文件头" class="headerlink" title="文件头"></a>文件头</h4><p>描述整个文件的文件属性，包括是否可执行，是静态链接函数动态链接及入口地址（可执行文件），目标硬件，目标操作系统等信息</p>
 <p>文件头还包含一个<strong>段表</strong>，段表描述了文件中各个段在文件中的偏移位置及段的属性</p>
 <p>从段表中可以得到每个段的所有信息，文件头后面就是各个段的内容</p>
 <p>一半C语言编译后执行语句保存在.text</p>
@@ -638,38 +613,31 @@
 <p>未初始化的全局变量和局部静态变量保存在.bss</p>
 <p>未初始化的全局变量和局部静态变量默认为0</p>
 <p>所以在.data没有必要保存他们，只需要在.bss段预留空间就行，所以.bss段没有内容也不占空间</p>
-<h4 id="分段的意义">分段的意义</h4>
-<p>把代码和数据分离之后，在程序被装载时可以把他们映射到不同的虚拟地址，之后可以把数据段设置为可读可写，代码段设置为可读，提高程序的安全性</p>
+<h4 id="分段的意义"><a href="#分段的意义" class="headerlink" title="分段的意义"></a>分段的意义</h4><p>把代码和数据分离之后，在程序被装载时可以把他们映射到不同的虚拟地址，之后可以把数据段设置为可读可写，代码段设置为可读，提高程序的安全性</p>
 <p>CPU缓存被设计为数据缓存和指令缓存分离，所以这样有助于提高CPU的效率</p>
 <p>另一个重要原因就是假如说一个程序被运行了很多副本，他们的指令都是一样的，所以缓存中只要保存一份该程序的指令部分</p>
 <p>这一点对于其他的可读数据也是一样的，图片，文本等资源都是可以共享的，这样可以节省大量的内存</p>
 <p>遇到了大麻烦：(</p>
-<h3 id="挖掘一个-o文件">挖掘一个.o文件</h3>
-<p>用objdump可以发现除了代码段，数据段和bss段外还有</p>
+<h3 id="挖掘一个-o文件"><a href="#挖掘一个-o文件" class="headerlink" title="挖掘一个.o文件"></a>挖掘一个.o文件</h3><p>用objdump可以发现除了代码段，数据段和bss段外还有</p>
 <p>.rodata(只读数据段)</p>
 <p>.comment（注释信息段）</p>
 <p>.note.GUN-stack（堆栈提示段）</p>
-<h5 id="段的属性">段的属性</h5>
-<p>比较重要的是长度size和位置file offset</p>
+<h5 id="段的属性"><a href="#段的属性" class="headerlink" title="段的属性"></a>段的属性</h5><p>比较重要的是长度size和位置file offset</p>
 <p>每个段中的第二行的CONTENTS ALLOC等表示段的各种属性</p>
 <p>bss段没有contents因为他没有内容</p>
 <p>堆栈提示段有contents但是长度为0 我们暂且认为他不存在</p>
-<h3 id="代码段">代码段</h3>
-<p>呃 好像没啥好说的</p>
+<h3 id="代码段"><a href="#代码段" class="headerlink" title="代码段"></a>代码段</h3><p>呃 好像没啥好说的</p>
 <p>机器码 反编译一下就是汇编代码</p>
-<h3 id="数据段和只读数据段">数据段和只读数据段</h3>
-<p>.data段保存的是<strong>初始化了的全局静态变量和局部静态变量</strong></p>
-<p>比如说printf(“%d\n”)这里有一个只读字符串常量&quot;%d\n&quot;这个字符串常量就会被放到.rodata段</p>
+<h3 id="数据段和只读数据段"><a href="#数据段和只读数据段" class="headerlink" title="数据段和只读数据段"></a>数据段和只读数据段</h3><p>.data段保存的是<strong>初始化了的全局静态变量和局部静态变量</strong></p>
+<p>比如说printf(“%d\n”)这里有一个只读字符串常量”%d\n”这个字符串常量就会被放到.rodata段</p>
 <p>程序中的只读常量都会被放到.rodata段，比如说用const修饰的常量和字符串常量</p>
 <p>单设一个只读段方便了内存的映射，可以直接把.rodata段属性改为只读，保障了程序的安全性</p>
 <p>另外，有些嵌入式平台的有些存储区是采用只读存储器的，这样就直接把.rodata段写进去就行了</p>
-<h3 id="BSS段">BSS段</h3>
-<p>static int x1=0;</p>
+<h3 id="BSS段"><a href="#BSS段" class="headerlink" title="BSS段"></a>BSS段</h3><p>static int x1=0;</p>
 <p>static int x2=1;</p>
 <p>相同的类型但是x1会被放在.bss段，x2被放在.data段</p>
 <p>因为x1的值是0，相当于未初始化，这样直接放在.bss段可以节省磁盘空间，这是一个优化的操作</p>
-<h3 id="其他段">其他段</h3>
-<p>.rodata1 (read only data,相当于.rodata)</p>
+<h3 id="其他段"><a href="#其他段" class="headerlink" title="其他段"></a>其他段</h3><p>.rodata1 (read only data,相当于.rodata)</p>
 <p>.comment(编译器版本信息)</p>
 <p>.debug(调试信息)</p>
 <p>.dynamic(动态连接信息)</p>
@@ -679,59 +647,49 @@
 <p>.strtab(string table 字符串表，存储elf文件中用到的各种字符串)</p>
 <p>.symtab(symbol table 符号表)</p>
 <p>.shastrtab(section table段名表)</p>
-<p>.plt ,.got</p>
+<p>.plt ,.got </p>
 <p>.init,.fini</p>
 <p>后面两行之后细讲</p>
 <p>以.作为前缀说明这些表的名字是系统保留的</p>
 <p>我们可以在里面插入一些自己定义的段比如music但是不能加.作为前缀</p>
 <p>（插入可以用一个工具叫做objcopy）</p>
-<h3 id="ELF文件结构描述">ELF文件结构描述</h3>
-<h4 id="文件头-2">文件头</h4>
-<p>文件头中定义了<strong>ELF魔数，文件机器字节长度，数据存储方式，版本，运行平台，ABI版本，ELF重定位结构，硬件平台，硬件平台版本，入口地址，程序入口和长度，段表的位置以及段的数量</strong></p>
+<h3 id="ELF文件结构描述"><a href="#ELF文件结构描述" class="headerlink" title="ELF文件结构描述"></a>ELF文件结构描述</h3><h4 id="文件头-1"><a href="#文件头-1" class="headerlink" title="文件头"></a>文件头</h4><p>文件头中定义了<strong>ELF魔数，文件机器字节长度，数据存储方式，版本，运行平台，ABI版本，ELF重定位结构，硬件平台，硬件平台版本，入口地址，程序入口和长度，段表的位置以及段的数量</strong></p>
 <p>可以通过readelf来输出elf文件的头文件信息</p>
 <p><img src="image-20230112191717328.png" alt="image-20230112191717328"></p>
 <p><img src="image-20230112191915542.png" alt="image-20230112191915542"></p>
-<h5 id="ELF魔数（magic）">ELF魔数（magic）</h5>
-<p>16个字节对应着elf文件的平台属性比如字长，字节序，文件版本</p>
+<h5 id="ELF魔数（magic）"><a href="#ELF魔数（magic）" class="headerlink" title="ELF魔数（magic）"></a>ELF魔数（magic）</h5><p>16个字节对应着elf文件的平台属性比如字长，字节序，文件版本</p>
 <p>前四个字节是所有elf文件都相同的标识码第一个字节对应ascii字符里的DEL控制符，后面三个就是ELF的ASCII码</p>
 <p>操作系统在加载文件时会检查魔数，如果魔数不正确就会拒绝加载</p>
 <p>接下来第一个字节是用来标志ELF文件类的0x01表示32位0x02是64位</p>
 <p>第6个是字节序表示大小端序</p>
 <p>第7个事ELF文件的主版本号</p>
 <p>后面9个没有定义</p>
-<h3 id="段表">段表</h3>
-<p><img src="image-20230112192430933.png" alt="image-20230112192430933"></p>
+<h3 id="段表"><a href="#段表" class="headerlink" title="段表"></a>段表</h3><p><img src="image-20230112192430933.png" alt="image-20230112192430933"></p>
 <p>有点多</p>
 <p>实际上段对于操作系统没有意义，操作系统只能认出他们的属性与权限</p>
 <p>段的名字对于编译器和链接器有意义</p>
-<h3 id="重定位表">重定位表</h3>
-<p>.rel.text是重定位表</p>
-<h3 id="字符串表">字符串表</h3>
-<p>ELF文件中用到了很多字符串，比如说段名和变量名，他们的长度都是不定的，所以常见的方法是把他们打包起来放到字符串表中，然后用字符串在表中的便宜来引用字符串</p>
-<h3 id="链接的接口——符号">链接的接口——符号</h3>
-<p>之前我们就说过，链接的实质就是指明地址</p>
+<h3 id="重定位表"><a href="#重定位表" class="headerlink" title="重定位表"></a>重定位表</h3><p>.rel.text是重定位表</p>
+<h3 id="字符串表"><a href="#字符串表" class="headerlink" title="字符串表"></a>字符串表</h3><p>ELF文件中用到了很多字符串，比如说段名和变量名，他们的长度都是不定的，所以常见的方法是把他们打包起来放到字符串表中，然后用字符串在表中的便宜来引用字符串</p>
+<h3 id="链接的接口——符号"><a href="#链接的接口——符号" class="headerlink" title="链接的接口——符号"></a>链接的接口——符号</h3><p>之前我们就说过，链接的实质就是指明地址</p>
 <p>地址可以是函数的地址，变量的地址，他们的名字都必须是不一样的</p>
 <p>变量和函数被称为<strong>符号</strong></p>
 <p>他们的名字就是<strong>符号名</strong></p>
 <p>符号是链接中的粘合剂，整个链接过程正是基于符号才能够正确的完成。</p>
 <p>符号通过<strong>符号表</strong>来管理，这个表里记录了目标文件中所用到的所有符号</p>
 <p>每个符号再符号表里对应一个值，这个值叫做<strong>符号值</strong>其实就是函数和变量的地址</p>
-<h3 id="ELF符号表结构">ELF符号表结构</h3>
-<p>ELF文件中的符号表往往是文件中的一个段</p>
+<h3 id="ELF符号表结构"><a href="#ELF符号表结构" class="headerlink" title="ELF符号表结构"></a>ELF符号表结构</h3><p>ELF文件中的符号表往往是文件中的一个段</p>
 <p>段名一般是.symtab</p>
 <p>符号表的结构就是一个32位ELF下的数组</p>
 <p>数组的第一个元素为无效的未定义</p>
-<h3 id="符号修饰与函数签名">符号修饰与函数签名</h3>
-<p>前置知识我们可以知道</p>
+<h3 id="符号修饰与函数签名"><a href="#符号修饰与函数签名" class="headerlink" title="符号修饰与函数签名"></a>符号修饰与函数签名</h3><p>前置知识我们可以知道</p>
 <p>符号名是不可以重复的，这样就会出现一个问题</p>
 <p>假如我们定义了一个库函数里面有main函数，这样链接的话我们的C语言程序里就不能有main函数</p>
 <p>这样显然是不合理的</p>
-<p>所以所有C语言库函数在编译后都会在变量和函数前加上‘_’，同样的Fortran语言会在前后都加上‘_’</p>
+<p>所以所有C语言库函数在编译后都会在变量和函数前加上‘<em>’，同样的Fortran语言会在前后都加上‘\</em>’</p>
 <p>但是这样也无法解决问题，因为库的数量一多仍然会导致重复</p>
 <p>所以人们就发明了<strong>命名空间</strong></p>
 <p>（随着时间的推移，很多操作系统和编译器都被重写了汇编库的冲突问题已经不那么明显了，所以Linux下GCC编译器已经默认取消了下划线，但是Windows下的编译器还是保留了下划线</p>
-<h4 id="c-符号修饰">c++符号修饰</h4>
-<p>还没写完ing</p>
+<h3 id="调试信息"><a href="#调试信息" class="headerlink" title="调试信息"></a>调试信息</h3><p>GCC编译时加上-g就可以在目标文件里找到调试信息了</p>
 
 
         <hr>
@@ -793,7 +751,7 @@
       </a>
     </li>
     <li class="social-share-li">
-      <a target="_blank" class="social-share-icon" href="mailto:?subject=程序员的自我修养&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/程序员的自我修养/">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=程序员的自我修养（1-3章）&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/程序员的自我修养/">
         <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
       </a>
     </li>
@@ -831,7 +789,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">接口</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A1%AC%E7%9B%98%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">硬盘的结构</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%9A%84%E4%BA%A7%E7%94%9F"><span class="toc-nav-number"></span> <span class="toc-nav-text">虚拟地址的产生</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%88%86%E6%AE%B5%EF%BC%88segmentation%EF%BC%89"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">分段（segmentation）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%88%86%E9%A1%B5%EF%BC%88paging%EF%BC%89"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">分页（paging）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-nav-number"></span> <span class="toc-nav-text">线程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">线程安全</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5"><span class="toc-nav-number"></span> <span class="toc-nav-text">编译与链接</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A2%AB%E9%9A%90%E8%97%8F%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-nav-number">0.1.</span> <span class="toc-nav-text">被隐藏的过程</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-nav-number">0.2.</span> <span class="toc-nav-text">预处理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-nav-number">0.3.</span> <span class="toc-nav-text">编译</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B1%87%E7%BC%96"><span class="toc-nav-number">0.4.</span> <span class="toc-nav-text">汇编</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5"><span class="toc-nav-number">0.5.</span> <span class="toc-nav-text">链接</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E5%81%9A%E4%BA%86%E4%BA%9B%E4%BB%80%E4%B9%88"><span class="toc-nav-number">0.6.</span> <span class="toc-nav-text">编译器做了些什么</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%89%AB%E6%8F%8F-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-nav-number">0.7.</span> <span class="toc-nav-text">扫描+语法分析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-nav-number">0.8.</span> <span class="toc-nav-text">语法分析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="toc-nav-number">0.9.</span> <span class="toc-nav-text">语义分析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80%E7%94%9F%E6%88%90"><span class="toc-nav-number">0.10.</span> <span class="toc-nav-text">中间语言生成</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%9B%AE%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="toc-nav-number">0.11.</span> <span class="toc-nav-text">目标代码生成与优化</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D"><span class="toc-nav-number">0.12.</span> <span class="toc-nav-text">重定位</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5-2"><span class="toc-nav-number">0.13.</span> <span class="toc-nav-text">链接</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A8%A1%E5%9D%97%E8%A3%85%E8%BD%BD%E2%80%94%E2%80%94%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-nav-number">0.14.</span> <span class="toc-nav-text">模块装载——静态链接</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6%EF%BC%88-o%EF%BC%89%E9%87%8C%E6%9C%89%E4%BB%80%E4%B9%88"><span class="toc-nav-number"></span> <span class="toc-nav-text">目标文件（.o）里有什么</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">目标文件是怎么样的</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">文件头</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%86%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">分段的意义</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8C%96%E6%8E%98%E4%B8%80%E4%B8%AA-o%E6%96%87%E4%BB%B6"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">挖掘一个.o文件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%AE%B5%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-nav-number">2.0.1.</span> <span class="toc-nav-text">段的属性</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%A3%E7%A0%81%E6%AE%B5"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">代码段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E6%AE%B5%E5%92%8C%E5%8F%AA%E8%AF%BB%E6%95%B0%E6%8D%AE%E6%AE%B5"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">数据段和只读数据段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#BSS%E6%AE%B5"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">BSS段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B6%E4%BB%96%E6%AE%B5"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">其他段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ELF%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E6%8F%8F%E8%BF%B0"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">ELF文件结构描述</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4-2"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">文件头</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ELF%E9%AD%94%E6%95%B0%EF%BC%88magic%EF%BC%89"><span class="toc-nav-number">7.1.1.</span> <span class="toc-nav-text">ELF魔数（magic）</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%AE%B5%E8%A1%A8"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">段表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">重定位表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A1%A8"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">字符串表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5%E7%9A%84%E6%8E%A5%E5%8F%A3%E2%80%94%E2%80%94%E7%AC%A6%E5%8F%B7"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">链接的接口——符号</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ELF%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">ELF符号表结构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%AC%A6%E5%8F%B7%E4%BF%AE%E9%A5%B0%E4%B8%8E%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">符号修饰与函数签名</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#c-%E7%AC%A6%E5%8F%B7%E4%BF%AE%E9%A5%B0"><span class="toc-nav-number">13.1.</span> <span class="toc-nav-text">c++符号修饰</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">接口</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%A1%AC%E7%9B%98%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">硬盘的结构</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%9A%84%E4%BA%A7%E7%94%9F"><span class="toc-nav-number"></span> <span class="toc-nav-text">虚拟地址的产生</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%88%86%E6%AE%B5%EF%BC%88segmentation%EF%BC%89"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">分段（segmentation）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%88%86%E9%A1%B5%EF%BC%88paging%EF%BC%89"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">分页（paging）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-nav-number"></span> <span class="toc-nav-text">线程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">线程安全</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5"><span class="toc-nav-number"></span> <span class="toc-nav-text">编译与链接</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%A2%AB%E9%9A%90%E8%97%8F%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-nav-number">0.1.</span> <span class="toc-nav-text">被隐藏的过程</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-nav-number">0.2.</span> <span class="toc-nav-text">预处理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-nav-number">0.3.</span> <span class="toc-nav-text">编译</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%B1%87%E7%BC%96"><span class="toc-nav-number">0.4.</span> <span class="toc-nav-text">汇编</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5"><span class="toc-nav-number">0.5.</span> <span class="toc-nav-text">链接</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E5%81%9A%E4%BA%86%E4%BA%9B%E4%BB%80%E4%B9%88"><span class="toc-nav-number">0.6.</span> <span class="toc-nav-text">编译器做了些什么</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%89%AB%E6%8F%8F-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-nav-number">0.7.</span> <span class="toc-nav-text">扫描+语法分析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-nav-number">0.8.</span> <span class="toc-nav-text">语法分析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="toc-nav-number">0.9.</span> <span class="toc-nav-text">语义分析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80%E7%94%9F%E6%88%90"><span class="toc-nav-number">0.10.</span> <span class="toc-nav-text">中间语言生成</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%9B%AE%E6%A0%87%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="toc-nav-number">0.11.</span> <span class="toc-nav-text">目标代码生成与优化</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D"><span class="toc-nav-number">0.12.</span> <span class="toc-nav-text">重定位</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5-1"><span class="toc-nav-number">0.13.</span> <span class="toc-nav-text">链接</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A8%A1%E5%9D%97%E8%A3%85%E8%BD%BD%E2%80%94%E2%80%94%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-nav-number">0.14.</span> <span class="toc-nav-text">模块装载——静态链接</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6%EF%BC%88-o%EF%BC%89%E9%87%8C%E6%9C%89%E4%BB%80%E4%B9%88"><span class="toc-nav-number"></span> <span class="toc-nav-text">目标文件（.o）里有什么</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">目标文件是怎么样的</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">文件头</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%86%E6%AE%B5%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">分段的意义</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%8C%96%E6%8E%98%E4%B8%80%E4%B8%AA-o%E6%96%87%E4%BB%B6"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">挖掘一个.o文件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%AE%B5%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-nav-number">2.0.1.</span> <span class="toc-nav-text">段的属性</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%A3%E7%A0%81%E6%AE%B5"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">代码段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E6%AE%B5%E5%92%8C%E5%8F%AA%E8%AF%BB%E6%95%B0%E6%8D%AE%E6%AE%B5"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">数据段和只读数据段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#BSS%E6%AE%B5"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">BSS段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%85%B6%E4%BB%96%E6%AE%B5"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">其他段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ELF%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E6%8F%8F%E8%BF%B0"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">ELF文件结构描述</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4-1"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">文件头</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ELF%E9%AD%94%E6%95%B0%EF%BC%88magic%EF%BC%89"><span class="toc-nav-number">7.1.1.</span> <span class="toc-nav-text">ELF魔数（magic）</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%AE%B5%E8%A1%A8"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">段表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">重定位表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A1%A8"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">字符串表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E9%93%BE%E6%8E%A5%E7%9A%84%E6%8E%A5%E5%8F%A3%E2%80%94%E2%80%94%E7%AC%A6%E5%8F%B7"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">链接的接口——符号</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ELF%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">ELF符号表结构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%AC%A6%E5%8F%B7%E4%BF%AE%E9%A5%B0%E4%B8%8E%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">符号修饰与函数签名</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%B0%83%E8%AF%95%E4%BF%A1%E6%81%AF"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">调试信息</span></a></li></ol>
         
         </div>
       </aside>
@@ -854,9 +812,9 @@
           </h5>
           <div class="tags">
             
-            <a class="tag" href="/tags/#C语言" title="C语言">C语言</a>
+            <a class="tag" href="/tags/#C语言底层机制" title="C语言底层机制">C语言底层机制</a>
             
-            <a class="tag" href="/tags/#PE结构" title="PE结构">PE结构</a>
+            <a class="tag" href="/tags/#编译器" title="编译器">编译器</a>
             
           </div>
         </section>
