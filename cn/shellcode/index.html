@@ -225,12 +225,10 @@
 
           
           
-          
-          
           <li>
-            <a href="/about/">
+            <a href="/archive/">
               
-              关于
+              归档
               
               
             </a>
@@ -261,13 +259,15 @@
           
           
           <li>
-            <a href="/archive/">
+            <a href="/about/">
               
-              归档
+              关于
               
               
             </a>
           </li>
+          
+          
           
           
 
@@ -385,7 +385,7 @@
             </span>
             <div class="blank_box"></div>
             <span class="meta">
-              Words <span class="post-count">502</span> In Total
+              Words <span class="post-count">503</span> In Total
             </span>
             <div class="blank_box"></div>
             <!-- WordCount end -->
@@ -431,7 +431,8 @@
       <!-- Post Container -->
       <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-        <h1 id="HGAME-WEEK4-REVERSE-shellcode"><a href="#HGAME-WEEK4-REVERSE-shellcode" class="headerlink" title="HGAME WEEK4 REVERSE shellcode"></a>HGAME WEEK4 REVERSE shellcode</h1><p>shellcode是一段用于利用软件漏洞而执行的代码，shellcode为16进制的机器码，因为经常让攻击者获得shell而得名。shellcode常常使用机器语言编写。 可在暂存器eip溢出后，塞入一段可让CPU执行的shellcode机器码，让电脑可以执行攻击者的任意指令。</p>
+        <h1>HGAME WEEK4 REVERSE shellcode</h1>
+<p>shellcode是一段用于利用软件漏洞而执行的代码，shellcode为16进制的机器码，因为经常让攻击者获得shell而得名。shellcode常常使用机器语言编写。 可在暂存器eip溢出后，塞入一段可让CPU执行的shellcode机器码，让电脑可以执行攻击者的任意指令。</p>
 <p>但是这道题目对于shellcode的定义应该是从机器码出发的，并不是利用程序漏洞。</p>
 <p><img src="image-20230213230108227.png" alt="image-20230213230108227"></p>
 <p>通过ida对函数的分析我们大概可以知道这是用GO语言编写的程序</p>
@@ -442,7 +443,7 @@
 <p>看了官方wp才发现010editor有那么强大的功能可以直接从base64解码并粘贴</p>
 <p><img src="image-20230213230729005.png" alt="image-20230213230729005"></p>
 <p>粘贴完后直接保存为.exe放到ida里就能发现一个比较标准的tea加密（要先p一下创建函数）</p>
-<p><img src="\image-20230213230825018.png" alt="image-20230213230825018"></p>
+<p><img src="image-20230213230825018.png" alt="image-20230213230825018"></p>
 <p>解码脚本：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrypt</span><span class="params">(<span class="keyword">uint32_t</span>* v, <span class="keyword">uint32_t</span>* k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v0 = v[<span class="number">0</span>], v1 = v[<span class="number">1</span>], sum = <span class="number">32</span>*(<span class="number">-0x543210dd</span>), i;</span><br><span class="line">    <span class="keyword">uint32_t</span> delta =<span class="number">0x543210dd</span>; <span class="comment">//在这里发现很多大佬的wp都是用了sum=32*0x12345ef sum每轮减去0x12....来实现解密的，其实这两个数相加就是0（受位数限制），所以两者并没有区别                   </span></span><br><span class="line">    <span class="keyword">uint32_t</span> k0 = k[<span class="number">0</span>], k1 = k[<span class="number">1</span>], k2 = k[<span class="number">2</span>], k3 = k[<span class="number">3</span>];  </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;                       </span><br><span class="line">        v1 -= ((v0 &lt;&lt; <span class="number">4</span>) + k2) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k3);</span><br><span class="line">        v0 -= ((v1 &lt;&lt; <span class="number">4</span>) + k0) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k1);</span><br><span class="line">        sum += delta;</span><br><span class="line">    &#125;                                           </span><br><span class="line">    v[<span class="number">0</span>] = v0; v[<span class="number">1</span>] = v1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v[] = &#123;<span class="number">0xe4b36920</span>,<span class="number">0x936924d0</span>,<span class="number">0xa816d144</span>,<span class="number">0xaa82d5f5</span>,<span class="number">0x3679f0da</span>,<span class="number">0x7f32fd06</span>,</span><br><span class="line">    <span class="number">0x3460c0d3</span>,<span class="number">0xb7214939</span>,<span class="number">0xe57269a2</span>,<span class="number">0x836a51fa</span>&#125;, k[<span class="number">4</span>] = &#123; <span class="number">22</span>,<span class="number">33</span>,<span class="number">44</span>,<span class="number">55</span> &#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">        decrypt(&amp;v[i*<span class="number">2</span>], k);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,v);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;<span class="comment">//这里v的值也要注意一下，因为最后给的是flag.enc文件，是小端序存储的，所以v的取值要以四个字节为单位反着输入</span></span><br><span class="line"><span class="comment">//hgame&#123;th1s_1s_th3_tutu&#x27;s_h0mew0rk&#125;</span></span><br></pre></td></tr></table></figure>
 
@@ -450,10 +451,6 @@
         <hr>
         <!-- Pager -->
         <ul class="pager">
-          
-          <li class="previous">
-            <a href="/cn/西湖论剑REVERSE复现/" data-toggle="tooltip" data-placement="top" title="西湖论剑REVERSE复现">&larr; Previous Post</a>
-          </li>
           
           
           <li class="next">
@@ -544,7 +541,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HGAME-WEEK4-REVERSE-shellcode"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME WEEK4 REVERSE shellcode</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME WEEK4 REVERSE shellcode</span></a></li></ol>
         
         </div>
       </aside>
