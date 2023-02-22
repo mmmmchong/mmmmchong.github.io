@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/404.html">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/patchme/">
   <title>
     
-      Welcome to my blog
+      patchme - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -329,19 +329,19 @@
     .body--light {
       /* intro-header */
       --intro-header-background-image-url-home: url('/img/header_img/pexels-photo-1287145.jpeg');
-      --intro-header-background-image-url-post: url('img/header_img/404_bg.jpg');
-      --intro-header-background-image-url-page: url('/img/header_img/404_bg.jpg');
+      --intro-header-background-image-url-post: url('');
+      --intro-header-background-image-url-page: url('/img/header_img/');
     }
     .body--dark {
       --intro-header-background-image-url-home: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/pexels-photo-1287145.jpeg');
-      --intro-header-background-image-url-post: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('img/header_img/404_bg.jpg');
-      --intro-header-background-image-url-page: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/404_bg.jpg');
+      --intro-header-background-image-url-post: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('');
+      --intro-header-background-image-url-page: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/');
     }
 
     header.intro-header {
-       /*page*/
-        background-image: var(--intro-header-background-image-url-page);
-        /* background-image: url('/img/header_img/404_bg.jpg'); */
+       /*post*/
+        background-image: var(--intro-header-background-image-url-post);
+        /* background-image: url(''); */
       
     }
 
@@ -356,6 +356,60 @@
 
 
 
+<header class="intro-header">
+  <!-- Signature -->
+  <div id="signature">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+          <div class="post-heading">
+            <div class="tags">
+              
+              <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
+              
+            </div>
+            <h1>patchme</h1>
+            <h2 class="subheading"></h2>
+            <span class="meta">
+              Posted by Humb1e on
+              2023-02-22
+            </span>
+
+
+            
+            <!-- WordCount start -->
+            <div class="blank_box"></div>
+            <span class="meta">
+              Estimated Reading Time <span class="post-count">2</span> Minutes
+            </span>
+            <div class="blank_box"></div>
+            <span class="meta">
+              Words <span class="post-count">580</span> In Total
+            </span>
+            <div class="blank_box"></div>
+            <!-- WordCount end -->
+            
+            
+            <!-- 不蒜子统计 start -->
+            <span class="meta" id="busuanzi_container_page_pv">
+              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+            </span>
+            <!-- 不蒜子统计 end -->
+            
+
+
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+</header>
+
 
 
 		<!-- Main Content (Post contains
@@ -369,39 +423,241 @@
 	Friends Blog、
 	anchorjs、
 	) -->
-		<style type="text/css">
-  
-    .body--light {
-      /* intro-header */
-      --intro-header-background-image-url-404: url('/img/header_img/404_bg.jpg');
-    }
-    .body--dark {
-      --intro-header-background-image-url-404: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/404_bg.jpg');
-    }
-    header.intro-header {
-      background-image: var(--intro-header-background-image-url-404);
-    }
-  
+		<!-- Modify by Yu-Hsuan Yen -->
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
+        <h1>HGAME REVERSE WEEK3</h1>
+<p>之前是按照出题人的思路进行patch得到的flag，这次想尝试一下直接逆向得到答案</p>
+<p><img src="image-20230222144725798.png" alt="image-20230222144725798"></p>
+<p>这是其中的一个比较重要的加密过程</p>
+<p>可以看到i的作用是类似于寻找地址</p>
+<p>之后的mprotect是用来修改指定内存区域属性的，并且这个函数是再Linux下的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span>   </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mmap.h&gt;</span>   </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mprotect</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *start, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这就是函数原型</p>
+<p>mprotect()函数把自start开始的、长度为len的内存区的保护属性修改为prot指定的值。</p>
+<p>prot可以取以下几个值，并且可以用“|”将几个属性合起来使用：</p>
+<p>1）PROT_READ：表示内存段内的内容可读；</p>
+<p>2）PROT_WRITE：表示内存段内的内容可写；</p>
+<p>3）PROT_EXEC：表示内存段中的内容可执行；</p>
+<p>4）PROT_NONE：表示内存段中的内容根本没法访问。</p>
+<p><img src="image-20230222145443578.png" alt="image-20230222145443578"></p>
+<p>可以看到，mprotect修改的内存区域与之后的加密区域是重合的</p>
+<p>所以下面的加密操作其实是对内存也就是text进行的，这一点是week3逆向题的总体风格了，对text段操作，或者有shellcode</p>
+<p>可以打开file -&gt; script command 写入脚本进行解密的</p>
+<p><img src="image-20230222151457411.png" alt="image-20230222151457411"></p>
+<p>（ida的python接口的函数还不会写）</p>
+<p>这样之后只要在0x14c6 p一下创建函数体就可以静态分析代码了</p>
+<p><img src="image-20230222151552310.png" alt="image-20230222151552310"></p>
+<p>加密很简单，异或之后输出</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> v9[<span class="number">6</span>];</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> v10[<span class="number">6</span>];</span><br><span class="line">    v9[<span class="number">0</span>] = <span class="number">0x5416D999808A28FA</span>LL;</span><br><span class="line">    v9[<span class="number">1</span>] = <span class="number">0x588505094953B563</span>LL;</span><br><span class="line">    v9[<span class="number">2</span>] = <span class="number">0xCE8CF3A0DC669097</span>LL;</span><br><span class="line">    v9[<span class="number">3</span>] = <span class="number">0x4C5CF3E854F44CBD</span>LL;</span><br><span class="line">    v9[<span class="number">4</span>] = <span class="number">0xD144E49916678331</span>LL;</span><br><span class="line">    v9[<span class="number">5</span>] = <span class="number">0x55BBD0DA616BAC</span>;</span><br><span class="line">    v10[<span class="number">0</span>] = <span class="number">0x3B4FA2FCEDEB4F92</span>LL;</span><br><span class="line">    v10[<span class="number">1</span>] = <span class="number">0x7E45A6C3B67EA16</span>LL;</span><br><span class="line">    v10[<span class="number">2</span>] = <span class="number">0xAFE1ACC8BF12D0E7</span>LL;</span><br><span class="line">    v10[<span class="number">3</span>] = <span class="number">0x132EC3B7269138CE</span>LL;</span><br><span class="line">    v10[<span class="number">4</span>] = <span class="number">0x8E2197EB7311E643</span>LL;</span><br><span class="line">    v10[<span class="number">5</span>] = <span class="number">0x28C9B5AE540AC1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">46</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(*((<span class="keyword">char</span>*)v9 + i) ^ *((<span class="keyword">char</span>*)v10 + i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;<span class="comment">//hgame&#123;You_4re_a_p@tch_master_0r_reverse_ma5ter&#125;</span></span><br></pre></td></tr></table></figure>
+<p>看了眼大师傅们的解密脚本</p>
+<p>都很妙，有用char对数组操作强制四位四位转换的</p>
+<p>还有整个异或之后用python pwn库的p64函数转换成字符串的</p>
+<p>都学到了新东西</p>
+<p>week3的所有wp应该都齐了，复现完week3之后我发觉对于逆向来说，任何对内存进行的操作都要敏感，不论是对数据的修改还是对代码的修改，这都非常重要</p>
+<p><s>ps:期末考考完哩，应该挂不了</s></p>
+
+
+        <hr>
+        <!-- Pager -->
+        <ul class="pager">
+          
+          
+          <li class="next">
+            <a href="/cn/cpp/" data-toggle="tooltip" data-placement="top" title="cpp">Next Post &rarr;</a>
+          </li>
+          
+        </ul>
+
+        
+        <!-- tip start -->
+        <!-- tip -->
+<!-- tip start -->
+<div class="tip">
+  <p>
+    
+      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+    
+  </p>
+</div>
+<!-- tip end -->
+
+        <!-- tip end -->
+        
+
+        
+        <!-- Sharing Srtart -->
+        <!-- Social Social Share Post -->
+<!-- Docs:https://github.com/overtrue/share.js -->
+
+<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
+  <ul class="list-inline text-center social-share-ul">
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-twitter">
+        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a class="social-share-icon icon-wechat">
+        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-weibo">
+        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-qq">
+        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=patchme&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/patchme/">
+        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- css & js -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
+<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+        <!-- Sharing End -->
+        
+        <hr>
+
+        <!-- comments start -->
+        <!-- 1. gitalk comment -->
+
+
+<!-- 2. gitment comment -->
+
+
+<!-- 3. disqus comment -->
+
+
+        <!-- comments end -->
+        <hr>
+
+      </div>
+
+      <!-- Catalog: Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">目录</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME REVERSE WEEK3</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+
+
+      <!-- Sidebar Container -->
+      <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+        <!-- Featured Tags -->
+        
+        <section>
+          <!-- no hr -->
+          <h5>
+            <a href="/tags/">特色标签</a>
+          </h5>
+          <div class="tags">
+            
+            <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
+            
+          </div>
+        </section>
+        
+
+        <!-- Friends Blog -->
+        
+        <hr>
+        <h5>链友</h5>
+        <ul class="list-inline">
+
+          
+          <li>
+            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
+          </li>
+          
+          <li>
+            <a href="http://gtg.ink/" target="_blank">gtg</a>
+          </li>
+          
+          <li>
+            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+<!-- anchorjs start -->
+<!-- async load function -->
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script type="text/javascript">
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  };
+</script>
+<script type="text/javascript">
+  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
+  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'left',
+      // icon: 'ℬ'
+      icon: '❡'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
 </style>
 
-<!-- Page Header -->
-<header class="intro-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>404</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">I&#39;m sorry there is nothing that you want , but you can enjoy the scenery here ...</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-<script>
-    document.body.classList.add('page-fullscreen');
-</script>
+<!-- anchorjs end -->
+
 
 
 		<!-- Footer (contains ThemeColor、viewer) -->
