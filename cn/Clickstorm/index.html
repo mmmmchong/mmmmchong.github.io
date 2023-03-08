@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/categories/">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/Clickstorm/">
   <title>
     
-      Categories - Welcome to my blog
+      Clickstorm - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -329,19 +329,19 @@
     .body--light {
       /* intro-header */
       --intro-header-background-image-url-home: url('/img/header_img/pexels-photo-1287145.jpeg');
-      --intro-header-background-image-url-post: url('img/header_img/categories_bg.jpg');
-      --intro-header-background-image-url-page: url('/img/header_img/categories_bg.jpg');
+      --intro-header-background-image-url-post: url('');
+      --intro-header-background-image-url-page: url('/img/header_img/');
     }
     .body--dark {
       --intro-header-background-image-url-home: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/pexels-photo-1287145.jpeg');
-      --intro-header-background-image-url-post: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('img/header_img/categories_bg.jpg');
-      --intro-header-background-image-url-page: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/categories_bg.jpg');
+      --intro-header-background-image-url-post: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('');
+      --intro-header-background-image-url-page: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/');
     }
 
     header.intro-header {
-       /*page*/
-        background-image: var(--intro-header-background-image-url-page);
-        /* background-image: url('/img/header_img/categories_bg.jpg'); */
+       /*post*/
+        background-image: var(--intro-header-background-image-url-post);
+        /* background-image: url(''); */
       
     }
 
@@ -363,10 +363,44 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="site-heading">
-            <h1>Categories</h1>
-            <!--<hr class="small">-->
-            <span class="subheading">Hi , here is Categories ....</span>
+          <div class="post-heading">
+            <div class="tags">
+              
+              <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
+              
+              <a class="tag" href="/tags/#Android" title="Android">Android</a>
+              
+            </div>
+            <h1>Clickstorm</h1>
+            <h2 class="subheading"></h2>
+            <span class="meta">
+              Posted by Humb1e on
+              2023-03-08
+            </span>
+
+
+            
+            <!-- WordCount start -->
+            <div class="blank_box"></div>
+            <span class="meta">
+              Estimated Reading Time <span class="post-count">2</span> Minutes
+            </span>
+            <div class="blank_box"></div>
+            <span class="meta">
+              Words <span class="post-count">539</span> In Total
+            </span>
+            <div class="blank_box"></div>
+            <!-- WordCount end -->
+            
+            
+            <!-- 不蒜子统计 start -->
+            <span class="meta" id="busuanzi_container_page_pv">
+              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+            </span>
+            <!-- 不蒜子统计 end -->
+            
+
+
           </div>
           
         </div>
@@ -391,241 +425,231 @@
 	Friends Blog、
 	anchorjs、
 	) -->
-		<!-- Main Content -->
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <!-- 分类页面 -->
+		<!-- Modify by Yu-Hsuan Yen -->
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-      
+        <h1>ClickStorm 一道有意思的安卓逆向</h1>
+<p><img src="image-20230308105016786.png" alt="image-20230308105016786"></p>
+<p>最近研究了RC4，结果遇到了很多RC4</p>
+<p>这是一道某个被喷烂的杯的逆向题，还是有点意思的</p>
+<p>这个RC4的key在上面</p>
+<p><img src="image-20230308105121215.png" alt="image-20230308105121215"></p>
+<p>infiniteloop已经暗示了下面的无限循环</p>
+<p>果然下面在对rc4的xbox进行初始化的时候采取了点击一次button随机一次xbox的操作</p>
+<p><img src="image-20230308105242220.png" alt="image-20230308105242220"></p>
+<p>在循环99999次后初始完成</p>
+<p>是的，有点坑人，如果你点击了九万九千九百次，他并不会给你flag，他只是完成了xbox的初始化，你仍然需要输入flag</p>
+<p>并且这题对flag的check隐藏在了<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24054609">native层</a>，这个native层有点类似C语言的.h头文件，又有点像.dll动态链接库</p>
+<p>反正在jadx里对这个.apk是看不出啥了的</p>
+<p>oacia✌说只要给.apk解压一下找一下.so文件，Linux下叫共享目标文件</p>
+<p>checkflag的逻辑就写在这里，只要把他拖进ida就行了</p>
+<p><img src="image-20230308110219921.png" alt="image-20230308110219921"></p>
+<p>密文找到哩</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>* s, <span class="keyword">unsigned</span> <span class="keyword">char</span>* key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> k[<span class="number">256</span>];</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> temp = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">s[i] = i;</span><br><span class="line">k[i] = key[i % <span class="built_in">strlen</span>(key)];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> l=<span class="number">0</span>; l &lt; <span class="number">99999</span>; l++) &#123;</span><br><span class="line">j = <span class="number">0</span>;<span class="comment">//注意一下j=0，不然就g了</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">j = (j + s[i] + k[i]) % <span class="number">256</span>;</span><br><span class="line">temp = s[i];</span><br><span class="line">s[i] = s[j];</span><br><span class="line">s[j] = temp;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">crypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>* s, <span class="keyword">unsigned</span> <span class="keyword">char</span>* data, <span class="keyword">unsigned</span> <span class="keyword">long</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, t = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> k = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> temp;</span><br><span class="line"><span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; len; k++)</span><br><span class="line">&#123;</span><br><span class="line">i = (i + <span class="number">1</span>) % <span class="number">256</span>;</span><br><span class="line">j = (j + s[i]) % <span class="number">256</span>;</span><br><span class="line">temp = s[i];</span><br><span class="line">s[i] = s[j];</span><br><span class="line">s[j] = temp;</span><br><span class="line">t = (s[i] + s[j]) % <span class="number">256</span>;</span><br><span class="line">data[k] ^= s[t];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> s[<span class="number">256</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="keyword">char</span> key[] = <span class="string">&quot;InfinityLoop&quot;</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> data[] = &#123; <span class="number">0xA6</span>, <span class="number">0x3D</span>, <span class="number">0x54</span>, <span class="number">0xB0</span>, <span class="number">0x74</span>, <span class="number">0xCC</span>, <span class="number">0xBD</span>, <span class="number">0x2A</span>,</span><br><span class="line"><span class="number">0x4A</span>, <span class="number">0xDE</span>,</span><br><span class="line"><span class="number">0xBD</span>, <span class="number">0x35</span>, <span class="number">0xD1</span>, <span class="number">0x1D</span>, <span class="number">0x80</span>, <span class="number">0x32</span>, <span class="number">0x5F</span>, <span class="number">0x64</span>, <span class="number">0x2F</span>, <span class="number">0xC5</span>,</span><br><span class="line"><span class="number">0xDD</span>, <span class="number">0x11</span>, <span class="number">0x3E</span>, <span class="number">0x95</span>, <span class="number">0xCC</span>, <span class="number">0x17</span>, <span class="number">0x13</span>, <span class="number">0xE5</span>, <span class="number">0x5E</span>, <span class="number">0x65</span>,</span><br><span class="line"><span class="number">0xCE</span>, <span class="number">0x42</span>, <span class="number">0x9E</span>, <span class="number">0x47</span>, <span class="number">0xC8</span>, <span class="number">0xF3</span>, <span class="number">0x4D</span>, <span class="number">0x8A</span>, <span class="number">0xA6</span>, <span class="number">0x1F</span>,</span><br><span class="line"><span class="number">0xF0</span>, <span class="number">0x50</span>, <span class="number">0x27</span>, <span class="number">0xA2</span>, <span class="number">0x28</span>, <span class="number">0x81</span>, <span class="number">0x24</span>, <span class="number">0xA7</span>, <span class="number">0xB4</span>, <span class="number">0x90</span>,</span><br><span class="line"><span class="number">0xFC</span>, <span class="number">0x93</span>, <span class="number">0x8A</span>, <span class="number">0xC1</span>, <span class="number">0x77</span>, <span class="number">0xD5</span>, <span class="number">0x16</span>, <span class="number">0x1E</span>, <span class="number">0xFD</span>, <span class="number">0x87</span>,</span><br><span class="line"><span class="number">0xC7</span>, <span class="number">0xBB</span>, <span class="number">0xB3</span>, <span class="number">0x00</span> &#125;;</span><br><span class="line">init(s, key);</span><br><span class="line">crypt(s, data, <span class="number">63</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">64</span>; i++) &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, data[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;<span class="comment">//flag&#123;i_hope_you_didnt_click_the_button_99999__justRE_in_Static&#125;</span></span><br></pre></td></tr></table></figure>
 
-      <!-- 标签云 -->
-      <div id='tag_cloud' class="tags">
+
+        <hr>
+        <!-- Pager -->
+        <ul class="pager">
+          
+          
+          <li class="next">
+            <a href="/cn/Kalmar CTF cyclechaser/" data-toggle="tooltip" data-placement="top" title="cyclechaser">Next Post &rarr;</a>
+          </li>
+          
+        </ul>
+
         
-        <a href="#REVERSE" title="REVERSE" rel="4">REVERSE</a>
+        <!-- tip start -->
+        <!-- tip -->
+<!-- tip start -->
+<div class="tip">
+  <p>
+    
+      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+    
+  </p>
+</div>
+<!-- tip end -->
+
+        <!-- tip end -->
         
-        <a href="#BOOK" title="BOOK" rel="2">BOOK</a>
+
         
-        <a href="#HGAME" title="HGAME" rel="3">HGAME</a>
+        <!-- Sharing Srtart -->
+        <!-- Social Social Share Post -->
+<!-- Docs:https://github.com/overtrue/share.js -->
+
+<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
+  <ul class="list-inline text-center social-share-ul">
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-twitter">
+        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a class="social-share-icon icon-wechat">
+        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-weibo">
+        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-qq">
+        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=Clickstorm&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/Clickstorm/">
+        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- css & js -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
+<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+        <!-- Sharing End -->
         
-        <a href="#IoT" title="IoT" rel="1">IoT</a>
-        
+        <hr>
+
+        <!-- comments start -->
+        <!-- 1. gitalk comment -->
+
+
+<!-- 2. gitment comment -->
+
+
+<!-- 3. disqus comment -->
+
+
+        <!-- comments end -->
+        <hr>
+
       </div>
 
-      <!-- 标签列表 -->
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="REVERSE">
-          <span class="tag-text">REVERSE</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/kumisc/">
-            <h2 class="post-title">
-              kumisc
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/suanfa/">
-            <h2 class="post-title">
-              CTF逆向常见算法
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/Kalmar CTF cyclechaser/">
-            <h2 class="post-title">
-              cyclechaser
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/Clickstorm/">
-            <h2 class="post-title">
-              Clickstorm
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="BOOK">
-          <span class="tag-text">BOOK</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/汇编语言/">
-            <h2 class="post-title">
-              汇编语言
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/程序员的自我修养/">
-            <h2 class="post-title">
-              程序员的自我修养（1-3章）
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="HGAME">
-          <span class="tag-text">HGAME</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/shellcode/">
-            <h2 class="post-title">
-              shellcode
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/cpp/">
-            <h2 class="post-title">
-              cpp
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/patchme/">
-            <h2 class="post-title">
-              patchme
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="IoT">
-          <span class="tag-text">IoT</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/TOTOLINK/">
-            <h2 class="post-title">
-              TOTOLINK
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
+      <!-- Catalog: Tabe of Content -->
+      <!-- Table of Contents -->
 
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">目录</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">ClickStorm 一道有意思的安卓逆向</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+
+
+      <!-- Sidebar Container -->
+      <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+        <!-- Featured Tags -->
+        
+        <section>
+          <!-- no hr -->
+          <h5>
+            <a href="/tags/">特色标签</a>
+          </h5>
+          <div class="tags">
+            
+            <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
+            
+            <a class="tag" href="/tags/#Android" title="Android">Android</a>
+            
+          </div>
+        </section>
+        
+
+        <!-- Friends Blog -->
+        
+        <hr>
+        <h5>链友</h5>
+        <ul class="list-inline">
+
+          
+          <li>
+            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
+          </li>
+          
+          <li>
+            <a href="http://gtg.ink/" target="_blank">gtg</a>
+          </li>
+          
+          <li>
+            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
+          </li>
+          
+        </ul>
+        
+      </div>
     </div>
   </div>
-</div>
+</article>
+
+
+
+<!-- anchorjs start -->
+<!-- async load function -->
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script type="text/javascript">
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  };
+</script>
+<script type="text/javascript">
+  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
+  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'left',
+      // icon: 'ℬ'
+      icon: '❡'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+<!-- anchorjs end -->
+
 
 
 		<!-- Footer (contains ThemeColor、viewer) -->
