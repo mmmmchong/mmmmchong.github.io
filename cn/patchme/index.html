@@ -228,9 +228,9 @@
           
           
           <li>
-            <a href="/archive/">
+            <a href="/categories/">
               
-              归档
+              分类
               
               
             </a>
@@ -250,9 +250,9 @@
           
           
           <li>
-            <a href="/categories/">
+            <a href="/archive/">
               
-              分类
+              归档
               
               
             </a>
@@ -385,7 +385,7 @@
             </span>
             <div class="blank_box"></div>
             <span class="meta">
-              Words <span class="post-count">580</span> In Total
+              Words <span class="post-count">719</span> In Total
             </span>
             <div class="blank_box"></div>
             <!-- WordCount end -->
@@ -461,7 +461,18 @@
 <p>都学到了新东西</p>
 <p>week3的所有wp应该都齐了，复现完week3之后我发觉对于逆向来说，任何对内存进行的操作都要敏感，不论是对数据的修改还是对代码的修改，这都非常重要</p>
 <p><s>ps:期末考考完哩，应该挂不了</s></p>
-
+<h1>2023.3.14更新 XCTF babyre</h1>
+<p>一道有趣的题目</p>
+<p><img src="image-20230314185701868.png" alt="image-20230314185701868"></p>
+<p>进去之后看到是这样的代码逻辑</p>
+<p>judge数组的出现显得非常没有逻辑</p>
+<p>其实这题和上文hgame的patchme是一个道理</p>
+<p>都用了类似于smc技术</p>
+<p>对关键代码进行了处理，不过hgame的逻辑隐藏地更深</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> idc</span><br><span class="line"></span><br><span class="line">addr=<span class="number">0x600b00</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">182</span>):</span><br><span class="line"></span><br><span class="line">​    idc.patch_byte(addr+i,idc.get_wide_byte(i+addr)^<span class="number">12</span>)<span class="comment">##execute script</span></span><br></pre></td></tr></table></figure>
+<p><img src="image-20230314190024215.png" alt="image-20230314190024215"></p>
+<p>judge代码逻辑</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flag=<span class="string">&quot;fmcd&quot;</span>+<span class="built_in">chr</span>(<span class="number">127</span>)+<span class="string">&quot;k7d;V`;np&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(flag)):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(<span class="built_in">ord</span>(flag[i])^i),end=<span class="string">&#x27;&#x27;</span>)<span class="comment">##flag&#123;n1c3_j0b&#125;</span></span><br></pre></td></tr></table></figure>
 
         <hr>
         <!-- Pager -->
@@ -560,7 +571,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME REVERSE WEEK3</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME REVERSE WEEK3</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">2023.3.14更新 XCTF babyre</span></a></li></ol>
         
         </div>
       </aside>

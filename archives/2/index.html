@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/cn/shellcode/">
+  <link rel="canonical" href="https://mmmmchong.github.io/archives/2/">
   <title>
     
-      shellcode - Welcome to my blog
+      Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -339,9 +339,9 @@
     }
 
     header.intro-header {
-       /*post*/
-        background-image: var(--intro-header-background-image-url-post);
-        /* background-image: url(''); */
+       /*config*/
+        background-image: var(--intro-header-background-image-url-home);
+        /* background-image: url('/img/header_img/pexels-photo-1287145.jpeg'); */
       
     }
 
@@ -363,42 +363,10 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="post-heading">
-            <div class="tags">
-              
-              <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
-              
-            </div>
-            <h1>shellcode</h1>
-            <h2 class="subheading"></h2>
-            <span class="meta">
-              Posted by Humb1e on
-              2023-02-13
-            </span>
-
-
-            
-            <!-- WordCount start -->
-            <div class="blank_box"></div>
-            <span class="meta">
-              Estimated Reading Time <span class="post-count">2</span> Minutes
-            </span>
-            <div class="blank_box"></div>
-            <span class="meta">
-              Words <span class="post-count">503</span> In Total
-            </span>
-            <div class="blank_box"></div>
-            <!-- WordCount end -->
-            
-            
-            <!-- 不蒜子统计 start -->
-            <span class="meta" id="busuanzi_container_page_pv">
-              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
-            </span>
-            <!-- 不蒜子统计 end -->
-            
-
-
+          <div class="site-heading">
+            <h1>Welcome</h1>
+            <!--<hr class="small">-->
+            <span class="subheading">to humb1e&#39;s blog</span>
           </div>
           
         </div>
@@ -423,230 +391,277 @@
 	Friends Blog、
 	anchorjs、
 	) -->
-		<!-- Modify by Yu-Hsuan Yen -->
-<!-- Post Content -->
-<article>
-  <div class="container">
-    <div class="row">
-      <!-- Post Container -->
-      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
+		<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    
 
-        <h1>HGAME WEEK4 REVERSE shellcode</h1>
-<p>shellcode是一段用于利用软件漏洞而执行的代码，shellcode为16进制的机器码，因为经常让攻击者获得shell而得名。shellcode常常使用机器语言编写。 可在暂存器eip溢出后，塞入一段可让CPU执行的shellcode机器码，让电脑可以执行攻击者的任意指令。</p>
-<p>但是这道题目对于shellcode的定义应该是从机器码出发的，并不是利用程序漏洞。</p>
-<p><img src="image-20230213230108227.png" alt="image-20230213230108227"></p>
-<p>通过ida对函数的分析我们大概可以知道这是用GO语言编写的程序</p>
-<p>GO的主函数一般都是以main_main命名的，找到他</p>
-<p><img src="image-20230213230432088.png" alt="image-20230213230432088"></p>
-<p>可以看到几处明显的base64解密</p>
-<p>密文里也有’+‘这种比较显著的base64符号</p>
-<p>看了官方wp才发现010editor有那么强大的功能可以直接从base64解码并粘贴</p>
-<p><img src="image-20230213230729005.png" alt="image-20230213230729005"></p>
-<p>粘贴完后直接保存为.exe放到ida里就能发现一个比较标准的tea加密（要先p一下创建函数）</p>
-<p><img src="image-20230213230825018.png" alt="image-20230213230825018"></p>
-<p>解码脚本：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrypt</span><span class="params">(<span class="keyword">uint32_t</span>* v, <span class="keyword">uint32_t</span>* k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v0 = v[<span class="number">0</span>], v1 = v[<span class="number">1</span>], sum = <span class="number">32</span>*(<span class="number">-0x543210dd</span>), i;</span><br><span class="line">    <span class="keyword">uint32_t</span> delta =<span class="number">0x543210dd</span>; <span class="comment">//在这里发现很多大佬的wp都是用了sum=32*0x12345ef sum每轮减去0x12....来实现解密的，其实这两个数相加就是0（受位数限制），所以两者并没有区别                   </span></span><br><span class="line">    <span class="keyword">uint32_t</span> k0 = k[<span class="number">0</span>], k1 = k[<span class="number">1</span>], k2 = k[<span class="number">2</span>], k3 = k[<span class="number">3</span>];  </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;                       </span><br><span class="line">        v1 -= ((v0 &lt;&lt; <span class="number">4</span>) + k2) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k3);</span><br><span class="line">        v0 -= ((v1 &lt;&lt; <span class="number">4</span>) + k0) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k1);</span><br><span class="line">        sum += delta;</span><br><span class="line">    &#125;                                           </span><br><span class="line">    v[<span class="number">0</span>] = v0; v[<span class="number">1</span>] = v1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v[] = &#123;<span class="number">0xe4b36920</span>,<span class="number">0x936924d0</span>,<span class="number">0xa816d144</span>,<span class="number">0xaa82d5f5</span>,<span class="number">0x3679f0da</span>,<span class="number">0x7f32fd06</span>,</span><br><span class="line">    <span class="number">0x3460c0d3</span>,<span class="number">0xb7214939</span>,<span class="number">0xe57269a2</span>,<span class="number">0x836a51fa</span>&#125;, k[<span class="number">4</span>] = &#123; <span class="number">22</span>,<span class="number">33</span>,<span class="number">44</span>,<span class="number">55</span> &#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">        decrypt(&amp;v[i*<span class="number">2</span>], k);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,v);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;<span class="comment">//这里v的值也要注意一下，因为最后给的是flag.enc文件，是小端序存储的，所以v的取值要以四个字节为单位反着输入</span></span><br><span class="line"><span class="comment">//hgame&#123;th1s_1s_th3_tutu&#x27;s_h0mew0rk&#125;</span></span><br></pre></td></tr></table></figure>
+    <!-- USE SIDEBAR -->
+    <!-- Post Container -->
+    <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+
+      <!-- Main Content -->
+
+
+
+<div class="post-preview">
+  
+  <!-- top start (article top hot config) -->
+  
+  <!-- top end -->
+  
+
+  <a href="/cn/kumisc/">
+    <h2 class="post-title">
+      kumisc
+    </h2>
+    <h3 class="post-subtitle">
+      
+    </h3>
+    <div class="post-content-preview">
+      hgame week3 reverse kmusic
+answer是小黑子
+这题拿到手是一个c#逆向
+经典工具是dnSPY
+
+可以看到在主程序中进行了异或一段代码的操作
+然而这段data在text段的，其实是代码
+这种加密代码的加密技术叫做SMC（[原创]VC实现SMC加密技术-编程技术-看雪论坛-安全社区|安全招聘|bbs.pediy.com (kanxue.com)）
+动调后array数......
+    </div>
+  </a>
+  
+  <p class="post-meta" style="margin: 10px 0;">
+    Posted by Humb1e on
+    2023-02-12
+  </p>
+  <div class="tags">
+    
+    <a href="/tags/#HGAME" title="HGAME">HGAME</a>
+    
+    <a href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
+    
+  </div>
+  
+
+</div>
+<hr>
+
+
+  <!-- Pager -->
+  <ul class="pager">
+    
+    <li class="previous">
+      <a href="/">&larr; 上一页</a>
+    </li>
+    
+    
+  </ul>
+
+
+      <!-- 如果开启评论功能 -->
+      
+    </div>
+
+    <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        <!-- Featured Tags -->
+
+<section>
+  <h5><a href="/tags/">特色标签</a></h5>
+  <div class="tags">
+    
+    
+    <a href="/tags/#HGAME" title="HGAME" rel="1">HGAME</a>
+    
+    
+    
+    <a href="/tags/#REVERSE" title="REVERSE" rel="8">REVERSE</a>
+    
+    
+    
+    <a href="/tags/#汇编语言" title="汇编语言" rel="1">汇编语言</a>
+    
+    
+    
+    <a href="/tags/#C语言底层机制" title="C语言底层机制" rel="1">C语言底层机制</a>
+    
+    
+    
+    <a href="/tags/#编译器" title="编译器" rel="1">编译器</a>
+    
+    
+    
+    <a href="/tags/#IoT" title="IoT" rel="1">IoT</a>
+    
+    
+    
+    <a href="/tags/#python" title="python" rel="1">python</a>
+    
+    
+    
+    <a href="/tags/#Android" title="Android" rel="1">Android</a>
+    
+    
+  </div>
+</section>
 
 
         <hr>
-        <!-- Pager -->
-        <ul class="pager">
-          
-          <li class="previous">
-            <a href="/cn/cpp/" data-toggle="tooltip" data-placement="top" title="cpp">&larr; Previous Post</a>
-          </li>
-          
-          
-          <li class="next">
-            <a href="/cn/程序员的自我修养/" data-toggle="tooltip" data-placement="top" title="程序员的自我修养（1-3章）">Next Post &rarr;</a>
-          </li>
-          
-        </ul>
-
-        
-        <!-- tip start -->
-        <!-- tip -->
-<!-- tip start -->
-<div class="tip">
-  <p>
     
-      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+  <h5><a href="/about/">关于自己</a></h5>
+  <div class="short-about">
+
     
-  </p>
-</div>
-<!-- tip end -->
+    <img id="avatar_pic" src="/img/avatar/t.jpg" alt="avatar_pic" style="box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
+    -webkit-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);" />
+    
 
-        <!-- tip end -->
-        
+    
+    <p>漏洞挖掘/逆向工程</p>
+    
 
-        
-        <!-- Sharing Srtart -->
-        <!-- Social Social Share Post -->
-<!-- Docs:https://github.com/overtrue/share.js -->
+    <!-- SNS Link -->
+    <ul class="list-inline">
+      
 
-<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
-  <ul class="list-inline text-center social-share-ul">
-    <li class="social-share-li">
-      <a target="_blank" class="social-share-icon icon-twitter">
-        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
-      </a>
-    </li>
-    <li class="social-share-li">
-      <a class="social-share-icon icon-wechat">
-        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
-      </a>
-    </li>
-    <li class="social-share-li">
-      <a target="_blank" class="social-share-icon icon-weibo">
-        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
-      </a>
-    </li>
-    <li class="social-share-li">
-      <a target="_blank" class="social-share-icon icon-qq">
-        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
-      </a>
-    </li>
-    <li class="social-share-li">
-      <a target="_blank" class="social-share-icon" href="mailto:?subject=shellcode&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/shellcode/">
-        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
-      </a>
-    </li>
+      
+      <li>
+        <a target="_blank" href="https://github.com/mmmmchong">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+          </span>
+        </a>
+      </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+    </ul>
+  </div>
+</section>
+
+        <hr>
+    
+        <!-- RECENT POSTS -->
+
+<h5><a href="/">最近博文</a></h5>
+<div class="widget">
+  <ul>
+    
+    <a href="../../cn/pyx%E6%96%87%E4%BB%B6%E6%8E%A2%E7%B4%A2/">
+      <li>pyx文件探索</li>
+    </a>
+    
+    <a href="../../cn/Clickstorm/">
+      <li>Clickstorm</li>
+    </a>
+    
+    <a href="../../cn/Kalmar%20CTF%20cyclechaser/">
+      <li>cyclechaser</li>
+    </a>
+    
+    <a href="../../cn/TOTOLINK/">
+      <li>TOTOLINK</li>
+    </a>
+    
+    <a href="../../cn/patchme/">
+      <li>patchme</li>
+    </a>
+    
   </ul>
 </div>
 
-<!-- css & js -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
-<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
 
-        <!-- Sharing End -->
-        
         <hr>
-
-        <!-- comments start -->
-        <!-- 1. gitalk comment -->
-
-
-<!-- 2. gitment comment -->
-
-
-<!-- 3. disqus comment -->
-
-
-        <!-- comments end -->
-        <hr>
-
-      </div>
-
-      <!-- Catalog: Tabe of Content -->
-      <!-- Table of Contents -->
-
     
-      <aside id="sidebar">
-        <div id="toc" class="toc-article">
-        <strong class="toc-title">目录</strong>
-        
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME WEEK4 REVERSE shellcode</span></a></li></ol>
-        
-        </div>
-      </aside>
-    
-
-
-
-      <!-- Sidebar Container -->
-      <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-        <!-- Featured Tags -->
-        
-        <section>
-          <!-- no hr -->
-          <h5>
-            <a href="/tags/">特色标签</a>
-          </h5>
-          <div class="tags">
-            
-            <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
-            
-          </div>
-        </section>
-        
-
         <!-- Friends Blog -->
-        
+
+<h5><a href="/">链友</a></h5>
+<ul class="list-inline">
+  
+  <li><a href="https://l0tus.vip/" target="_blank">L0tus</a></li>
+  
+  <li><a href="http://gtg.ink/" target="_blank">gtg</a></li>
+  
+  <li><a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a></li>
+  
+</ul>
+
+
         <hr>
-        <h5>链友</h5>
-        <ul class="list-inline">
+    
+        <!-- Archives -->
 
-          
-          <li>
-            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
-          </li>
-          
-          <li>
-            <a href="http://gtg.ink/" target="_blank">gtg</a>
-          </li>
-          
-          <li>
-            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
-          </li>
-          
-        </ul>
-        
-      </div>
-    </div>
+<h5><a href="/archives/">archives</a></h5>
+<div class="widget">
+  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../2023/03/">March 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="../2023/02/">February 2023</a><span class="archive-list-count">7</span></li></ul>
+</div>
+
+
+        <hr>
+    
+        <!-- Categories -->
+
+<h5><a href="/categories/">categories</a></h5>
+<div class="widget">
+  <ul>
+    
+    <a href="/categories/#REVERSE">
+      <li>REVERSE</li>
+    </a>
+    
+    <a href="/categories/#BOOK">
+      <li>BOOK</li>
+    </a>
+    
+    <a href="/categories/#HGAME">
+      <li>HGAME</li>
+    </a>
+    
+    <a href="/categories/#IoT">
+      <li>IoT</li>
+    </a>
+    
+  </ul>
+</div>
+
+
+        <hr>
+    
+</div>
+
+
+    
   </div>
-</article>
-
-
-
-<!-- anchorjs start -->
-<!-- async load function -->
-<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-<script type="text/javascript">
-  // async load function
-  function async (u, c) {
-    var d = document,
-      t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) {
-      o.addEventListener('load', function(e) {
-        c(null, e);
-      }, false);
-    }
-    s.parentNode.insertBefore(o, s);
-  };
-</script>
-<script type="text/javascript">
-  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
-  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
-    anchors.options = {
-      visible: 'hover',
-      placement: 'left',
-      // icon: 'ℬ'
-      icon: '❡'
-    };
-    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-  });
-</script>
-<style>
-  /* place left on bigger screen */
-  @media all and (min-width: 800px) {
-    .anchorjs-link {
-      position: absolute;
-      left: -0.75em;
-      font-size: 1.1em;
-      margin-top: -0.1em;
-    }
-  }
-</style>
-
-<!-- anchorjs end -->
-
+</div>
 
 
 		<!-- Footer (contains ThemeColor、viewer) -->

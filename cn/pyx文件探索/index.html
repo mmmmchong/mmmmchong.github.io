@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/cn/shellcode/">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/pyx文件探索/">
   <title>
     
-      shellcode - Welcome to my blog
+      pyx文件探索 - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -368,12 +368,14 @@
               
               <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
               
+              <a class="tag" href="/tags/#python" title="python">python</a>
+              
             </div>
-            <h1>shellcode</h1>
+            <h1>pyx文件探索</h1>
             <h2 class="subheading"></h2>
             <span class="meta">
               Posted by Humb1e on
-              2023-02-13
+              2023-03-21
             </span>
 
 
@@ -385,7 +387,7 @@
             </span>
             <div class="blank_box"></div>
             <span class="meta">
-              Words <span class="post-count">503</span> In Total
+              Words <span class="post-count">745</span> In Total
             </span>
             <div class="blank_box"></div>
             <!-- WordCount end -->
@@ -431,34 +433,72 @@
       <!-- Post Container -->
       <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-        <h1>HGAME WEEK4 REVERSE shellcode</h1>
-<p>shellcode是一段用于利用软件漏洞而执行的代码，shellcode为16进制的机器码，因为经常让攻击者获得shell而得名。shellcode常常使用机器语言编写。 可在暂存器eip溢出后，塞入一段可让CPU执行的shellcode机器码，让电脑可以执行攻击者的任意指令。</p>
-<p>但是这道题目对于shellcode的定义应该是从机器码出发的，并不是利用程序漏洞。</p>
-<p><img src="image-20230213230108227.png" alt="image-20230213230108227"></p>
-<p>通过ida对函数的分析我们大概可以知道这是用GO语言编写的程序</p>
-<p>GO的主函数一般都是以main_main命名的，找到他</p>
-<p><img src="image-20230213230432088.png" alt="image-20230213230432088"></p>
-<p>可以看到几处明显的base64解密</p>
-<p>密文里也有’+‘这种比较显著的base64符号</p>
-<p>看了官方wp才发现010editor有那么强大的功能可以直接从base64解码并粘贴</p>
-<p><img src="image-20230213230729005.png" alt="image-20230213230729005"></p>
-<p>粘贴完后直接保存为.exe放到ida里就能发现一个比较标准的tea加密（要先p一下创建函数）</p>
-<p><img src="image-20230213230825018.png" alt="image-20230213230825018"></p>
-<p>解码脚本：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrypt</span><span class="params">(<span class="keyword">uint32_t</span>* v, <span class="keyword">uint32_t</span>* k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v0 = v[<span class="number">0</span>], v1 = v[<span class="number">1</span>], sum = <span class="number">32</span>*(<span class="number">-0x543210dd</span>), i;</span><br><span class="line">    <span class="keyword">uint32_t</span> delta =<span class="number">0x543210dd</span>; <span class="comment">//在这里发现很多大佬的wp都是用了sum=32*0x12345ef sum每轮减去0x12....来实现解密的，其实这两个数相加就是0（受位数限制），所以两者并没有区别                   </span></span><br><span class="line">    <span class="keyword">uint32_t</span> k0 = k[<span class="number">0</span>], k1 = k[<span class="number">1</span>], k2 = k[<span class="number">2</span>], k3 = k[<span class="number">3</span>];  </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;                       </span><br><span class="line">        v1 -= ((v0 &lt;&lt; <span class="number">4</span>) + k2) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k3);</span><br><span class="line">        v0 -= ((v1 &lt;&lt; <span class="number">4</span>) + k0) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k1);</span><br><span class="line">        sum += delta;</span><br><span class="line">    &#125;                                           </span><br><span class="line">    v[<span class="number">0</span>] = v0; v[<span class="number">1</span>] = v1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v[] = &#123;<span class="number">0xe4b36920</span>,<span class="number">0x936924d0</span>,<span class="number">0xa816d144</span>,<span class="number">0xaa82d5f5</span>,<span class="number">0x3679f0da</span>,<span class="number">0x7f32fd06</span>,</span><br><span class="line">    <span class="number">0x3460c0d3</span>,<span class="number">0xb7214939</span>,<span class="number">0xe57269a2</span>,<span class="number">0x836a51fa</span>&#125;, k[<span class="number">4</span>] = &#123; <span class="number">22</span>,<span class="number">33</span>,<span class="number">44</span>,<span class="number">55</span> &#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">        decrypt(&amp;v[i*<span class="number">2</span>], k);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,v);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;<span class="comment">//这里v的值也要注意一下，因为最后给的是flag.enc文件，是小端序存储的，所以v的取值要以四个字节为单位反着输入</span></span><br><span class="line"><span class="comment">//hgame&#123;th1s_1s_th3_tutu&#x27;s_h0mew0rk&#125;</span></span><br></pre></td></tr></table></figure>
+        <h1>pyx文件探索</h1>
+<p>起因是第五空间的一道逆向题：strange_language</p>
+<p>那里有一个pyd文件知识的考点，比较有意思</p>
+<p>先在看雪看大佬的<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-259124.htm">博客</a>，明白了一点前置知识</p>
+<p><strong>py、pyc、pyo、pyd</strong></p>
+<p>py: python 脚本文件（source code）</p>
+<p>pyc: 脚本文件编译得到的字节码, 二进制文件，python文件经过编译器编译之后的文件。可以提高文件加载速度</p>
+<p>pyo: 脚本文件开启优化编译选项（-O）编译得到的字节码,二进制文件，优化编译后的文件。可以通过python -O file.py生成。</p>
+<p>pyd: 基本的Windows DLL文件, python的动态链接库。</p>
+<p>strange_language就是把关键的逻辑放在了一个pyd文件里</p>
+<p>然后pyinstxtractor也会把那个pyd文件解析出来</p>
+<p>pyd文件直接用ida看就行了，毕竟是dll文件</p>
+<p>于是乎我对以下几个问题产生了一点兴趣：</p>
+<p>1.如何生成pyd文件</p>
+<p>2.如何引用pyd文件</p>
+<p>3.如何把py文件和pyd文件打包到一个exe里（用pyinstaller）</p>
+<h2 id="实验过程如下">实验过程如下</h2>
+<p>首先是pyd文件的生成</p>
+<p>这个有些麻烦</p>
+<p>首先你需要自己编写一个func放在一个.py文件下</p>
+<p>比如我在checkflag.py文件里放了一个checkflag函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">checkflag</span>(<span class="params">s</span>):</span></span><br><span class="line">    <span class="keyword">if</span> s==<span class="string">&quot;flag&quot;</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;yes!&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;no!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://xn--setup-fg1hyjm6vz5ft68fn55ane0a2hr22w.py">然后还需要编写一个setup.py</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup</span><br><span class="line"><span class="keyword">from</span> Cython.Build <span class="keyword">import</span> cythonize<span class="comment">##pip install cython 即可</span></span><br><span class="line">setup(</span><br><span class="line">    name=<span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">    ext_modules=cythonize(<span class="string">&#x27;checkflag.py&#x27;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>之后就需要在terminal里运行</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py build_ext -<span class="literal">-inplace</span>  </span><br></pre></td></tr></table></figure>
+<p>就会生成一个pyd文件在目录下了</p>
+<p><img src="image-20230321175030988.png" alt=""></p>
+<p>这样之后我们就可以新建一个文件来调用这个pyd文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> checkflag <span class="keyword">import</span> checkflag <span class="keyword">as</span> check</span><br><span class="line">s=<span class="built_in">input</span>()</span><br><span class="line">check(s)</span><br></pre></td></tr></table></figure>
+<p>好像直接import不行</p>
+<p>ok，到了这里已经大概完成一二两步了</p>
+<p>第三步就是把pyd文件和py文件打包成一个exe</p>
+<p>一开始我直接在terminal里</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller .\pyx.py</span><br></pre></td></tr></table></figure>
+<p>这样创建了一个dist并且里面还有文件夹，文件夹里有许多pyd文件</p>
+<p><img src="image-20230321175521236.png" alt="image-20230321175521236"></p>
+<p>这样显然是没有打包成功的，并且这样的exe脱离了当前目录运行就会报找不到库的错误</p>
+<p>为此我也是头疼了好久</p>
+<p>直到我翻pyinstaller的官方文档我才发现打包成一个exe需要加上命令<code>-F</code></p>
+<p>于是就是</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyinstaller <span class="operator">-F</span> .\pyx.py</span><br></pre></td></tr></table></figure>
+<p>然后就完事哩</p>
+<p>生成了一个包含pyd文件的exe</p>
+<p>其实这样的文件仍然可以用pyinstxtractor解包</p>
+<p>pyc文件用pycdc反编译</p>
+<p>但是可能由于我的版本问题pycdc反编译的时候出现了bad magic</p>
+<p>pyc文件的魔数出问题了</p>
+<p>但是我check了一下magic number没有问题</p>
+<p>上github上搜了一下pycdc的源码</p>
+<p><img src="image-20230321185554870.png" alt="image-20230321185554870"></p>
+<p><img src="image-20230321185748400.png" alt="image-20230321185748400"></p>
+<p>为啥pyc文件的魔数对的上pycdc却报bad magic的错呢</p>
+<p>然后反应过来可能是pycdc版本太低了</p>
+<p>于是重装了pycdc</p>
+<p><img src="image-20230321184910872.png" alt="image-20230321184910872"></p>
+<p>结果还是有错，唉，暂时研究不动了</p>
 
 
         <hr>
         <!-- Pager -->
         <ul class="pager">
           
-          <li class="previous">
-            <a href="/cn/cpp/" data-toggle="tooltip" data-placement="top" title="cpp">&larr; Previous Post</a>
-          </li>
-          
           
           <li class="next">
-            <a href="/cn/程序员的自我修养/" data-toggle="tooltip" data-placement="top" title="程序员的自我修养（1-3章）">Next Post &rarr;</a>
+            <a href="/cn/Clickstorm/" data-toggle="tooltip" data-placement="top" title="Clickstorm">Next Post &rarr;</a>
           </li>
           
         </ul>
@@ -507,7 +547,7 @@
       </a>
     </li>
     <li class="social-share-li">
-      <a target="_blank" class="social-share-icon" href="mailto:?subject=shellcode&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/shellcode/">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=pyx文件探索&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/pyx文件探索/">
         <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
       </a>
     </li>
@@ -545,7 +585,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME WEEK4 REVERSE shellcode</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">pyx文件探索</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AE%9E%E9%AA%8C%E8%BF%87%E7%A8%8B%E5%A6%82%E4%B8%8B"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">实验过程如下</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -569,6 +609,8 @@
           <div class="tags">
             
             <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
+            
+            <a class="tag" href="/tags/#python" title="python">python</a>
             
           </div>
         </section>
