@@ -250,9 +250,9 @@
           
           
           <li>
-            <a href="/archive/">
+            <a href="/tags/">
               
-              归档
+              标签
               
               
             </a>
@@ -261,9 +261,9 @@
           
           
           <li>
-            <a href="/tags/">
+            <a href="/archive/">
               
-              标签
+              归档
               
               
             </a>
@@ -444,7 +444,7 @@
 <p>发生这些事件的时候select会被唤醒去执行接下来的操作，如果这些事件都没有发生那么select就会沉睡。</p>
 <p>select采用的是<strong>轮询</strong>的检查方式，灰常之慢</p>
 <p>而且select所监听的文件描述符的数量是有上限的，一般给的宏定义是1024</p>
-<p><img src="C:%5CUsers%5Cmuchong%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20230417213133026.png" alt="image-20230417213133026"></p>
+<p><img src="image-20230417213133026.png" alt="image-20230417213133026"></p>
 <p>截一个大佬的解释</p>
 <h2 id="poll">poll()</h2>
 <p>poll()和select()几乎没有什么区别，只是poll()使用了pollfd结构而不是select的fd_set结构，使得poll支持的fds集合限制远大于select的1024。poll虽然解决了fds集合大小1024的限制问题，从实现来看。很明显它并没优化大量描述符数组被整体复制于用户态和内核态的地址空间之间，以及个别描述符就绪触发整体描述符集合的遍历的低效问题。poll随着监控的socket集合的增加性能线性下降，使得poll也并不适合用于大并发场景。<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/367591714">深入浅出理解select、poll、epoll的实现 - 知乎 (zhihu.com)</a></p>
@@ -498,6 +498,10 @@
         <hr>
         <!-- Pager -->
         <ul class="pager">
+          
+          <li class="previous">
+            <a href="/cn/LD_PRELOAD/" data-toggle="tooltip" data-placement="top" title="LD_PRELOAD">&larr; Previous Post</a>
+          </li>
           
           
           <li class="next">
