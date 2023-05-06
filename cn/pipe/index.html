@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/tags/C语言底层机制/">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/pipe/">
   <title>
     
-      Welcome to my blog
+      pipe - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -339,9 +339,9 @@
     }
 
     header.intro-header {
-       /*page*/
-        background-image: var(--intro-header-background-image-url-page);
-        /* background-image: url('/img/header_img/'); */
+       /*post*/
+        background-image: var(--intro-header-background-image-url-post);
+        /* background-image: url(''); */
       
     }
 
@@ -363,10 +363,40 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="site-heading">
-            <h1>Welcome</h1>
-            <!--<hr class="small">-->
-            <span class="subheading">to humb1e&#39;s blog</span>
+          <div class="post-heading">
+            <div class="tags">
+              
+            </div>
+            <h1>pipe</h1>
+            <h2 class="subheading"></h2>
+            <span class="meta">
+              Posted by Humb1e on
+              2023-05-06
+            </span>
+
+
+            
+            <!-- WordCount start -->
+            <div class="blank_box"></div>
+            <span class="meta">
+              Estimated Reading Time <span class="post-count">2</span> Minutes
+            </span>
+            <div class="blank_box"></div>
+            <span class="meta">
+              Words <span class="post-count">623</span> In Total
+            </span>
+            <div class="blank_box"></div>
+            <!-- WordCount end -->
+            
+            
+            <!-- 不蒜子统计 start -->
+            <span class="meta" id="busuanzi_container_page_pv">
+              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+            </span>
+            <!-- 不蒜子统计 end -->
+            
+
+
           </div>
           
         </div>
@@ -391,424 +421,235 @@
 	Friends Blog、
 	anchorjs、
 	) -->
-		<!-- Main Content -->
-<div class="container">
-  <div class="row">
-    
+		<!-- Modify by Yu-Hsuan Yen -->
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-    <!-- USE SIDEBAR -->
-    <!-- Post Container -->
-    <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
+        <h1>pipe</h1>
+<p>mainly from <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/pipe-system-call/">pipe（） 系统调用 - GeeksforGeeks</a></p>
+<p>从概念上讲，管道是两个进程之间的连接，使得一个进程的标准输出成为另一个进程的标准输入。在 UNIX 操作系统中，管道对于相关进程之间的通信（进程间通信）很有用。</p>
+<ul>
+<li>
+<p>管道只是<strong>单向通信</strong>，即我们可以使用管道，使得一个进程写入管道，另一个进程从管道读取。它打开一个管道，这是被视为**“虚拟文件”**的主内存区域。</p>
+</li>
+<li>
+<p>创建进程及其所有子进程可以使用管道进行读取和写入。一个进程可以写入此“虚拟文件”或管道，另一个相关进程可以从中读取。</p>
+</li>
+<li>
+<p>如果进程在将某些内容写入管道之前尝试读取，则该进程将挂起，直到写入某些内容。</p>
+</li>
+<li>
+<p>管道系统调用查找进程的打开文件表中的前两个可用位置，并将它们分配给管道的读取端和写入端。</p>
+<p><img src="https://media.geeksforgeeks.org/wp-content/uploads/Process.jpg" alt="img"></p>
+</li>
+</ul>
+<h2 id="pipe和fork联合">pipe和fork联合</h2>
+<p>mainly from <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/c-program-demonstrate-fork-and-pipe/">C 程序演示 fork（） 和 pipe（） - GeeksforGeeks</a></p>
+<p>fork和pipe联合可以实现</p>
+<p>fork一个子进程，然后子进程向管道里写一些东西，父进程从管道里读。</p>
+<p>下面的code实现了一个类似于strcat的方法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//define pipe</span></span><br><span class="line">    <span class="keyword">int</span> fd_parent[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">int</span> fd_child[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">char</span> first_str[] = <span class="string">&quot;humb1e&quot;</span>;</span><br><span class="line">    <span class="keyword">char</span> second_str[]=<span class="string">&quot;hacked_by_&quot;</span>;</span><br><span class="line">    <span class="keyword">pid_t</span> p;</span><br><span class="line">    <span class="comment">//check if create successfully</span></span><br><span class="line">    <span class="keyword">if</span> (pipe(fd_parent) == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Pipe Failed&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (pipe(fd_child) == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Pipe Failed&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    p = fork();</span><br><span class="line">    <span class="keyword">if</span> (p &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;fork Failed&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Parent process</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (p &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">char</span> concat_str[<span class="number">100</span>];</span><br><span class="line"></span><br><span class="line">        close(fd_parent[<span class="number">0</span>]); <span class="comment">// Close reading end of first pipe</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Write input string and close writing end of first</span></span><br><span class="line">        <span class="comment">// pipe.</span></span><br><span class="line">        write(fd_parent[<span class="number">1</span>], second_str, <span class="built_in">strlen</span>(second_str) + <span class="number">1</span>);</span><br><span class="line">        close(fd_parent[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Wait for child to send a string</span></span><br><span class="line">        wait(<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">        close(fd_child[<span class="number">1</span>]); <span class="comment">// Close writing end of second pipe</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Read string from child, print it and close</span></span><br><span class="line">        <span class="comment">// reading end.</span></span><br><span class="line">        read(fd_child[<span class="number">0</span>], concat_str, <span class="number">100</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Concatenated string:%s\n&quot;</span>, concat_str);</span><br><span class="line">        close(fd_child[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// child process</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        close(fd_parent[<span class="number">1</span>]); <span class="comment">// Close writing end of first pipe</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Read a string using first pipe</span></span><br><span class="line">        <span class="keyword">char</span> concat_str[<span class="number">100</span>];</span><br><span class="line">        read(fd_parent[<span class="number">0</span>], concat_str, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Concatenate a fixed string with it</span></span><br><span class="line">        <span class="keyword">int</span> k = <span class="built_in">strlen</span>(concat_str);</span><br><span class="line">        <span class="keyword">int</span> i;</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(first_str); i++)</span><br><span class="line">            concat_str[k++] = first_str[i];</span><br><span class="line"></span><br><span class="line">        concat_str[k] = <span class="string">&#x27;\0&#x27;</span>; <span class="comment">// string ends with &#x27;\0&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Close both reading ends</span></span><br><span class="line">        close(fd_parent[<span class="number">0</span>]);</span><br><span class="line">        close(fd_child[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Write concatenated string and close writing end</span></span><br><span class="line">        write(fd_child[<span class="number">1</span>], concat_str, <span class="built_in">strlen</span>(concat_str) + <span class="number">1</span>);</span><br><span class="line">        close(fd_child[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Concatenated <span class="built_in">string</span>:hacked_by_humb1e</span><br></pre></td></tr></table></figure>
 
-      <!-- Main Content -->
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-0 col-md-10 col-md-offset-1">
-      <!-- 归档列表 -->
 
-      
-
-      <!-- 归档列表 -->
-      
-      <div class="one-tag-list">
-        <span class="fa fa-calendar-times-o listing-seperator" id="2023">
-          <span class="tag-text">2023</span>
-        </span>
-        <ul>
+        <hr>
+        <!-- Pager -->
+        <ul class="pager">
           
-          <li>
-            05-06
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/pipe/" style="color: #0085a1">
-              <span>
-                pipe
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
           
-          <li>
-            04-22
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/LD_PRELOAD/" style="color: #0085a1">
-              <span>
-                LD_PRELOAD
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            04-17
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/IO复用/" style="color: #0085a1">
-              <span>
-                IO复用
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-21
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/pyx文件探索/" style="color: #0085a1">
-              <span>
-                pyx文件探索
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-08
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/Clickstorm/" style="color: #0085a1">
-              <span>
-                Clickstorm
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-06
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/Kalmar CTF cyclechaser/" style="color: #0085a1">
-              <span>
-                cyclechaser
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-03
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/TOTOLINK/" style="color: #0085a1">
-              <span>
-                TOTOLINK
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-22
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/patchme/" style="color: #0085a1">
-              <span>
-                patchme
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-20
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/cpp/" style="color: #0085a1">
-              <span>
-                cpp
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-13
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/shellcode/" style="color: #0085a1">
-              <span>
-                shellcode
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/程序员的自我修养/" style="color: #0085a1">
-              <span>
-                程序员的自我修养（1-3章）
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/汇编语言/" style="color: #0085a1">
-              <span>
-                汇编语言
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/suanfa/" style="color: #0085a1">
-              <span>
-                CTF逆向常见算法
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/kumisc/" style="color: #0085a1">
-              <span>
-                kumisc
-                
-                -- cn
-                
-              </span>
-            </a>
+          <li class="next">
+            <a href="/cn/LD_PRELOAD/" data-toggle="tooltip" data-placement="top" title="LD_PRELOAD">Next Post &rarr;</a>
           </li>
           
         </ul>
+
+        
+        <!-- tip start -->
+        <!-- tip -->
+<!-- tip start -->
+<div class="tip">
+  <p>
+    
+      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+    
+  </p>
+</div>
+<!-- tip end -->
+
+        <!-- tip end -->
+        
+
+        
+        <!-- Sharing Srtart -->
+        <!-- Social Social Share Post -->
+<!-- Docs:https://github.com/overtrue/share.js -->
+
+<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
+  <ul class="list-inline text-center social-share-ul">
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-twitter">
+        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a class="social-share-icon icon-wechat">
+        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-weibo">
+        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-qq">
+        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=pipe&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/pipe/">
+        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- css & js -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
+<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+        <!-- Sharing End -->
+        
+        <hr>
+
+        <!-- comments start -->
+        <!-- 1. gitalk comment -->
+
+
+<!-- 2. gitment comment -->
+
+
+<!-- 3. disqus comment -->
+
+
+        <!-- comments end -->
+        <hr>
+
       </div>
-      
-    </div>
-  </div>
-</div>
 
+      <!-- Catalog: Tabe of Content -->
+      <!-- Table of Contents -->
 
-      <!-- 如果开启评论功能 -->
-      
-    </div>
-
-    <!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
     
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">目录</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">pipe</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#pipe%E5%92%8Cfork%E8%81%94%E5%90%88"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">pipe和fork联合</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+
+
+      <!-- Sidebar Container -->
+      <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
         <!-- Featured Tags -->
+        
+        <section>
+          <!-- no hr -->
+          <h5>
+            <a href="/tags/">特色标签</a>
+          </h5>
+          <div class="tags">
+            
+          </div>
+        </section>
+        
 
-<section>
-  <h5><a href="/tags/">特色标签</a></h5>
-  <div class="tags">
-    
-    
-    <a href="/tags/#HGAME" title="HGAME" rel="1">HGAME</a>
-    
-    
-    
-    <a href="/tags/#REVERSE" title="REVERSE" rel="8">REVERSE</a>
-    
-    
-    
-    <a href="/tags/#汇编语言" title="汇编语言" rel="1">汇编语言</a>
-    
-    
-    
-    <a href="/tags/#C语言底层机制" title="C语言底层机制" rel="1">C语言底层机制</a>
-    
-    
-    
-    <a href="/tags/#编译器" title="编译器" rel="1">编译器</a>
-    
-    
-    
-    <a href="/tags/#IoT" title="IoT" rel="1">IoT</a>
-    
-    
-    
-    <a href="/tags/#Android" title="Android" rel="1">Android</a>
-    
-    
-    
-    <a href="/tags/#python" title="python" rel="1">python</a>
-    
-    
-  </div>
-</section>
-
-
-        <hr>
-    
-        <!-- Short About -->
-<section class="visible-md visible-lg">
-  <h5><a href="/about/">关于自己</a></h5>
-  <div class="short-about">
-
-    
-    <img id="avatar_pic" src="/img/avatar/t.jpg" alt="avatar_pic" style="box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
-    -moz-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
-    -webkit-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);" />
-    
-
-    
-    <p>漏洞挖掘/逆向工程</p>
-    
-
-    <!-- SNS Link -->
-    <ul class="list-inline">
-      
-
-      
-      <li>
-        <a target="_blank" href="https://github.com/mmmmchong">
-          <span class="fa-stack fa-lg">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-          </span>
-        </a>
-      </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-    </ul>
-  </div>
-</section>
-
-        <hr>
-    
-        <!-- RECENT POSTS -->
-
-<h5><a href="/">最近博文</a></h5>
-<div class="widget">
-  <ul>
-    
-    <a href="../../cn/pipe/">
-      <li>pipe</li>
-    </a>
-    
-    <a href="../../cn/LD_PRELOAD/">
-      <li>LD_PRELOAD</li>
-    </a>
-    
-    <a href="../../cn/IO%E5%A4%8D%E7%94%A8/">
-      <li>IO复用</li>
-    </a>
-    
-    <a href="../../cn/pyx%E6%96%87%E4%BB%B6%E6%8E%A2%E7%B4%A2/">
-      <li>pyx文件探索</li>
-    </a>
-    
-    <a href="../../cn/Clickstorm/">
-      <li>Clickstorm</li>
-    </a>
-    
-  </ul>
-</div>
-
-
-        <hr>
-    
         <!-- Friends Blog -->
-
-<h5><a href="/">链友</a></h5>
-<ul class="list-inline">
-  
-  <li><a href="https://l0tus.vip/" target="_blank">L0tus</a></li>
-  
-  <li><a href="http://gtg.ink/" target="_blank">gtg</a></li>
-  
-  <li><a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a></li>
-  
-</ul>
-
-
+        
         <hr>
-    
-        <!-- Archives -->
+        <h5>链友</h5>
+        <ul class="list-inline">
 
-<h5><a href="/archives/">archives</a></h5>
-<div class="widget">
-  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2023/05/">May 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2023/04/">April 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2023/03/">March 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2023/02/">February 2023</a><span class="archive-list-count">7</span></li></ul>
-</div>
-
-
-        <hr>
-    
-        <!-- Categories -->
-
-<h5><a href="/categories/">categories</a></h5>
-<div class="widget">
-  <ul>
-    
-    <a href="/categories/#REVERSE">
-      <li>REVERSE</li>
-    </a>
-    
-    <a href="/categories/#BOOK">
-      <li>BOOK</li>
-    </a>
-    
-    <a href="/categories/#HGAME">
-      <li>HGAME</li>
-    </a>
-    
-    <a href="/categories/#IoT">
-      <li>IoT</li>
-    </a>
-    
-  </ul>
-</div>
-
-
-        <hr>
-    
-</div>
-
-
-    
+          
+          <li>
+            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
+          </li>
+          
+          <li>
+            <a href="http://gtg.ink/" target="_blank">gtg</a>
+          </li>
+          
+          <li>
+            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
   </div>
-</div>
+</article>
+
+
+
+<!-- anchorjs start -->
+<!-- async load function -->
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script type="text/javascript">
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  };
+</script>
+<script type="text/javascript">
+  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
+  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'left',
+      // icon: 'ℬ'
+      icon: '❡'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+<!-- anchorjs end -->
+
 
 
 		<!-- Footer (contains ThemeColor、viewer) -->
