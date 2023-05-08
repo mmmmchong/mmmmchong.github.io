@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/cn/shellcode/">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/D3CTF-d3rc4/">
   <title>
     
-      shellcode - Welcome to my blog
+      D3CTF_d3rc4 - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -366,14 +366,12 @@
           <div class="post-heading">
             <div class="tags">
               
-              <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
-              
             </div>
-            <h1>shellcode</h1>
+            <h1>D3CTF_d3rc4</h1>
             <h2 class="subheading"></h2>
             <span class="meta">
               Posted by Humb1e on
-              2023-02-13
+              2023-05-08
             </span>
 
 
@@ -381,11 +379,11 @@
             <!-- WordCount start -->
             <div class="blank_box"></div>
             <span class="meta">
-              Estimated Reading Time <span class="post-count">2</span> Minutes
+              Estimated Reading Time <span class="post-count">4</span> Minutes
             </span>
             <div class="blank_box"></div>
             <span class="meta">
-              Words <span class="post-count">503</span> In Total
+              Words <span class="post-count">972</span> In Total
             </span>
             <div class="blank_box"></div>
             <!-- WordCount end -->
@@ -431,34 +429,55 @@
       <!-- Post Container -->
       <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-        <h1>HGAME WEEK4 REVERSE shellcode</h1>
-<p>shellcode是一段用于利用软件漏洞而执行的代码，shellcode为16进制的机器码，因为经常让攻击者获得shell而得名。shellcode常常使用机器语言编写。 可在暂存器eip溢出后，塞入一段可让CPU执行的shellcode机器码，让电脑可以执行攻击者的任意指令。</p>
-<p>但是这道题目对于shellcode的定义应该是从机器码出发的，并不是利用程序漏洞。</p>
-<p><img src="image-20230213230108227.png" alt="image-20230213230108227"></p>
-<p>通过ida对函数的分析我们大概可以知道这是用GO语言编写的程序</p>
-<p>GO的主函数一般都是以main_main命名的，找到他</p>
-<p><img src="image-20230213230432088.png" alt="image-20230213230432088"></p>
-<p>可以看到几处明显的base64解密</p>
-<p>密文里也有’+‘这种比较显著的base64符号</p>
-<p>看了官方wp才发现010editor有那么强大的功能可以直接从base64解码并粘贴</p>
-<p><img src="image-20230213230729005.png" alt="image-20230213230729005"></p>
-<p>粘贴完后直接保存为.exe放到ida里就能发现一个比较标准的tea加密（要先p一下创建函数）</p>
-<p><img src="image-20230213230825018.png" alt="image-20230213230825018"></p>
-<p>解码脚本：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrypt</span><span class="params">(<span class="keyword">uint32_t</span>* v, <span class="keyword">uint32_t</span>* k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v0 = v[<span class="number">0</span>], v1 = v[<span class="number">1</span>], sum = <span class="number">32</span>*(<span class="number">-0x543210dd</span>), i;</span><br><span class="line">    <span class="keyword">uint32_t</span> delta =<span class="number">0x543210dd</span>; <span class="comment">//在这里发现很多大佬的wp都是用了sum=32*0x12345ef sum每轮减去0x12....来实现解密的，其实这两个数相加就是0（受位数限制），所以两者并没有区别                   </span></span><br><span class="line">    <span class="keyword">uint32_t</span> k0 = k[<span class="number">0</span>], k1 = k[<span class="number">1</span>], k2 = k[<span class="number">2</span>], k3 = k[<span class="number">3</span>];  </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;                       </span><br><span class="line">        v1 -= ((v0 &lt;&lt; <span class="number">4</span>) + k2) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k3);</span><br><span class="line">        v0 -= ((v1 &lt;&lt; <span class="number">4</span>) + k0) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k1);</span><br><span class="line">        sum += delta;</span><br><span class="line">    &#125;                                           </span><br><span class="line">    v[<span class="number">0</span>] = v0; v[<span class="number">1</span>] = v1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">uint32_t</span> v[] = &#123;<span class="number">0xe4b36920</span>,<span class="number">0x936924d0</span>,<span class="number">0xa816d144</span>,<span class="number">0xaa82d5f5</span>,<span class="number">0x3679f0da</span>,<span class="number">0x7f32fd06</span>,</span><br><span class="line">    <span class="number">0x3460c0d3</span>,<span class="number">0xb7214939</span>,<span class="number">0xe57269a2</span>,<span class="number">0x836a51fa</span>&#125;, k[<span class="number">4</span>] = &#123; <span class="number">22</span>,<span class="number">33</span>,<span class="number">44</span>,<span class="number">55</span> &#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">        decrypt(&amp;v[i*<span class="number">2</span>], k);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,v);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;<span class="comment">//这里v的值也要注意一下，因为最后给的是flag.enc文件，是小端序存储的，所以v的取值要以四个字节为单位反着输入</span></span><br><span class="line"><span class="comment">//hgame&#123;th1s_1s_th3_tutu&#x27;s_h0mew0rk&#125;</span></span><br></pre></td></tr></table></figure>
+        <h1>D^3CTF d3rc4</h1>
+<p>不得不说每次vidar的比赛都能学到很多知识点…</p>
+<p>先ida打开</p>
+<p><img src="image-20230508211439033.png" alt="image-20230508211439033"></p>
+<p>就是一个非常平平无奇的rc4</p>
+<p>写一个脚本跑一下才会发现这是什么东西</p>
+<p>看了wp才知道，原来还有这种操作</p>
+<p><img src="image-20230508211549513.png" alt="image-20230508211549513"></p>
+<p>在进入main()函数之前运行了这样一个程序</p>
+<p><img src="image-20230508211634262.png" alt="image-20230508211634262"></p>
+<p>这里分别异或了三个数组</p>
+<p>跑过之后发现其中两个是wrong和right作为最后程序是否正确的输出（这个判断暂时还找不到）</p>
+<p>这里估计是出题人故意不想让我们开始直接shift+f12检索字符串找到wrong和right，这样的话藏在_init_array和_fini_array里的函数很容易就会被发现</p>
+<p>知道这一点之后就可以直接交叉引用right就能找到一个函数</p>
+<p><img src="image-20230508211912477.png" alt="image-20230508211912477"></p>
+<p>大概长这样[晕]</p>
+<p>里面主要是两个系统调用，一个是pipe()是一个管道函数，之前的博客里刚刚讲过</p>
+<p>另一个就是fork，刚好前几天的博客里写过采用fork()和pipe()函数实现类似于strcat操作的方法</p>
+<p>这里其实也是类似的</p>
+<p>这里是用pipe()和fork()实现了多进程的质数筛选</p>
+<p><img src="image-20230508212110870.png" alt="image-20230508212110870"></p>
+<p>明白了这些之后分别分析子进程和父进程就完事了</p>
+<p>子进程：</p>
+<p><img src="image-20230508212204226.png" alt="image-20230508212204226"></p>
+<p>这里实现的就是把找到的素数写在aNHFTT…数组的后面</p>
+<p>这里还有一个需要注意的是SHIDWORD这一个宏定义，这个在ida里定义的意思是数组的下一位</p>
+<p>原来的宏长这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SHIDWORD(x)  (*((int32*)&amp;(x)+1))</span></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/goodhacker/p/7692443.html">附上ida宏定义</a></p>
+<p>父进程：</p>
+<p><img src="image-20230508212614108.png" alt="image-20230508212614108"></p>
+<p>父进程就是最后对input的处理和最后的比较</p>
+<p>解决方案1：</p>
+<p>显然可以直接dump出最后byte_4180,byte_4340的值直接z3爆破出input的值的</p>
+<p>但是这道题的libc版本太高了，当时想动调dump根本没办法…</p>
+<p>解决方法2：</p>
+<p>因为题目的逻辑已经知道了，基于rc4生成加密数组的属性，我们完全可以再次模拟一下加密流程，但最终还是要采用爆破的方式得到input(因为同时处理input[i]和input[i+1])</p>
+<p>结合wp写的一点脚本</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> enc[] = &#123; <span class="number">0xF7</span>, <span class="number">0x5F</span>, <span class="number">0xE7</span>, <span class="number">0xB0</span>, <span class="number">0x9A</span>, <span class="number">0xB4</span>, <span class="number">0xE0</span>, <span class="number">0xE7</span>, <span class="number">0x9E</span>, <span class="number">0x05</span>,</span><br><span class="line">  <span class="number">0xFE</span>, <span class="number">0xD8</span>, <span class="number">0x35</span>, <span class="number">0x5C</span>, <span class="number">0x72</span>, <span class="number">0xE0</span>, <span class="number">0x86</span>, <span class="number">0xDE</span>, <span class="number">0x73</span>, <span class="number">0x9F</span>,</span><br><span class="line">  <span class="number">0x9A</span>, <span class="number">0xF6</span>, <span class="number">0x0D</span>, <span class="number">0xDC</span>, <span class="number">0xC8</span>, <span class="number">0x4F</span>, <span class="number">0xC2</span>, <span class="number">0xA4</span>, <span class="number">0x7A</span>, <span class="number">0xB5</span>,</span><br><span class="line">  <span class="number">0xE3</span>, <span class="number">0xCD</span>, <span class="number">0x60</span>, <span class="number">0x9D</span>, <span class="number">0x04</span>, <span class="number">0x1F</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rc4_init_s</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>* s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++) &#123;</span><br><span class="line">        s[i] = i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rc4_shuffle</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>* s, <span class="keyword">unsigned</span> <span class="keyword">char</span>* key, <span class="keyword">int</span> key_len)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++) &#123;</span><br><span class="line">        j = (j + s[i] + key[i % key_len]) % <span class="number">256</span>;</span><br><span class="line">        <span class="keyword">int</span> tmp = s[i];</span><br><span class="line">        s[i] = s[j];</span><br><span class="line">        s[j] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rc4_gen_keystream</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>* s, <span class="keyword">int</span> len, <span class="keyword">unsigned</span> <span class="keyword">char</span>* key_stream)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, cnt = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">while</span> (len) &#123;</span><br><span class="line">        i = (i + <span class="number">1</span>) % <span class="number">256</span>;</span><br><span class="line">        j = (j + s[i]) % <span class="number">256</span>;</span><br><span class="line">        <span class="keyword">int</span> tmp = s[i];</span><br><span class="line">        s[i] = s[j];</span><br><span class="line">        s[j] = tmp;</span><br><span class="line">        key_stream[++cnt] = s[(s[i] + s[j]) % <span class="number">256</span>];</span><br><span class="line">        len -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> keystream1[<span class="number">50</span>];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> keystream[<span class="number">50</span>];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> xbox[<span class="number">256</span>];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> key[] = &#123; <span class="number">0x7C</span>, <span class="number">0x4E</span>, <span class="number">0x1A</span>, <span class="number">0x48</span>, <span class="number">0x1B</span>, <span class="number">0x46</span>, <span class="number">0x18</span>, <span class="number">0x74</span>, <span class="number">0x5F</span>, <span class="number">0x1B</span>,</span><br><span class="line">  <span class="number">0x74</span>, <span class="number">0x4F</span>, <span class="number">0x75</span>, <span class="number">0x18</span>, <span class="number">0x48</span>, <span class="number">0x5F</span>, <span class="number">0x4D</span> &#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">17</span>; i++) &#123;</span><br><span class="line">        key[i] ^= <span class="number">43</span>;</span><br><span class="line">       <span class="comment">// printf(&quot;%c&quot;, key[i]);</span></span><br><span class="line">    &#125;</span><br><span class="line">    rc4_init_s(xbox);</span><br><span class="line">    rc4_shuffle(xbox,key, <span class="number">17</span>);</span><br><span class="line">    rc4_gen_keystream(xbox, <span class="number">36</span>, keystream1);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> primes[] = &#123; <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>, <span class="number">31</span> &#125;;</span><br><span class="line">    <span class="built_in">memcpy</span>(key + <span class="number">17</span>, primes, <span class="number">10</span>);</span><br><span class="line">    rc4_shuffle(xbox, key, <span class="number">27</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">17</span>; i++) &#123; <span class="comment">//这里的加密轮数没有找到素数的轮数+1,讲实话确定其他都对的话这个轮数爆破也无所谓的</span></span><br><span class="line">        rc4_gen_keystream(xbox, <span class="number">36</span>, keystream);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">36</span>; i += <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">char</span> a1 = <span class="number">0</span>; a1 &lt; <span class="number">0xff</span>; a1++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">char</span> a2 = <span class="number">0</span>; a2 &lt; <span class="number">0xff</span>; a2++) &#123;</span><br><span class="line">                <span class="keyword">unsigned</span> <span class="keyword">char</span> a10 = a1;</span><br><span class="line">                <span class="keyword">unsigned</span> <span class="keyword">char</span> a20 = a2;</span><br><span class="line">                a1 = a1 ^ keystream1[i];</span><br><span class="line">                a2 = a2 ^ keystream1[i + <span class="number">1</span>];</span><br><span class="line">                a1 = (a1 + a2) ^ keystream[i];</span><br><span class="line">                a2 = (a1 - a2) ^ keystream[i + <span class="number">1</span>];</span><br><span class="line">                <span class="keyword">if</span> (a1 == enc[i] &amp;&amp; a2 == enc[i + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">&quot;%c%c&quot;</span>, a10, a20);</span><br><span class="line">                &#125;</span><br><span class="line">                a1 = a10;</span><br><span class="line">                a2 = a20;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;<span class="comment">//getting_primes_with_pipes_is_awesome</span></span><br></pre></td></tr></table></figure>
+<p>学到很多</p>
 
 
         <hr>
         <!-- Pager -->
         <ul class="pager">
           
-          <li class="previous">
-            <a href="/cn/cpp/" data-toggle="tooltip" data-placement="top" title="cpp">&larr; Previous Post</a>
-          </li>
-          
           
           <li class="next">
-            <a href="/cn/程序员的自我修养/" data-toggle="tooltip" data-placement="top" title="程序员的自我修养（1-3章）">Next Post &rarr;</a>
+            <a href="/cn/pipe/" data-toggle="tooltip" data-placement="top" title="pipe">Next Post &rarr;</a>
           </li>
           
         </ul>
@@ -507,7 +526,7 @@
       </a>
     </li>
     <li class="social-share-li">
-      <a target="_blank" class="social-share-icon" href="mailto:?subject=shellcode&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/shellcode/">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=D3CTF_d3rc4&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/D3CTF-d3rc4/">
         <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
       </a>
     </li>
@@ -545,7 +564,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">目录</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HGAME WEEK4 REVERSE shellcode</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">D^3CTF d3rc4</span></a></li></ol>
         
         </div>
       </aside>
@@ -567,8 +586,6 @@
             <a href="/tags/">特色标签</a>
           </h5>
           <div class="tags">
-            
-            <a class="tag" href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
             
           </div>
         </section>
