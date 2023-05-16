@@ -228,6 +228,17 @@
           
           
           <li>
+            <a href="/archive/">
+              
+              归档
+              
+              
+            </a>
+          </li>
+          
+          
+          
+          <li>
             <a href="/about/">
               
               关于
@@ -242,17 +253,6 @@
             <a href="/categories/">
               
               分类
-              
-              
-            </a>
-          </li>
-          
-          
-          
-          <li>
-            <a href="/archive/">
-              
-              归档
               
               
             </a>
@@ -409,6 +409,45 @@
       <!-- Main Content -->
 
 
+
+<div class="post-preview">
+  
+  <!-- top start (article top hot config) -->
+  
+  <!-- top end -->
+  
+
+  <a href="/cn/patchme/">
+    <h2 class="post-title">
+      patchme
+    </h2>
+    <h3 class="post-subtitle">
+      
+    </h3>
+    <div class="post-content-preview">
+      HGAME REVERSE WEEK3
+之前是按照出题人的思路进行patch得到的flag，这次想尝试一下直接逆向得到答案
+
+这是其中的一个比较重要的加密过程
+可以看到i的作用是类似于寻找地址
+之后的mprotect是用来修改指定内存区域属性的，并且这个函数是再Linux下的
+123#include &lt;unistd.h&gt;   #include &lt;sys/mmap.h&gt;......
+    </div>
+  </a>
+  
+  <p class="post-meta" style="margin: 10px 0;">
+    Posted by Humb1e on
+    2023-02-22
+  </p>
+  <div class="tags">
+    
+    <a href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
+    
+  </div>
+  
+
+</div>
+<hr>
 
 <div class="post-preview">
   
@@ -696,15 +735,15 @@ answer是小黑子
     
     
     
+    <a href="/tags/#IoT" title="IoT" rel="1">IoT</a>
+    
+    
+    
     <a href="/tags/#Android" title="Android" rel="1">Android</a>
     
     
     
     <a href="/tags/#python" title="python" rel="1">python</a>
-    
-    
-    
-    <a href="/tags/#IoT" title="IoT" rel="1">IoT</a>
     
     
   </div>
@@ -767,6 +806,10 @@ answer是小黑子
 <div class="widget">
   <ul>
     
+    <a href="../../cn/vm-%E9%80%86%E5%90%91/">
+      <li>vm_逆向</li>
+    </a>
+    
     <a href="../../cn/D3CTF-d3hell/">
       <li>D3CTF_d3hell</li>
     </a>
@@ -781,10 +824,6 @@ answer是小黑子
     
     <a href="../../cn/LD_PRELOAD/">
       <li>LD_PRELOAD</li>
-    </a>
-    
-    <a href="../../cn/IO%E5%A4%8D%E7%94%A8/">
-      <li>IO复用</li>
     </a>
     
   </ul>
@@ -813,7 +852,7 @@ answer是小黑子
 
 <h5><a href="/archives/">archives</a></h5>
 <div class="widget">
-  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../2023/05/">May 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="../2023/04/">April 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="../2023/03/">March 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="../2023/02/">February 2023</a><span class="archive-list-count">7</span></li></ul>
+  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../2023/05/">May 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="../2023/04/">April 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="../2023/03/">March 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="../2023/02/">February 2023</a><span class="archive-list-count">7</span></li></ul>
 </div>
 
 

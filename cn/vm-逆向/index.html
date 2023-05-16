@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/categories/">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/vm-逆向/">
   <title>
     
-      Categories - Welcome to my blog
+      vm_逆向 - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -329,19 +329,19 @@
     .body--light {
       /* intro-header */
       --intro-header-background-image-url-home: url('/img/header_img/pexels-photo-1287145.jpeg');
-      --intro-header-background-image-url-post: url('img/header_img/categories_bg.jpg');
-      --intro-header-background-image-url-page: url('/img/header_img/categories_bg.jpg');
+      --intro-header-background-image-url-post: url('');
+      --intro-header-background-image-url-page: url('/img/header_img/');
     }
     .body--dark {
       --intro-header-background-image-url-home: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/pexels-photo-1287145.jpeg');
-      --intro-header-background-image-url-post: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('img/header_img/categories_bg.jpg');
-      --intro-header-background-image-url-page: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/categories_bg.jpg');
+      --intro-header-background-image-url-post: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('');
+      --intro-header-background-image-url-page: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/');
     }
 
     header.intro-header {
-       /*page*/
-        background-image: var(--intro-header-background-image-url-page);
-        /* background-image: url('/img/header_img/categories_bg.jpg'); */
+       /*post*/
+        background-image: var(--intro-header-background-image-url-post);
+        /* background-image: url(''); */
       
     }
 
@@ -363,10 +363,40 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="site-heading">
-            <h1>Categories</h1>
-            <!--<hr class="small">-->
-            <span class="subheading">Hi , here is Categories ....</span>
+          <div class="post-heading">
+            <div class="tags">
+              
+            </div>
+            <h1>vm_逆向</h1>
+            <h2 class="subheading"></h2>
+            <span class="meta">
+              Posted by Humb1e on
+              2023-05-16
+            </span>
+
+
+            
+            <!-- WordCount start -->
+            <div class="blank_box"></div>
+            <span class="meta">
+              Estimated Reading Time <span class="post-count">2</span> Minutes
+            </span>
+            <div class="blank_box"></div>
+            <span class="meta">
+              Words <span class="post-count">728</span> In Total
+            </span>
+            <div class="blank_box"></div>
+            <!-- WordCount end -->
+            
+            
+            <!-- 不蒜子统计 start -->
+            <span class="meta" id="busuanzi_container_page_pv">
+              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+            </span>
+            <!-- 不蒜子统计 end -->
+            
+
+
           </div>
           
         </div>
@@ -391,259 +421,286 @@
 	Friends Blog、
 	anchorjs、
 	) -->
-		<!-- Main Content -->
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <!-- 分类页面 -->
+		<!-- Modify by Yu-Hsuan Yen -->
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-      
+        <h1>VM逆向</h1>
+<p>从上个学期就意识到自己不会vm逆向有很大一部分原因是汇编不会，寒假学了汇编，学的不好，汇编还是不会，总想着留到暑假用大把的时间再去学习和总结。</p>
+<p>然后突然意识到这样逃避永远也学不会自己害怕的东西。</p>
+<p>于是就开始摁看了。</p>
+<p>从最简单的虚拟机开始。</p>
+<p><strong>mainly from [<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-267670.htm">原创]对VM逆向的分析(CTF)(比较经典的一个虚拟机逆向题目)-CTF对抗-看雪-安全社区|安全招聘|kanxue.com</a></strong></p>
+<p><img src="https://bbs.kanxue.com/upload/attach/202105/921830_K2JZ5JFV5CASYVD.png" alt="图片描述"></p>
+<p>这个图还是比较清晰的</p>
+<p>所以第一个就是得找到eip和模拟的汇编指令</p>
+<p>用这题非常经典的题目来积累一点经验</p>
+<p>(里面的寄存器和eip基本上都已经重命名了)</p>
+<h2 id="vm-nop">vm_nop</h2>
+<p><img src="image-20230516225008654.png" alt="image-20230516225008654"></p>
+<p>这是一个比较有意思的汇编指令，eip++相当于什么都没做其实就对应了汇编中的<strong>nop</strong></p>
+<h1>vm_mov</h1>
+<p><img src="image-20230516225056171.png" alt="image-20230516225056171"></p>
+<p>从这里的byte的地址可以看出其实他们就是两个相邻的机器码</p>
+<p>把第一个数给v0,第二个数给v1</p>
+<p>eip+3(3其实就是一条指令的长度)</p>
+<p>然后把v1给到reg[v0]</p>
+<p>其实就是<strong>mov reg[v0],v1</strong></p>
+<h2 id="vm-push-data">vm_push_data</h2>
+<p><img src="image-20230516225311912.png" alt="image-20230516225311912"></p>
+<p>同样的，v1是第一个数据</p>
+<p>i就是栈指针，扩大了栈，然后把v1放进栈里</p>
+<p>对应了<strong>push v1</strong></p>
+<h2 id="vm-push-reg">vm_push_reg</h2>
+<p><img src="image-20230516225457945.png" alt="image-20230516225457945"></p>
+<p>原理同上，不过v1换成了reg罢了</p>
+<p>相当于<strong>push reg</strong></p>
+<h2 id="vm-pop-reg">vm_pop_reg</h2>
+<p><img src="image-20230516225550874.png" alt="image-20230516225550874"></p>
+<p>这里先取了栈中的数据，然后把栈里的数据给了一个寄存器</p>
+<p>相当于<strong>pop reg</strong></p>
+<h2 id="vm-printf">vm_printf</h2>
+<p><img src="image-20230516225654892.png" alt="image-20230516225654892"></p>
+<p>这题独有的printf</p>
+<h2 id="vm-add-reg1-reg2">vm_add_reg1_reg2</h2>
+<p><img src="image-20230516225737210.png" alt="image-20230516225737210"></p>
+<p>取了两个reg相加</p>
+<p>相当于<strong>add reg[v0],reg[v1]</strong></p>
+<h2 id="vm-sub-reg1-reg2">vm_sub_reg1_reg2</h2>
+<p><img src="image-20230516225934104.png" alt="image-20230516225934104"></p>
+<p>同上</p>
+<p>相当于<strong>sub reg[v0],reg[v1]</strong></p>
+<h2 id="vm-mul">vm_mul</h2>
+<p><img src="image-20230516230025652.png" alt="image-20230516230025652"></p>
+<p>很显然的乘法</p>
+<p>相当于<strong>mul reg[v0],reg[v1]</strong>(好像记得汇编只有mul reg，因为另一个乘数已经放到一个寄存器里了)</p>
+<h2 id="vm-div">vm_div</h2>
+<p><img src="image-20230516230205272.png" alt="image-20230516230205272"></p>
+<p>同上</p>
+<p>相当于<strong>div reg[v0],reg[v1]</strong>(同上，汇编只有div reg，但是这里意思意思，能看懂就行)</p>
+<h2 id="vm-xor">vm_xor</h2>
+<p><img src="image-20230516230500821.png" alt="image-20230516230500821"></p>
+<p>嘿嘿，我觉得逆向人最喜欢看见的就是异或了</p>
+<p>不解释</p>
+<p>相当于<strong>xor reg[v0],reg[v1]</strong></p>
+<h2 id="vm-jmp">vm_jmp</h2>
+<p><img src="image-20230516230604828.png" alt="image-20230516230604828"></p>
+<p>一开始有点疑惑，为什么是3*opcode[eip]-3</p>
+<p>后面对eip的赋值说明肯定是jmp类的</p>
+<p>想一想3是指令长度，eip的赋值又没有条件应该就是jmp</p>
+<p>这里jmp的方法是指令长度*数据似乎和汇编有点不同</p>
+<p>相当于<strong>jmp [addr]</strong></p>
+<h1>vm_cmp</h1>
+<p><img src="image-20230516230810063.png" alt="image-20230516230810063"></p>
+<p>有一个减，返回的是减的结果，就是cmp了</p>
+<p>相当于<strong>cmp reg[v0],reg[v1]</strong></p>
+<h2 id="vm-je">vm_je</h2>
+<p><img src="image-20230516231007870.png" alt="image-20230516231007870"></p>
+<p>这里我直接把标志寄存器叫做flag了</p>
+<p>可以判断出flag!=0时跳转</p>
+<p>或许应该把flag改成ZF更好？</p>
+<p>相当于<strong>jne [addr]</strong></p>
+<p>其他的就不写了，基本上都涉及到了</p>
+<p>对于这些东西的打印分析又是一个问题了，今天先到此为止吧。</p>
 
-      <!-- 标签云 -->
-      <div id='tag_cloud' class="tags">
+
+        <hr>
+        <!-- Pager -->
+        <ul class="pager">
+          
+          
+          <li class="next">
+            <a href="/cn/D3CTF-d3hell/" data-toggle="tooltip" data-placement="top" title="D3CTF_d3hell">Next Post &rarr;</a>
+          </li>
+          
+        </ul>
+
         
-        <a href="#REVERSE" title="REVERSE" rel="5">REVERSE</a>
+        <!-- tip start -->
+        <!-- tip -->
+<!-- tip start -->
+<div class="tip">
+  <p>
+    
+      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+    
+  </p>
+</div>
+<!-- tip end -->
+
+        <!-- tip end -->
         
-        <a href="#BOOK" title="BOOK" rel="2">BOOK</a>
+
         
-        <a href="#HGAME" title="HGAME" rel="3">HGAME</a>
+        <!-- Sharing Srtart -->
+        <!-- Social Social Share Post -->
+<!-- Docs:https://github.com/overtrue/share.js -->
+
+<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
+  <ul class="list-inline text-center social-share-ul">
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-twitter">
+        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a class="social-share-icon icon-wechat">
+        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-weibo">
+        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-qq">
+        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=vm_逆向&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/vm-逆向/">
+        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- css & js -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
+<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+        <!-- Sharing End -->
         
-        <a href="#IoT" title="IoT" rel="1">IoT</a>
-        
+        <hr>
+
+        <!-- comments start -->
+        <!-- 1. gitalk comment -->
+
+
+<!-- 2. gitment comment -->
+
+
+<!-- 3. disqus comment -->
+
+
+        <!-- comments end -->
+        <hr>
+
       </div>
 
-      <!-- 标签列表 -->
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="REVERSE">
-          <span class="tag-text">REVERSE</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/kumisc/">
-            <h2 class="post-title">
-              kumisc
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/suanfa/">
-            <h2 class="post-title">
-              CTF逆向常见算法
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/Kalmar CTF cyclechaser/">
-            <h2 class="post-title">
-              cyclechaser
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/Clickstorm/">
-            <h2 class="post-title">
-              Clickstorm
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/pyx文件探索/">
-            <h2 class="post-title">
-              pyx文件探索
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="BOOK">
-          <span class="tag-text">BOOK</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/汇编语言/">
-            <h2 class="post-title">
-              汇编语言
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/程序员的自我修养/">
-            <h2 class="post-title">
-              程序员的自我修养（1-3章）
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="HGAME">
-          <span class="tag-text">HGAME</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/cpp/">
-            <h2 class="post-title">
-              cpp
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/shellcode/">
-            <h2 class="post-title">
-              shellcode
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/patchme/">
-            <h2 class="post-title">
-              patchme
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
-      <div class="one-tag-list">
-        <span class="fa fa-tag listing-seperator" id="IoT">
-          <span class="tag-text">IoT</span>
-        </span>
-        
-        <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-        <div class="post-preview">
-          <a href="/cn/TOTOLINK/">
-            <h2 class="post-title">
-              TOTOLINK
-              
-              -- cn
-              
-            </h2>
-            
-          </a>
-          <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-        </div>
-        <hr>
-        
-      </div>
-      
+      <!-- Catalog: Tabe of Content -->
+      <!-- Table of Contents -->
 
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">目录</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">VM逆向</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-nop"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">vm_nop</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">vm_mov</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-push-data"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">vm_push_data</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-push-reg"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">vm_push_reg</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-pop-reg"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">vm_pop_reg</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-printf"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">vm_printf</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-add-reg1-reg2"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">vm_add_reg1_reg2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-sub-reg1-reg2"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">vm_sub_reg1_reg2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-mul"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">vm_mul</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-div"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">vm_div</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-xor"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">vm_xor</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-jmp"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">vm_jmp</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">vm_cmp</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#vm-je"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">vm_je</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+
+
+      <!-- Sidebar Container -->
+      <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+        <!-- Featured Tags -->
+        
+        <section>
+          <!-- no hr -->
+          <h5>
+            <a href="/tags/">特色标签</a>
+          </h5>
+          <div class="tags">
+            
+          </div>
+        </section>
+        
+
+        <!-- Friends Blog -->
+        
+        <hr>
+        <h5>链友</h5>
+        <ul class="list-inline">
+
+          
+          <li>
+            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
+          </li>
+          
+          <li>
+            <a href="http://gtg.ink/" target="_blank">gtg</a>
+          </li>
+          
+          <li>
+            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
+          </li>
+          
+        </ul>
+        
+      </div>
     </div>
   </div>
-</div>
+</article>
+
+
+
+<!-- anchorjs start -->
+<!-- async load function -->
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script type="text/javascript">
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  };
+</script>
+<script type="text/javascript">
+  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
+  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'left',
+      // icon: 'ℬ'
+      icon: '❡'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+<!-- anchorjs end -->
+
 
 
 		<!-- Footer (contains ThemeColor、viewer) -->
