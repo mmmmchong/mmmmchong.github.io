@@ -228,9 +228,9 @@
           
           
           <li>
-            <a href="/about/">
+            <a href="/archive/">
               
-              关于
+              归档
               
               
             </a>
@@ -239,9 +239,9 @@
           
           
           <li>
-            <a href="/categories/">
+            <a href="/about/">
               
-              分类
+              关于
               
               
             </a>
@@ -261,9 +261,9 @@
           
           
           <li>
-            <a href="/archive/">
+            <a href="/categories/">
               
-              归档
+              分类
               
               
             </a>
@@ -409,6 +409,49 @@
       <!-- Main Content -->
 
 
+
+<div class="post-preview">
+  
+  <!-- top start (article top hot config) -->
+  
+  <!-- top end -->
+  
+
+  <a href="/cn/encryptor/">
+    <h2 class="post-title">
+      encrypto
+    </h2>
+    <h3 class="post-subtitle">
+      
+    </h3>
+    <div class="post-content-preview">
+      2023上海赛初赛encrypto
+挺抽象的，五道逆向，两道0解
+另外两题都被干到50分了，还有这题400分左右的
+ida打开一看是rust写的elf
+反正rust一贯那么丑
+
+先看一眼这个，有很多库的调用，摆明了这是rust，然后乱点几个进去能看到time之类的系统调用
+
+还有这种对60,3600操作的很明显和时间挂钩的
+
+后面有起poll的，有点离谱
+
+还有给直接写明sha256字符串的......
+    </div>
+  </a>
+  
+  <p class="post-meta" style="margin: 10px 0;">
+    Posted by Humb1e on
+    2023-05-29
+  </p>
+  <div class="tags">
+    
+  </div>
+  
+
+</div>
+<hr>
 
 <div class="post-preview">
   
@@ -757,48 +800,6 @@ infiniteloop已经暗示了下面的无限循环
 </div>
 <hr>
 
-<div class="post-preview">
-  
-  <!-- top start (article top hot config) -->
-  
-  <!-- top end -->
-  
-
-  <a href="/cn/Kalmar CTF cyclechaser/">
-    <h2 class="post-title">
-      cyclechaser
-    </h2>
-    <h3 class="post-subtitle">
-      
-    </h3>
-    <div class="post-content-preview">
-      KalmarCTF Re cyclechaser
-在void爷的帮助下做出来的
-
-这个程序是跑在靶机的终端上的，题目让我们自己本地先跑通再去nc
-但是这道题的libc版本是2.34太高了，没法运行和动调，只能纯静态分析
-上面代码的逻辑就是生成了一个种子，并且打印了种子的值
-
-之后的代码就用到了很多断言（用于处理错误，并且执行一些func），首先malloc了一个ptr
-这个ptr很重要
-pt......
-    </div>
-  </a>
-  
-  <p class="post-meta" style="margin: 10px 0;">
-    Posted by Humb1e on
-    2023-03-06
-  </p>
-  <div class="tags">
-    
-    <a href="/tags/#REVERSE" title="REVERSE">REVERSE</a>
-    
-  </div>
-  
-
-</div>
-<hr>
-
 
   <!-- Pager -->
   <ul class="pager">
@@ -831,6 +832,10 @@ pt......
   <div class="tags">
     
     
+    <a href="/tags/#HGAME" title="HGAME" rel="1">HGAME</a>
+    
+    
+    
     <a href="/tags/#REVERSE" title="REVERSE" rel="8">REVERSE</a>
     
     
@@ -844,10 +849,6 @@ pt......
     
     
     <a href="/tags/#编译器" title="编译器" rel="1">编译器</a>
-    
-    
-    
-    <a href="/tags/#HGAME" title="HGAME" rel="1">HGAME</a>
     
     
     
@@ -922,6 +923,10 @@ pt......
 <div class="widget">
   <ul>
     
+    <a href="cn/encryptor/">
+      <li>encrypto</li>
+    </a>
+    
     <a href="cn/serial-150/">
       <li>serial-150</li>
     </a>
@@ -936,10 +941,6 @@ pt......
     
     <a href="cn/D3CTF-d3rc4/">
       <li>D3CTF_d3rc4</li>
-    </a>
-    
-    <a href="cn/pipe/">
-      <li>pipe</li>
     </a>
     
   </ul>
@@ -968,7 +969,7 @@ pt......
 
 <h5><a href="/archives/">archives</a></h5>
 <div class="widget">
-  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/05/">May 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/04/">April 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/03/">March 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/02/">February 2023</a><span class="archive-list-count">7</span></li></ul>
+  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/05/">May 2023</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/04/">April 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/03/">March 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="archives/2023/02/">February 2023</a><span class="archive-list-count">7</span></li></ul>
 </div>
 
 

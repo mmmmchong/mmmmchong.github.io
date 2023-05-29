@@ -130,10 +130,10 @@
   <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
 
   <!-- ga & ba script hoook -->
-  <link rel="canonical" href="https://mmmmchong.github.io/archives/">
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/encryptor/">
   <title>
     
-      Welcome to my blog
+      encrypto - Welcome to my blog
     
   </title>
 <meta name="generator" content="Hexo 5.4.0"></head>
@@ -339,9 +339,9 @@
     }
 
     header.intro-header {
-       /*page*/
-        background-image: var(--intro-header-background-image-url-page);
-        /* background-image: url('/img/header_img/'); */
+       /*post*/
+        background-image: var(--intro-header-background-image-url-post);
+        /* background-image: url(''); */
       
     }
 
@@ -363,10 +363,40 @@
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="site-heading">
-            <h1>Welcome</h1>
-            <!--<hr class="small">-->
-            <span class="subheading">to humb1e&#39;s blog</span>
+          <div class="post-heading">
+            <div class="tags">
+              
+            </div>
+            <h1>encrypto</h1>
+            <h2 class="subheading"></h2>
+            <span class="meta">
+              Posted by Humb1e on
+              2023-05-29
+            </span>
+
+
+            
+            <!-- WordCount start -->
+            <div class="blank_box"></div>
+            <span class="meta">
+              Estimated Reading Time <span class="post-count">2</span> Minutes
+            </span>
+            <div class="blank_box"></div>
+            <span class="meta">
+              Words <span class="post-count">508</span> In Total
+            </span>
+            <div class="blank_box"></div>
+            <!-- WordCount end -->
+            
+            
+            <!-- 不蒜子统计 start -->
+            <span class="meta" id="busuanzi_container_page_pv">
+              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+            </span>
+            <!-- 不蒜子统计 end -->
+            
+
+
           </div>
           
         </div>
@@ -391,489 +421,237 @@
 	Friends Blog、
 	anchorjs、
 	) -->
-		<!-- Main Content -->
-<div class="container">
-  <div class="row">
-    
+		<!-- Modify by Yu-Hsuan Yen -->
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-    <!-- USE SIDEBAR -->
-    <!-- Post Container -->
-    <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
+        <h1>2023上海赛初赛encrypto</h1>
+<p>挺抽象的，五道逆向，两道0解</p>
+<p>另外两题都被干到50分了，还有这题400分左右的</p>
+<p>ida打开一看是rust写的elf</p>
+<p>反正rust一贯那么丑</p>
+<p><img src="image-20230529224819152.png" alt="image-20230529224819152"></p>
+<p>先看一眼这个，有很多库的调用，摆明了这是rust，然后乱点几个进去能看到time之类的系统调用</p>
+<p><img src="image-20230529224911249.png" alt="image-20230529224911249"></p>
+<p>还有这种对60,3600操作的很明显和时间挂钩的</p>
+<p><img src="image-20230529225020567.png" alt="image-20230529225020567"></p>
+<p>后面有起poll的，有点离谱</p>
+<p><img src="image-20230529225336169.png" alt="image-20230529225336169"></p>
+<p>还有给直接写明sha256字符串的。。</p>
+<p>查了一下这个<code>EVP_Q_digest</code>大概是OpenSSL EVP的密码库用法，可以猜测出他调用了sha256加密</p>
+<p>然后去瞄一眼给的flag.txt.enc</p>
+<p>一看是68位的，这显然不是sha256直接加密的（不然也没法逆）</p>
+<p><img src="image-20230529230133338.png" alt="image-20230529230133338"></p>
+<p>后面一看这函数也蛮离谱的，就是一个rc4</p>
+<p><img src="image-20230529230158821.png" alt="image-20230529230158821"></p>
+<p>这样天才的赋初值方式。。</p>
+<p>理论上动调一下，看一眼传入值的key是啥能做</p>
+<p>咱也没装这些库，没法搞</p>
+<p>随便猜猜是某个值的sha256加密后的结果传进来作为key(实际上是看官方wp的)</p>
+<p>然后那个值也别管了，这函数都没输入，肯定和时间挂钩了，至于是什么关系呢？管他呢1-100000000随便爆吧</p>
+<p>然后就有了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> sha256</span><br><span class="line"></span><br><span class="line">enc = [<span class="number">0xA2</span>, <span class="number">0x05</span>, <span class="number">0x05</span>, <span class="number">0xDB</span>, <span class="number">0x23</span>, <span class="number">0x11</span>, <span class="number">0x0E</span>, <span class="number">0x39</span>, <span class="number">0x46</span>, <span class="number">0x06</span>, <span class="number">0x0C</span>, <span class="number">0xD1</span>, <span class="number">0x91</span>, <span class="number">0xC6</span>, <span class="number">0x44</span>, <span class="number">0xE2</span>,</span><br><span class="line">        <span class="number">0x1A</span>, <span class="number">0x9C</span>, <span class="number">0x61</span>, <span class="number">0xF1</span>, <span class="number">0xD3</span>, <span class="number">0xEB</span>, <span class="number">0x75</span>, <span class="number">0x3A</span>, <span class="number">0x81</span>, <span class="number">0x5D</span>, <span class="number">0xA2</span>, <span class="number">0x12</span>, <span class="number">0xB4</span>, <span class="number">0x58</span>, <span class="number">0x2A</span>, <span class="number">0xDB</span>,</span><br><span class="line">        <span class="number">0x94</span>, <span class="number">0x14</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rc4</span>(<span class="params">data, key</span>):</span></span><br><span class="line">    x = <span class="number">0</span></span><br><span class="line">    box = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">256</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">256</span>):</span><br><span class="line">        x = (x + box[i] + key[i % <span class="built_in">len</span>(key)]) % <span class="number">256</span></span><br><span class="line">        box[i], box[x] = box[x], box[i]</span><br><span class="line">    x = y = <span class="number">0</span></span><br><span class="line">    out = <span class="built_in">bytearray</span>()</span><br><span class="line">    <span class="keyword">for</span> char <span class="keyword">in</span> data:</span><br><span class="line">        x = (x + <span class="number">1</span>) % <span class="number">256</span></span><br><span class="line">        y = (y + box[x]) % <span class="number">256</span></span><br><span class="line">        box[x], box[y] = box[y], box[x]</span><br><span class="line">        out.append(char ^ box[(box[x] + box[y]) % <span class="number">256</span>])</span><br><span class="line">    <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000</span>):</span><br><span class="line">    k = sha256(<span class="built_in">str</span>(i).encode()).digest()</span><br><span class="line">    d = rc4(enc, k)</span><br><span class="line">    <span class="keyword">if</span> d[<span class="number">0</span>] == <span class="built_in">ord</span>(<span class="string">&#x27;f&#x27;</span>) <span class="keyword">and</span> d[<span class="number">1</span>] == <span class="built_in">ord</span>(<span class="string">&#x27;l&#x27;</span>) <span class="keyword">and</span> d[<span class="number">2</span>] == <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>):</span><br><span class="line">        <span class="built_in">print</span>(d.decode())</span><br><span class="line"><span class="comment">##flag&#123;3df837d045ea07d9230cd23047a&#125;</span></span><br></pre></td></tr></table></figure>
+<p>别说，flag瞬间就跑出来了。。。</p>
+<p>我的评价是rust逆向就靠坑蒙拐骗猜，猜到就是赚到。</p>
 
-      <!-- Main Content -->
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-0 col-md-10 col-md-offset-1">
-      <!-- 归档列表 -->
 
-      
-
-      <!-- 归档列表 -->
-      
-      <div class="one-tag-list">
-        <span class="fa fa-calendar-times-o listing-seperator" id="2023">
-          <span class="tag-text">2023</span>
-        </span>
-        <ul>
+        <hr>
+        <!-- Pager -->
+        <ul class="pager">
           
-          <li>
-            05-29
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/encryptor/" style="color: #0085a1">
-              <span>
-                encrypto
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
           
-          <li>
-            05-25
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/serial-150/" style="color: #0085a1">
-              <span>
-                serial-150
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            05-16
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/vm-逆向/" style="color: #0085a1">
-              <span>
-                vm_逆向
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            05-09
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/D3CTF-d3hell/" style="color: #0085a1">
-              <span>
-                D3CTF_d3hell
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            05-08
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/D3CTF-d3rc4/" style="color: #0085a1">
-              <span>
-                D3CTF_d3rc4
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            05-06
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/pipe/" style="color: #0085a1">
-              <span>
-                pipe
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            04-22
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/LD_PRELOAD/" style="color: #0085a1">
-              <span>
-                LD_PRELOAD
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            04-17
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/IO复用/" style="color: #0085a1">
-              <span>
-                IO复用
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-21
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/pyx文件探索/" style="color: #0085a1">
-              <span>
-                pyx文件探索
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-08
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/Clickstorm/" style="color: #0085a1">
-              <span>
-                Clickstorm
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-06
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/Kalmar CTF cyclechaser/" style="color: #0085a1">
-              <span>
-                cyclechaser
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            03-03
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/TOTOLINK/" style="color: #0085a1">
-              <span>
-                TOTOLINK
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-22
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/patchme/" style="color: #0085a1">
-              <span>
-                patchme
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-20
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/cpp/" style="color: #0085a1">
-              <span>
-                cpp
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-13
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/shellcode/" style="color: #0085a1">
-              <span>
-                shellcode
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/程序员的自我修养/" style="color: #0085a1">
-              <span>
-                程序员的自我修养（1-3章）
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/汇编语言/" style="color: #0085a1">
-              <span>
-                汇编语言
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/suanfa/" style="color: #0085a1">
-              <span>
-                CTF逆向常见算法
-                
-                -- cn
-                
-              </span>
-            </a>
-          </li>
-          
-          <li>
-            02-12
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            <a href="/cn/kumisc/" style="color: #0085a1">
-              <span>
-                kumisc
-                
-                -- cn
-                
-              </span>
-            </a>
+          <li class="next">
+            <a href="/cn/serial-150/" data-toggle="tooltip" data-placement="top" title="serial-150">Next Post &rarr;</a>
           </li>
           
         </ul>
+
+        
+        <!-- tip start -->
+        <!-- tip -->
+<!-- tip start -->
+<div class="tip">
+  <p>
+    
+      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+    
+  </p>
+</div>
+<!-- tip end -->
+
+        <!-- tip end -->
+        
+
+        
+        <!-- Sharing Srtart -->
+        <!-- Social Social Share Post -->
+<!-- Docs:https://github.com/overtrue/share.js -->
+
+<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
+  <ul class="list-inline text-center social-share-ul">
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-twitter">
+        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a class="social-share-icon icon-wechat">
+        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-weibo">
+        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-qq">
+        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=encrypto&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/encryptor/">
+        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- css & js -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
+<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+        <!-- Sharing End -->
+        
+        <hr>
+
+        <!-- comments start -->
+        <!-- 1. gitalk comment -->
+
+
+<!-- 2. gitment comment -->
+
+
+<!-- 3. disqus comment -->
+
+
+        <!-- comments end -->
+        <hr>
+
       </div>
-      
-    </div>
-  </div>
-</div>
 
+      <!-- Catalog: Tabe of Content -->
+      <!-- Table of Contents -->
 
-      <!-- 如果开启评论功能 -->
-      
-    </div>
-
-    <!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
     
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">目录</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">2023上海赛初赛encrypto</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+
+
+      <!-- Sidebar Container -->
+      <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
         <!-- Featured Tags -->
+        
+        <section>
+          <!-- no hr -->
+          <h5>
+            <a href="/tags/">特色标签</a>
+          </h5>
+          <div class="tags">
+            
+          </div>
+        </section>
+        
 
-<section>
-  <h5><a href="/tags/">特色标签</a></h5>
-  <div class="tags">
-    
-    
-    <a href="/tags/#HGAME" title="HGAME" rel="1">HGAME</a>
-    
-    
-    
-    <a href="/tags/#REVERSE" title="REVERSE" rel="8">REVERSE</a>
-    
-    
-    
-    <a href="/tags/#汇编语言" title="汇编语言" rel="1">汇编语言</a>
-    
-    
-    
-    <a href="/tags/#C语言底层机制" title="C语言底层机制" rel="1">C语言底层机制</a>
-    
-    
-    
-    <a href="/tags/#编译器" title="编译器" rel="1">编译器</a>
-    
-    
-    
-    <a href="/tags/#IoT" title="IoT" rel="1">IoT</a>
-    
-    
-    
-    <a href="/tags/#Android" title="Android" rel="1">Android</a>
-    
-    
-    
-    <a href="/tags/#python" title="python" rel="1">python</a>
-    
-    
-  </div>
-</section>
-
-
-        <hr>
-    
-        <!-- Short About -->
-<section class="visible-md visible-lg">
-  <h5><a href="/about/">关于自己</a></h5>
-  <div class="short-about">
-
-    
-    <img id="avatar_pic" src="/img/avatar/t.jpg" alt="avatar_pic" style="box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
-    -moz-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);
-    -webkit-box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, .5);" />
-    
-
-    
-    <p>漏洞挖掘/逆向工程</p>
-    
-
-    <!-- SNS Link -->
-    <ul class="list-inline">
-      
-
-      
-      <li>
-        <a target="_blank" href="https://github.com/mmmmchong">
-          <span class="fa-stack fa-lg">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-          </span>
-        </a>
-      </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-    </ul>
-  </div>
-</section>
-
-        <hr>
-    
-        <!-- RECENT POSTS -->
-
-<h5><a href="/">最近博文</a></h5>
-<div class="widget">
-  <ul>
-    
-    <a href="../cn/encryptor/">
-      <li>encrypto</li>
-    </a>
-    
-    <a href="../cn/serial-150/">
-      <li>serial-150</li>
-    </a>
-    
-    <a href="../cn/vm-%E9%80%86%E5%90%91/">
-      <li>vm_逆向</li>
-    </a>
-    
-    <a href="../cn/D3CTF-d3hell/">
-      <li>D3CTF_d3hell</li>
-    </a>
-    
-    <a href="../cn/D3CTF-d3rc4/">
-      <li>D3CTF_d3rc4</li>
-    </a>
-    
-  </ul>
-</div>
-
-
-        <hr>
-    
         <!-- Friends Blog -->
-
-<h5><a href="/">链友</a></h5>
-<ul class="list-inline">
-  
-  <li><a href="https://l0tus.vip/" target="_blank">L0tus</a></li>
-  
-  <li><a href="http://gtg.ink/" target="_blank">gtg</a></li>
-  
-  <li><a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a></li>
-  
-</ul>
-
-
+        
         <hr>
-    
-        <!-- Archives -->
+        <h5>链友</h5>
+        <ul class="list-inline">
 
-<h5><a href="/archives/">archives</a></h5>
-<div class="widget">
-  <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="2023/05/">May 2023</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="2023/04/">April 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="2023/03/">March 2023</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="2023/02/">February 2023</a><span class="archive-list-count">7</span></li></ul>
-</div>
-
-
-        <hr>
-    
-        <!-- Categories -->
-
-<h5><a href="/categories/">categories</a></h5>
-<div class="widget">
-  <ul>
-    
-    <a href="/categories/#REVERSE">
-      <li>REVERSE</li>
-    </a>
-    
-    <a href="/categories/#BOOK">
-      <li>BOOK</li>
-    </a>
-    
-    <a href="/categories/#HGAME">
-      <li>HGAME</li>
-    </a>
-    
-    <a href="/categories/#IoT">
-      <li>IoT</li>
-    </a>
-    
-  </ul>
-</div>
-
-
-        <hr>
-    
-</div>
-
-
-    
+          
+          <li>
+            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
+          </li>
+          
+          <li>
+            <a href="http://gtg.ink/" target="_blank">gtg</a>
+          </li>
+          
+          <li>
+            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
   </div>
-</div>
+</article>
+
+
+
+<!-- anchorjs start -->
+<!-- async load function -->
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script type="text/javascript">
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  };
+</script>
+<script type="text/javascript">
+  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
+  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'left',
+      // icon: 'ℬ'
+      icon: '❡'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+<!-- anchorjs end -->
+
 
 
 		<!-- Footer (contains ThemeColor、viewer) -->
