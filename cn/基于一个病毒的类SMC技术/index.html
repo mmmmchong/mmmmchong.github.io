@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag (contains Google-Analytics、Baidu-Tongji)-->
+<head>
+  <!-- Google Analytics -->
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-xxxxxx-xx"></script>
+    <script type="text/javascript">
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-xxxxxx-xx');
+    </script>
+  
+
+  <!-- Baidu Tongji -->
+  
+    <script type="text/javascript">
+      // Originial
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  <!-- Baidu Push -->
+  
+    <script>
+      (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+          bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+          bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+      })();
+    </script>
+  
+
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+  <meta name="google-site-verification" content="lxDfCplOZbIzjhG34NuQBgu2gdyRlAtMB4utP5AgEBc"/>
+  <meta name="baidu-site-verification" content="PpzM9WxOJU"/>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="It&#39;s a personal blog..."/>
+  <meta name="keyword" content=""/>
+  <link rel="shortcut icon" href="/img/avatar/"/>
+
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async="async" defer="defer" src="https://buttons.github.io/buttons.js"></script>
+
+  
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/beantech.min.css"/>
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css"/>
+    <link rel="stylesheet" href="/css/widget.css"/>
+    <link rel="stylesheet" href="/css/rocket.css"/>
+    <link rel="stylesheet" href="/css/signature.css"/>
+    <link rel="stylesheet" href="/css/catalog.css"/>
+    <link rel="stylesheet" href="/css/livemylife.css"/>
+
+    
+
+    
+      <!-- top start (article top hot config) -->
+      <link rel="stylesheet" href="/css/top.css"/>
+      <!-- top end -->
+    
+
+    
+      <!-- ThemeColor start -->
+      <link rel="stylesheet" href="/css/scroll.css"/>
+      <!-- ThemeColor end -->
+    
+
+    
+      <!-- viewer start (Picture preview) -->
+      <link rel="stylesheet" href="/css/viewer.min.css"/>
+      <!-- viewer end -->
+    
+
+    
+      <!-- Search start -->
+      <link rel="stylesheet" href="/css/search.css"/>
+      <!-- Search end -->
+    
+
+    
+      <!-- ThemeColor start -->
+      <link rel="stylesheet" href="/css/themecolor.css"/>
+      <!-- ThemeColor end -->
+    
+
+    
+
+    
+  
+
+  <!-- Custom Fonts -->
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+  <!-- Hux change font-awesome CDN to qiniu -->
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Hux Delete, sad but pending in China <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'> <link
+  href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/ css'> -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
+
+  <!-- ga & ba script hoook -->
+  <link rel="canonical" href="https://mmmmchong.github.io/cn/基于一个病毒的类SMC技术/">
+  <title>
+    
+      一个病毒实例的类SMC技术 - Welcome to my blog
+    
+  </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+
+	<body ontouchstart="" class="body--light body--dark">
+
+
+		<!-- ThemeColor -->
+		
+		<!-- ThemeColor -->
+<style type="text/css">
+  .body--light {
+    --light-mode: none;
+    --dark-mode: block;
+  }
+  .body--dark {
+    --light-mode: block;
+    --dark-mode: none;
+  }
+  i.mdui-icon.material-icons.light-mode {
+    display: var(--light-mode);
+  }
+  i.mdui-icon.material-icons.dark-mode {
+    display: var(--dark-mode);
+  }
+</style>
+<div class="toggle" onclick="document.body.classList.toggle('body--dark')">
+  <i class="mdui-icon material-icons light-mode"></i>
+  <i class="mdui-icon material-icons dark-mode"></i>
+</div>
+<script>
+  //getCookieValue
+  function getCookieValue(a) {
+    var b = document.cookie.match('(^|[^;]+)\\s*' + a + '\\s*=\\s*([^;]+)');
+    return b
+      ? b.pop()
+      : '';
+  }
+  let themeMode = 'dark';
+  if (getCookieValue('sb-color-mode') && (getCookieValue('sb-color-mode') !== themeMode)) {
+    let dbody = document.body.classList;
+    themeMode === 'dark' ? dbody.remove('body--dark') : dbody.add('body--dark');
+  }
+
+  //setCookieValue
+  var toggleBtn = document.querySelector(".toggle");
+  toggleBtn.addEventListener("click", function () {
+    var e = document.body.classList.contains("body--dark");
+    var cookieString = e
+      ? "dark"
+      : "light";
+    var exp = new Date();
+    exp.setTime(exp.getTime() + 3 * 24 * 60 * 60 * 1000); //3天过期
+    document.cookie = "sb-color-mode=" + cookieString + ";expires=" + exp.toGMTString() + ";path=/";
+  });
+</script>
+
+		
+
+		<!-- Gitter -->
+		
+
+		<!-- Navigation (contains search)-->
+		<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Welcome</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <!-- Known Issue, found by Hux: <nav>'s height woule be hold on by its content. so, when navbar scale out, the <nav> will cover tags. also mask any touch event of tags, unfortunately. -->
+    <div id="huxblog_navbar">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="/">首页</a>
+          </li>
+
+          
+          
+          
+          
+          <li>
+            <a href="/categories/">
+              
+              分类
+              
+              
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a href="/archive/">
+              
+              归档
+              
+              
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a href="/tags/">
+              
+              标签
+              
+              
+            </a>
+          </li>
+          
+          
+          
+          <li>
+            <a href="/about/">
+              
+              关于
+              
+              
+            </a>
+          </li>
+          
+          
+
+          
+          <li>
+            <a class="popup-trigger">
+              <span class="search-icon"></span>搜索</a>
+          </li>
+          
+
+          <!-- LangSelect -->
+          
+        </ul>
+      </div>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
+<!-- progress -->
+<div id="progress">
+  <div class="line" style="width: 0%;"></div>
+</div>
+
+<script>
+  // Drop Bootstarp low-performance Navbar Use customize navbar with high-quality material design animation in high-perf jank-free CSS3 implementation
+  var $body = document.body;
+  var $toggle = document.querySelector('.navbar-toggle');
+  var $navbar = document.querySelector('#huxblog_navbar');
+  var $collapse = document.querySelector('.navbar-collapse');
+
+  $toggle.addEventListener('click', handleMagic)
+
+  function handleMagic(e) {
+    if ($navbar.className.indexOf('in') > 0) {
+      // CLOSE
+      $navbar.className = " ";
+      // wait until animation end.
+      setTimeout(function() {
+        // prevent frequently toggle
+        if ($navbar.className.indexOf('in') < 0) {
+          $collapse.style.height = "0px"
+        }
+      }, 400)
+    } else {
+      // OPEN
+      $collapse.style.height = "auto"
+      $navbar.className += " in";
+    }
+  }
+</script>
+
+
+		<!-- Post Header (contains intro-header、signature、wordcount、busuanzi、waveoverlay) -->
+		<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+
+  <style type="text/css">
+    .body--light {
+      /* intro-header */
+      --intro-header-background-image-url-home: url('/img/header_img/pexels-photo-1287145.jpeg');
+      --intro-header-background-image-url-post: url('');
+      --intro-header-background-image-url-page: url('/img/header_img/');
+    }
+    .body--dark {
+      --intro-header-background-image-url-home: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/pexels-photo-1287145.jpeg');
+      --intro-header-background-image-url-post: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('');
+      --intro-header-background-image-url-page: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)), url('/img/header_img/');
+    }
+
+    header.intro-header {
+       /*post*/
+        background-image: var(--intro-header-background-image-url-post);
+        /* background-image: url(''); */
+      
+    }
+
+    
+      #signature {/*signature*/
+        background-image: url('/img/signature/');
+      }
+    
+  </style>
+
+
+
+
+
+<header class="intro-header">
+  <!-- Signature -->
+  <div id="signature">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+          <div class="post-heading">
+            <div class="tags">
+              
+            </div>
+            <h1>一个病毒实例的类SMC技术</h1>
+            <h2 class="subheading"></h2>
+            <span class="meta">
+              Posted by Humb1e on
+              2023-07-09
+            </span>
+
+
+            
+            <!-- WordCount start -->
+            <div class="blank_box"></div>
+            <span class="meta">
+              Estimated Reading Time <span class="post-count">11</span> Minutes
+            </span>
+            <div class="blank_box"></div>
+            <span class="meta">
+              Words <span class="post-count">3k</span> In Total
+            </span>
+            <div class="blank_box"></div>
+            <!-- WordCount end -->
+            
+            
+            <!-- 不蒜子统计 start -->
+            <span class="meta" id="busuanzi_container_page_pv">
+              Viewed <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> Times
+            </span>
+            <!-- 不蒜子统计 end -->
+            
+
+
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+</header>
+
+
+
+		<!-- Main Content (Post contains
+	Pager、
+	tip、
+	socialshare、
+	gitalk、gitment、disqus-comment、
+	Catalog、
+	Sidebar、
+	Featured-Tags、
+	Friends Blog、
+	anchorjs、
+	) -->
+		<!-- Modify by Yu-Hsuan Yen -->
+<!-- Post Content -->
+<article>
+  <div class="container">
+    <div class="row">
+      <!-- Post Container -->
+      <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
+
+        <h1>一个病毒实例的类SMC技术</h1>
+<p>很早以前就了解过smc技术，这次在通过学习《恶意代码分析实战》这本书去了解Windows病毒的时候也在章节实验中发现了类似于SMC技术的痕迹，这里通过详细介绍所采用的系统调用来展开恶意代码被调用的过程。</p>
+<p>本来了解Windows病毒的一个出发点就是多了解一些Windows API所以有些地方可能解释的会比较繁琐。</p>
+<h2 id="实验程序Lab03-03">实验程序Lab03-03</h2>
+<h3 id="main函数"><strong>main函数</strong></h3>
+<p><img src="image-20230707214137896.png" alt="image-20230707214137896"></p>
+<p><strong>GetModuleHandleA</strong></p>
+<p>函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HMODULE <span class="title">GetModuleHandleA</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  LPCSTR lpModuleName</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<ul>
+<li><code>lpModuleName</code>：指定要获取句柄的模块名称。如果为 NULL，则返回调用模块（当前可执行文件）的句柄。</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>如果函数成功，则返回指定模块的句柄（<code>HMODULE</code>）。</li>
+<li>如果函数失败，则返回 NULL。</li>
+</ul>
+<p><code>GetModuleHandleA</code> 函数可以用于获取指定模块（DLL 或可执行文件）的句柄，以便在代码中引用和操作该模块的资源。</p>
+<h3 id="跟进sub-40149D">跟进sub_40149D</h3>
+<p><img src="image-20230707214537308.png" alt="image-20230707214537308"></p>
+<p><strong>GetSystemDirectoryA</strong></p>
+<p>函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">UINT <span class="title">GetSystemDirectoryA</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  LPSTR lpBuffer,</span></span></span><br><span class="line"><span class="function"><span class="params">  UINT  uSize</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<ul>
+<li><code>lpBuffer</code>：指向一个字符缓冲区，用于接收系统目录的路径。</li>
+<li><code>uSize</code>：指定缓冲区的大小，以字节为单位。</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>如果函数成功，则返回拷贝到缓冲区的字符数，不包括终止空字符。</li>
+<li>如果函数失败，则返回 0。</li>
+</ul>
+<p><code>GetSystemDirectoryA</code> 函数的作用是将系统目录的路径字符串拷贝到指定的缓冲区中。系统目录通常是 Windows 系统文件所在的目录，例如：C:\Windows\System32。</p>
+<p>在这里其实不难猜测，这个函数就是为了获取svchost.exe的绝对路径</p>
+<p>我们可以通过动调来观察一下参数的值</p>
+<p><img src="image-20230707214955889.png" alt="image-20230707214955889"></p>
+<p>果然v5的值已经变成了svchost.exe的绝对路径</p>
+<h3 id="跟进sub-40132C">跟进sub_40132C</h3>
+<p><img src="image-20230707215220466.png" alt="image-20230707215220466"></p>
+<p><img src="image-20230707215348703.png" alt="image-20230707215348703"></p>
+<p>其中涉及到了一系列的Windows API，不然咋能叫Windows病毒是吧</p>
+<p>这里的函数也不给出详细说明了</p>
+<p>关注一下这几行代码</p>
+<p><img src="image-20230707215520390.png" alt="image-20230707215520390"></p>
+<p>这里有一个’M‘和’Z‘相信敏感的朋友已经意识到了什么，MZ就是PE文件的magic number这就是一个相当典型的SMC，sub_40100里面当然是异或操作</p>
+<p><img src="image-20230707215627518.png" alt="image-20230707215627518"></p>
+<p>为了证实我们的想法，我们可以用010editor打开看一看</p>
+<p><img src="image-20230707215719159.png" alt="image-20230707215719159"></p>
+<p>很明显存在大量的A，这就对应了一般的文件中存在的大量的0</p>
+<p><img src="image-20230707215800216.png" alt="image-20230707215800216"></p>
+<p>并且我们还找到了UNICODE LOCALIZATION的字样</p>
+<p>这就分别对应了FindResourceA函数里的Type，和Name参数</p>
+<p><img src="image-20230707215923297.png" alt="image-20230707215923297"></p>
+<p>ok，现在只需要掏出resourcehacker即可得到里面的资源</p>
+<p><img src="image-20230707220203132.png" alt="image-20230707220203132"></p>
+<p>保存之后可以直接用ida打开写idapython脚本或者其他方式给他异或65均可</p>
+<p>先不着急看恶意代码的逻辑是什么，我们返回主程序去看一下他对这个恶意代码继续做了什么操作</p>
+<h3 id="跟进sub-4010EA">跟进sub_4010EA</h3>
+<p>首先值得一提的是sub_4040EA接受的两个参数分别是之前获取的svchost.exe的绝对路径和恶意代码</p>
+<p><img src="image-20230707220529316.png" alt="image-20230707220529316"></p>
+<p>首先前面几行检查的是这段恶意代码有没有被SMC解密成功，校验了MZ和PE两个magic number</p>
+<p>后面初始化了一些参数并且调用了<strong>CreatProcessA</strong></p>
+<p>函数原型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">CreateProcessA</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  LPCSTR                lpApplicationName,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPSTR                 lpCommandLine,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPSECURITY_ATTRIBUTES lpProcessAttributes,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPSECURITY_ATTRIBUTES lpThreadAttributes,</span></span></span><br><span class="line"><span class="function"><span class="params">  BOOL                  bInheritHandles,</span></span></span><br><span class="line"><span class="function"><span class="params">  DWORD                 dwCreationFlags,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPVOID                lpEnvironment,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPCSTR                lpCurrentDirectory,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPSTARTUPINFOA        lpStartupInfo,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPPROCESS_INFORMATION lpProcessInformation</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<ul>
+<li><code>lpApplicationName</code>：指定可执行文件的路径或文件名。如果为 <code>NULL</code>，则使用 <code>lpCommandLine</code> 参数。</li>
+<li><code>lpCommandLine</code>：指定命令行参数字符串。</li>
+<li><code>lpProcessAttributes</code>：进程对象的安全属性。</li>
+<li><code>lpThreadAttributes</code>：线程对象的安全属性。</li>
+<li><code>bInheritHandles</code>：指定是否继承父进程的句柄。</li>
+<li><code>dwCreationFlags</code>：指定创建进程的标志和优先级类。</li>
+<li><code>lpEnvironment</code>：指定新进程的环境变量。如果为 <code>NULL</code>，则使用父进程的环境变量。</li>
+<li><code>lpCurrentDirectory</code>：指定当前目录的路径。</li>
+<li><code>lpStartupInfo</code>：指定启动信息结构体，包括窗口和标准输入输出的句柄。</li>
+<li><code>lpProcessInformation</code>：接收新进程和主线程的标识信息。</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>如果函数成功，则返回非零值。</li>
+<li>如果函数失败，则返回零。</li>
+</ul>
+<p><strong>CreateProcessA</strong> 函数用于创建一个新的进程，并可以指定可执行文件的路径、命令行参数、安全属性、环境变量、启动信息等。</p>
+<p>其中lpApplicationName参数是就是C:\Windows\system32\svchost.exe</p>
+<p>dwCreationFlags用于指示新创建的进程将以挂起的状态启动。当进程以挂起状态<code>4u</code>启动时，它的线程将不会运行，直到通过调用 <strong>ResumeThread</strong> 函数恢复线程的执行。</p>
+<p>果然我们在最后找到了<strong>ResumeThread</strong>函数去恢复线程的执行</p>
+<p>已经分析的代码逻辑是创建了一个新的svchost.exe并且执行它，对于恶意代码只字未提，显然对于恶意代码的注入在中间的操作</p>
+<p><img src="image-20230707223221500.png" alt="image-20230707223221500"></p>
+<p>纯小白不知道这个是为什么，可能是由于拦截和修改线程执行？</p>
+<p><strong>GetThreadContext</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">GetThreadContext</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HANDLE  hThread,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPCONTEXT lpContext</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<ul>
+<li><code>hThread</code>：指定要获取上下文信息的线程的句柄。</li>
+<li><code>lpContext</code>：指向 <code>CONTEXT</code> 结构的指针，用于接收线程的上下文信息。</li>
+</ul>
+<p>用于获取指定线程的上下文信息，包括寄存器值、标志寄存器、段寄存器等。通过读取线程的上下文，可以监视和控制线程的执行状态。</p>
+<p>这里获取了svchost.exe的信息并且保存到lpContext.</p>
+<p><img src="image-20230708003418719.png" alt="image-20230708003418719"></p>
+<p>后面先初始化一些变量之后调用</p>
+<p><strong>ReadProcessMemory</strong></p>
+<p>函数原型:</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">ReadProcessMemory</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HANDLE  hProcess,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPCVOID lpBaseAddress,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPVOID  lpBuffer,</span></span></span><br><span class="line"><span class="function"><span class="params">  SIZE_T  nSize,</span></span></span><br><span class="line"><span class="function"><span class="params">  SIZE_T  *lpNumberOfBytesRead</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<ul>
+<li><code>hProcess</code>：指定要读取内存的进程的句柄。</li>
+<li><code>lpBaseAddress</code>：指定要读取的起始内存地址。</li>
+<li><code>lpBuffer</code>：接收读取数据的缓冲区。</li>
+<li><code>nSize</code>：要读取的字节数。</li>
+<li><code>lpNumberOfBytesRead</code>：接收实际读取的字节数的指针。</li>
+</ul>
+<p><strong>ReadProcessMemory</strong>函数用于在一个进程的上下文中读取另一个进程的内存数据。通过提供目标进程的句柄、要读取的起始地址以及缓冲区来接收数据，可以读取目标进程的内存。</p>
+<p>这里的Ebx+8让我很异或，lpContext是之前<strong>GetThreadContext</strong>获取的，所以说是之前起的svchost.exe里的。</p>
+<p>汇编菜鸡看前面的汇编也看不出什么逻辑[晕]</p>
+<p>后面翻<a target="_blank" rel="noopener" href="https://www.cnblogs.com/DisAsm/p/17304619.html">大佬的博客</a>才翻到了一点信息</p>
+<p><img src="image-20230709183733275.png" alt="image-20230709183733275"></p>
+<p>什么是PEB结构呢？</p>
+<p><strong>PEB结构（Process Envirorment Block Structure）</strong></p>
+<p>是<strong>进程环境信息块</strong></p>
+<p>这个结构中存储着整个进程的信息</p>
+<p>语法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">PEB</span> &#123;</span></span><br><span class="line">  BYTE                          Reserved1[<span class="number">2</span>];</span><br><span class="line">  BYTE                          BeingDebugged;</span><br><span class="line">  BYTE                          Reserved2[<span class="number">1</span>];</span><br><span class="line">  PVOID                         Reserved3[<span class="number">2</span>];</span><br><span class="line">  PPEB_LDR_DATA                 Ldr;</span><br><span class="line">  PRTL_USER_PROCESS_PARAMETERS  ProcessParameters;</span><br><span class="line">  PVOID                         Reserved4[<span class="number">3</span>];</span><br><span class="line">  PVOID                         AtlThunkSListPtr;</span><br><span class="line">  PVOID                         Reserved5;</span><br><span class="line">  ULONG                         Reserved6;</span><br><span class="line">  PVOID                         Reserved7;</span><br><span class="line">  ULONG                         Reserved8;</span><br><span class="line">  ULONG                         AtlThunkSListPtr32;</span><br><span class="line">  PVOID                         Reserved9[<span class="number">45</span>];</span><br><span class="line">  BYTE                          Reserved10[<span class="number">96</span>];</span><br><span class="line">  PPS_POST_PROCESS_INIT_ROUTINE PostProcessInitRoutine;</span><br><span class="line">  BYTE                          Reserved11[<span class="number">128</span>];</span><br><span class="line">  PVOID                         Reserved12[<span class="number">1</span>];</span><br><span class="line">  ULONG                         SessionId;</span><br><span class="line">&#125; PEB, *PPEB;</span><br></pre></td></tr></table></figure>
+<p>里面有一个有趣的成员是<strong>BeingDebugged</strong>，这个标识了当前进程是否被调试，这个在许多反调技术中会用到。</p>
+<p>EBP+8是<strong>IMAGE_BASE</strong></p>
+<p>IMAGE_BASE（映像基址）是指可执行映像（如可执行程序或DLL）在内存中加载时的基地址。它表示了映像在内存中的起始地址，所有程序执行时的相对地址都是相对于此基址的。</p>
+<p>在Windows系统下，每个可执行映像在加载时都会被加载到内存的某个虚拟地址空间中。加载器负责将映像从磁盘加载到内存，并将其基地址设置为IMAGE_BASE。加载器会根据操作系统和系统配置自动为每个模块分配合适的基地址。</p>
+<p>IMAGE_BASE通常在可执行文件的PE头部（Portable Executable）中指定，并由操作系统加载器读取和设置。对于可执行程序，IMAGE_BASE是进程环境块（PEB，Process Environment Block）中的一个字段，指示可执行程序加载到内存中的基地址。</p>
+<p>通过了解IMAGE_BASE，程序可以通过计算相对地址来访问其它模块、函数或变量。在编写代码或进行调试时，了解IMAGE_BASE对于处理模块间的引用和调用非常重要。</p>
+<p>哈哈这样就对上号了，Ebx+8是svchost的基址，而<strong>ReadProcessMemory</strong>函数接受的第二个量就是文件基地址，并且前文的<strong>GetThreadContext</strong>也可以推理出是为了获得Ebx寄存器等一系列的值。</p>
+<p><img src="image-20230709224404812.png" alt="image-20230709224404812"></p>
+<p><img src="image-20230709225109398.png" alt="image-20230709225109398"></p>
+<p><strong>GetProcAddress</strong></p>
+<p>函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FARPROC <span class="title">GetProcAddress</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HMODULE hModule,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPCSTR  lpProcName</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>hModule</code>：此参数指定包含函数或变量的DLL或EXE模块的句柄。可以使用<code>LoadLibrary</code>函数获得模块句柄。</li>
+<li><code>lpProcName</code>：此参数是一个以空字符结尾的字符串，指定导出函数或变量的名称。</li>
+</ul>
+<p>GetProcAddress是Windows操作系统中的一个函数，用于从动态链接库（DLL）或可执行文件（EXE）中检索导出函数或变量的地址。</p>
+<p>他与GetProcessMemory结合实现的是从ntdll.dll获取<strong>NtUnmapViewOfSection</strong></p>
+<p><strong>NtUnmapViewOfSection</strong>是Windows操作系统中的一个函数，用于取消映射指定进程中的某个虚拟内存区域。该函数属于Windows内核模块（NTDLL.DLL）的一部分，用于底层系统编程和驱动开发。</p>
+<p>由于NtUnmapViewOfSection函数是Windows内核函数，它没有公开的头文件和官方文档说明。它是通过Windows内核API中的NtUnmapViewOfSection系统调用进行访问的。</p>
+<p>所以他也不能直接被调用，只能通过GetProc Adress的方法获取</p>
+<p><img src="image-20230709225745189.png" alt="image-20230709225745189"></p>
+<p><strong>WriteProcessMemory</strong></p>
+<p>函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">WriteProcessMemory</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HANDLE  hProcess,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPVOID  lpBaseAddress,</span></span></span><br><span class="line"><span class="function"><span class="params">  LPCVOID lpBuffer,</span></span></span><br><span class="line"><span class="function"><span class="params">  SIZE_T  nSize,</span></span></span><br><span class="line"><span class="function"><span class="params">  SIZE_T  *lpNumberOfBytesWritten</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>hProcess</code>：此参数指定目标进程的句柄，表示要写入内存的进程。</li>
+<li><code>lpBaseAddress</code>：此参数是要写入数据的目标内存地址。</li>
+<li><code>lpBuffer</code>：此参数是包含要写入的数据的缓冲区的指针。</li>
+<li><code>nSize</code>：此参数是要写入的数据的大小（以字节为单位）。</li>
+<li><code>lpNumberOfBytesWritten</code>：此参数是一个指向变量的指针，用于接收实际写入的字节数。</li>
+</ul>
+<p>WriteProcessMemory是Windows操作系统中的一个函数，用于向指定进程的内存中写入数据。它是Windows API（应用程序编程接口）的一部分，常用于进程间通信和内存操作。</p>
+<p>在这里用于向svchost.exe写入恶意的代码片段。</p>
+<p>后面分块写入恶意代码不是外面关注的点，就此略过了。</p>
+<p><img src="image-20230709230041500.png" alt="image-20230709230041500"></p>
+<p>最后有<strong>SetThreadContext</strong>和<strong>ResumeThread</strong></p>
+<p>ResumeThread之前我们已经说过，用于恢复挂起的进程。</p>
+<p><strong>SetThreadContext</strong></p>
+<p>函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BOOL <span class="title">SetThreadContext</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HANDLE    hThread,</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">const</span> CONTEXT *lpContext</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>以下是对函数参数的简要解释：</p>
+<ul>
+<li><code>hThread</code>：此参数指定要设置上下文的线程句柄。</li>
+<li><code>lpContext</code>：此参数是一个指向 CONTEXT 结构的指针，其中包含要设置的上下文信息。</li>
+</ul>
+<p>SetThreadContext 是 Windows 操作系统中的一个函数，用于设置线程的上下文信息。它属于 Windows API（应用程序编程接口）的一部分，用于线程操作和调试。</p>
+<p><strong>ResumeThread</strong></p>
+<p>函数原型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">DWORD <span class="title">ResumeThread</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  HANDLE hThread</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>hThread</code>：此参数指定要恢复执行的线程的句柄。</li>
+</ul>
+<p>ResumeThread 是 Windows 操作系统中的一个函数，用于恢复（继续执行）一个被挂起的线程。它属于 Windows API（应用程序编程接口）的一部分，用于线程操作和调度。</p>
+<p>ok，至此基本上这段恶意代码的具体实现就已经讲完了。</p>
+<p><strong>大致流程如下：</strong></p>
+<p>1.通过类似于SMC动态解密出恶意代码，并且是一个PE文件</p>
+<p>2.运行并挂起svchost.exe，取消其映射</p>
+<p>3.将恶意代码注入svchost.exe并且计算OEP等使其可以正常运行</p>
+<p>这个病毒给俺的启发是不一定SMC就非得局限于程序自身，以往一般都是在自己的某个区段藏有部分关键代码，在运行的时候解密并且修改权限运行以达到反调的目的，其实这样动调起来还是很容易发现的，采用这样跨进程隐藏关键代码的方式比起原来的方式调试难度更大，目前俺只想到在挂起和Resume之间的时候attach上去，不知道有没有什么好的方法可以多进程调试。</p>
+<p>这个病毒的恶意代码部分不知道咋了俺恢复的时候系统调用没恢复出来，之后得研究下，就先鸽到这里了。</p>
+
+
+        <hr>
+        <!-- Pager -->
+        <ul class="pager">
+          
+          
+          <li class="next">
+            <a href="/cn/fuzz-in-reverse/" data-toggle="tooltip" data-placement="top" title="fuzz_in_reverse?">Next Post &rarr;</a>
+          </li>
+          
+        </ul>
+
+        
+        <!-- tip start -->
+        <!-- tip -->
+<!-- tip start -->
+<div class="tip">
+  <p>
+    
+      如果您喜欢此博客或发现它对您有用，则欢迎对此发表评论。 也欢迎您共享此博客，以便更多人可以参与。 如果博客中使用的图像侵犯了您的版权，请与作者联系以将其删除。 谢谢 ！
+    
+  </p>
+</div>
+<!-- tip end -->
+
+        <!-- tip end -->
+        
+
+        
+        <!-- Sharing Srtart -->
+        <!-- Social Social Share Post -->
+<!-- Docs:https://github.com/overtrue/share.js -->
+
+<div class="social-share" data-initialized="true" data-disabled="tencent ,douban ,qzone ,linkedin ,facebook ,google ,diandian" data-wechat-qrcode-helper="" align="center">
+  <ul class="list-inline text-center social-share-ul">
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-twitter">
+        <i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a class="social-share-icon icon-wechat">
+        <i class="fa fa-weixin fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-weibo">
+        <i class="fa fa-weibo fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon icon-qq">
+        <i class="fa fa-qq fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="social-share-li">
+      <a target="_blank" class="social-share-icon" href="mailto:?subject=一个病毒实例的类SMC技术&body=Hi,I found this website and thought you might like it https://mmmmchong.github.io/cn/基于一个病毒的类SMC技术/">
+        <i class="fa fa-envelope fa-1x" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- css & js -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css"> -->
+<script defer="defer" async="true" src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+        <!-- Sharing End -->
+        
+        <hr>
+
+        <!-- comments start -->
+        <!-- 1. gitalk comment -->
+
+
+<!-- 2. gitment comment -->
+
+
+<!-- 3. disqus comment -->
+
+
+        <!-- comments end -->
+        <hr>
+
+      </div>
+
+      <!-- Catalog: Tabe of Content -->
+      <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">目录</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">一个病毒实例的类SMC技术</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%A8%8B%E5%BA%8FLab03-03"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">实验程序Lab03-03</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#main%E5%87%BD%E6%95%B0"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">main函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%B7%9F%E8%BF%9Bsub-40149D"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">跟进sub_40149D</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%B7%9F%E8%BF%9Bsub-40132C"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">跟进sub_40132C</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%B7%9F%E8%BF%9Bsub-4010EA"><span class="toc-nav-number">1.1.4.</span> <span class="toc-nav-text">跟进sub_4010EA</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+
+
+      <!-- Sidebar Container -->
+      <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+        <!-- Featured Tags -->
+        
+        <section>
+          <!-- no hr -->
+          <h5>
+            <a href="/tags/">特色标签</a>
+          </h5>
+          <div class="tags">
+            
+          </div>
+        </section>
+        
+
+        <!-- Friends Blog -->
+        
+        <hr>
+        <h5>链友</h5>
+        <ul class="list-inline">
+
+          
+          <li>
+            <a href="https://l0tus.vip/" target="_blank">L0tus</a>
+          </li>
+          
+          <li>
+            <a href="http://gtg.ink/" target="_blank">gtg</a>
+          </li>
+          
+          <li>
+            <a href="https://jbnrz.com.cn/" target="_blank">JBNRZ</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+<!-- anchorjs start -->
+<!-- async load function -->
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script type="text/javascript">
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  };
+</script>
+<script type="text/javascript">
+  //anchor-js, Doc:http://bryanbraun.github.io/anchorjs/
+  async ("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'left',
+      // icon: 'ℬ'
+      icon: '❡'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  });
+</script>
+<style>
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
+    }
+  }
+</style>
+
+<!-- anchorjs end -->
+
+
+
+		<!-- Footer (contains ThemeColor、viewer) -->
+		<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center">
+          
+
+          
+            <li>
+              <a target="_blank" href="https://github.com/mmmmchong">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+
+        </ul>
+        <p class="copyright text-muted">
+          Copyright &copy;
+          Humb1e
+          2023
+          <br>
+          Theme by
+          <a target="_blank" rel="noopener" href="http://beantech.org">BeanTech</a>
+          <span style="display: inline-block; margin: 0 5px;">
+            <i class="fa fa-heart"></i>
+          </span>
+          re-Ported by
+          <a target="_blank" rel="noopener" href="https://v-vincen.life/">Live My Life</a>
+          |
+          <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=V-Vincen&repo=V-Vincen.github.io&type=star&count=true"></iframe>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a id="rocket" href="#top" class=""></a>
+
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <!-- Custom Theme JavaScript -->
+  <script type="text/javascript" src="/js/hux-blog.min.js"></script>
+  <!-- catalog -->
+  <script async="true" type="text/javascript" src="/js/catalog.js"></script>
+  <!-- totop(rocket) -->
+  <script async="true" type="text/javascript" src="/js/totop.js"></script>
+
+  
+    <!-- Busuanzi JavaScript -->
+    <script async="async" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <!-- Scroll start -->
+    <script async="async" type="text/javascript" src="/js/scroll.js"></script>
+    <!-- Scroll end -->
+  
+
+  
+
+  
+    <!-- Mouseclick -->
+    <script type="text/javascript" src="/js/mouseclick.js" content='' color='#9933CC,#339933,#66CCCC,#FF99CC,#CCCCFF,#6666CC,#663399,#66CC99,#FF0033'></script>
+  
+
+  
+    <!-- ribbon -->
+    <script type="text/javascript" src="/js/ribbonDynamic.js"></script>
+  
+
+  
+
+
+
+
+
+
+  <!-- viewer start -->
+  <!-- viewer start (Picture preview) -->
+  
+    <script async="async" type="text/javascript" src="/js/viewer/viewer.min.js"></script>
+    <script async="async" type="text/javascript" src="/js/viewer/pic-viewer.js"></script>
+  
+
+  <!-- viewer end -->
+
+
+<script>
+  // async load function
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function (e) {
+        c(null, e);
+      }, false);
+    }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  // fastClick.js
+  async ("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+    var $nav = document.querySelector("nav");
+    if ($nav)
+      FastClick.attach($nav);
+    }
+  )
+</script>
+
+<!-- Because of the native support for backtick-style fenced code blocks right within the Markdown is landed in Github Pages, From V1.6, There is no need for Highlight.js, so Huxblog drops it officially. -
+https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0 - https://help.github.com/articles/creating-and-highlighting-code-blocks/ -->
+<!-- <script> async ("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function () { hljs.initHighlightingOnLoad(); }) </script> <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet"> -->
+
+<!-- jquery.tagcloud.js -->
+<!-- <script> // only load tagcloud.js in tag.html if ($('#tag_cloud').length !== 0) { async ("https://mmmmchong.github.io/js/jquery.tagcloud.js", function () { $.fn.tagcloud.defaults = { // size: { start: 1, end: 1, unit: 'em' }, color: {
+start: '#bbbbee', end: '#0085a1' } }; $('#tag_cloud a').tagcloud(); }) } </script> -->
+
+
+		<!-- Search -->
+		
+		<div class="popup search-popup local-search-popup">
+  <span class="popup-btn-close">
+    ESC
+  </span>
+  <div class="container">
+    <div class="row">
+      <!-- <div class="col-md-9 col-md-offset-1"> -->
+      <div class="col-lg-9 col-lg-offset-1 col-md-10 col-md-offset-1 local-search-content">
+
+        <div class="local-search-header clearfix">
+
+          <div class="local-search-input-wrapper">
+            <span class="search-icon">
+              <i class="fa fa-search fa-lg" style="margin: 25px 10px 25px 20px;"></i>
+            </span>
+            <input autocomplete="off" placeholder="搜索..." type="text" id="local-search-input">
+          </div>
+        </div>
+        <div id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+    <script src="/js/ziploader.js"></script>
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    // monitor main search box;
+    var onPopupClose = function (e) {
+      $('.popup').fadeOut(300);
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $('.popup').fadeIn(300);
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+    // get search zip version
+    $.get('/searchVersion.json?t=' + (+new Date()), function (res) {
+      if (localStorage.getItem('searchVersion') !== res) {
+        localStorage.setItem('searchVersion', res);
+        initSearchJson();
+      }
+    });
+
+    function initSearchJson() {
+      initLoad(['/search.flv'], {
+        loadOptions: {
+          success: function (obj) {
+            localStorage.setItem('searchJson', obj['search.json'])
+          },
+          error: function (e) {
+            return console.log(e)
+          }
+        },
+        returnOptions: {
+          'json': TYPE_TEXT
+        },
+        mimeOptions: {
+          'json': 'application/json'
+        }
+      })
+    }
+    // search function;
+    var searchFunc = function (search_id, content_id) {
+      'use strict';
+      isfetched = true;
+      var datas = JSON.parse(localStorage.getItem('searchJson'));
+      // console.log(search_id)
+      var input = document.getElementById(search_id);
+      var resultContent = document.getElementById(content_id);
+      var inputEventFunction = function () {
+        var searchText = input.value.trim().toLowerCase();
+        var keywords = searchText.split(/[\s\-]+/);
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        var resultItems = [];
+        if (searchText.length > 0) {
+          // perform local searching
+          datas.forEach(function (data) {
+            var isMatch = false;
+            var hitCount = 0;
+            var searchTextCount = 0;
+            var title = data.title
+              ? data.title.trim()
+              : '';
+            var titleInLowerCase = title.toLowerCase();
+            var content = data.content
+              ? data.content.trim().replace(/<[^>]+>/g, "")
+              : '';
+            var contentInLowerCase = content.toLowerCase();
+            var articleUrl = decodeURIComponent(data.url);
+
+            var date = data.date;
+            var dateTime = date.replace(/T/, " ").replace(/.000Z/, "");
+            var imgUrl = data.header_img;
+            
+
+
+            var indexOfTitle = [];
+            var indexOfContent = [];
+            // only match articles with not empty titles
+            keywords.forEach(function (keyword) {
+              function getIndexByWord(word, text, caseSensitive) {
+                var wordLen = word.length;
+                if (wordLen === 0) {
+                  return [];
+                }
+                var startPosition = 0,
+                  position = [],
+                  index = [];
+                if (!caseSensitive) {
+                  text = text.toLowerCase();
+                  word = word.toLowerCase();
+                }
+                while ((position = text.indexOf(word, startPosition)) > -1) {
+                  index.push({position: position, word: word});
+                  startPosition = position + wordLen;
+                }
+                return index;
+              }
+              indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+              indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+            });
+            if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+              isMatch = true;
+              hitCount = indexOfTitle.length + indexOfContent.length;
+            }
+            // show search results
+            if (isMatch) {
+              // sort index by position of keyword
+              [indexOfTitle, indexOfContent].forEach(function (index) {
+                index.sort(function (itemLeft, itemRight) {
+                  if (itemRight.position !== itemLeft.position) {
+                    return itemRight.position - itemLeft.position;
+                  } else {
+                    return itemLeft.word.length - itemRight.word.length;
+                  }
+                });
+              });
+              // merge hits into slices
+              function mergeIntoSlice(text, start, end, index) {
+                var item = index[index.length - 1];
+                var position = item.position;
+                var word = item.word;
+                var hits = [];
+                var searchTextCountInSlice = 0;
+                while (position + word.length <= end && index.length != 0) {
+                  if (word === searchText) {
+                    searchTextCountInSlice++;
+                  }
+                  hits.push({position: position, length: word.length});
+                  var wordEnd = position + word.length;
+                  // move to next position of hit
+                  index.pop();
+                  while (index.length != 0) {
+                    item = index[index.length - 1];
+                    position = item.position;
+                    word = item.word;
+                    if (wordEnd > position) {
+                      index.pop();
+                    } else {
+                      break;
+                    }
+                  }
+                }
+                searchTextCount += searchTextCountInSlice;
+                return {hits: hits, start: start, end: end, searchTextCount: searchTextCountInSlice};
+              }
+              var slicesOfTitle = [];
+              if (indexOfTitle.length != 0) {
+                slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+              }
+              var slicesOfContent = [];
+              while (indexOfContent.length != 0) {
+                var item = indexOfContent[indexOfContent.length - 1];
+                var position = item.position;
+                var word = item.word;
+                // cut out 100 characters
+                var start = position - 20;
+                var end = position + 80;
+                if (start < 0) {
+                  start = 0;
+                }
+                if (end < position + word.length) {
+                  end = position + word.length;
+                }
+                if (end > content.length) {
+                  end = content.length;
+                }
+                slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+              }
+              // sort slices in content by search text's count and hits' count
+              slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                  return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                  return sliceRight.hits.length - sliceLeft.hits.length;
+                } else {
+                  return sliceLeft.start - sliceRight.start;
+                }
+              });
+              // select top N slices in content
+              var upperBound = parseInt('1');
+              if (upperBound >= 0) {
+                slicesOfContent = slicesOfContent.slice(0, upperBound);
+              }
+              // highlight title and content
+              function highlightKeyword(text, slice) {
+                var result = '';
+                var prevEnd = slice.start;
+                slice.hits.forEach(function (hit) {
+                  result += text.substring(prevEnd, hit.position);
+                  var end = hit.position + hit.length;
+                  result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                  prevEnd = end;
+                });
+                result += text.substring(prevEnd, slice.end);
+                return result;
+              }
+              var resultItem = '';
+
+              // if (slicesOfTitle.length != 0) {   resultItem += "<li><a target='_blank' href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>"; } else {   resultItem += "<li><a target='_blank' href='" +
+              // articleUrl + "' class='search-result-title'>" + title + "</a>"; } slicesOfContent.forEach(function (slice) {   resultItem += "<a target='_blank' href='" + articleUrl + "'><p class=\"search-result\">" + highlightKeyword(content, slice) +
+              // "...</p></a>"; }); resultItem += "</li>";
+
+              if (slicesOfTitle.length != 0) {
+                resultItem += "<a target='_blank' href='" + articleUrl + "' class='search-result'><div class='search-result-left'><div class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</div><time class='search-result-date'>" + dateTime + "</time>";
+              } else {
+                resultItem += "<a target='_blank' href='" + articleUrl + "' class='search-result'><div class='search-result-left'><div class='search-result-title'>" + title + "</div><time class='search-result-date'>" + dateTime + "</time>";
+              }
+              slicesOfContent.forEach(function (slice) {
+                resultItem += "<p class=\"search-result-content\">" + highlightKeyword(content, slice) + "...</p>";
+              });
+              resultItem += "</div><div class='search-result-right'><img class='media-image' src='" + imgUrl + "' width='64px' height='48px'></img></div></a>";
+
+              resultItems.push({item: resultItem, searchTextCount: searchTextCount, hitCount: hitCount, id: resultItems.length});
+            }
+          })
+        };
+
+        if (keywords.length === 1 && keywords[0] === "") {
+          resultContent.innerHTML = '<div id="no-result"></div>'
+        } else if (resultItems.length === 0) {
+          resultContent.innerHTML = '<div id="no-result"></div>'
+        } else {
+          resultItems.sort(function (resultLeft, resultRight) {
+            if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+              return resultRight.searchTextCount - resultLeft.searchTextCount;
+            } else if (resultLeft.hitCount !== resultRight.hitCount) {
+              return resultRight.hitCount - resultLeft.hitCount;
+            } else {
+              return resultRight.id - resultLeft.id;
+            }
+          });
+          var searchResultList = '<div class=\"search-result-list\">';
+          resultItems.forEach(function (result) {
+            searchResultList += result.item;
+          })
+          searchResultList += "</div>";
+          resultContent.innerHTML = searchResultList;
+        }
+      }
+      if ('auto' === 'auto') {
+        input.addEventListener('input', inputEventFunction);
+      } else {
+        $('.search-icon').click(inputEventFunction);
+        input.addEventListener('keypress', function (event) {
+          if (event.keyCode === 13) {
+            inputEventFunction();
+          }
+        });
+      }
+      // remove loading animation
+      $('body').css('overflow', '');
+      proceedsearch();
+    }
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function (e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc('local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function (e) {
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 && $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+
+    document.addEventListener('mouseup', (e) => {
+      var _con = document.querySelector(".local-search-content");
+      if (_con) {
+        if (!_con.contains(e.target)) {
+          onPopupClose();
+        }
+      }
+    });
+  </script>
+
+
+		
+	<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
