@@ -60,14 +60,14 @@ window.SITE_CONTENT = {
   posts: [
     {
       slug: "hello-world",
-      title: "从这里开始，记录研究与思考",
+      title: "Research notes start here",
       date: "2026-10-09", // YYYY-MM-DD；按日期倒序显示。
-      excerpt: "为读过的论文、做过的实验，以及还没有答案的问题，留下一些文字。",
+      excerpt: "Notes on papers, experiments, and questions still waiting for answers.",
       example: true,
       paragraphs: [
-        "这是博客的第一篇示例文章。欢迎来到这个小小的角落。除了正式的研究成果，我也希望在这里保留那些尚在形成中的想法。",
-        "研究往往从一个具体的问题开始：为什么会出现这个现象？现有方法的边界在哪里？有没有更简单的解释？把这些问题写下来，也是整理思路的一种方式。",
-        "未来，这里可以是论文阅读笔记、实验记录、技术分享，也可以是学习与生活中的零散观察。慢慢积累，不必急于给出结论。"
+        "This is the first sample post on this blog. Alongside published research, I hope to share ideas that are still taking shape.",
+        "Research often starts with a question: Why does this happen? Where do current methods fall short? Is there a simpler explanation? Writing these questions down helps organize my thinking.",
+        "This space may grow into a collection of paper notes, experiment logs, technical posts, and observations from everyday learning. Ideas can develop over time, without rushing to a conclusion."
       ]
     }
   ]

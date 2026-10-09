@@ -76,7 +76,7 @@
   }
 
   function sampleLabel() {
-    return el("span", "example-label", "示例 · 待替换");
+    return el("span", "example-label", "Example");
   }
 
   function dateLabel(date) {
@@ -92,6 +92,7 @@
     if (node.dataset.profile === "fullName" && profile.nameZh) {
       const english = el("span", "english-name", profile.name);
       const chinese = el("span", "native-name", `（${profile.nameZh}）`);
+      chinese.lang = "zh-CN";
       node.replaceChildren(english, chinese);
       let previousWidth;
       function updateNameLayout() {
@@ -146,7 +147,7 @@
     document.querySelectorAll("[data-avatar]").forEach(node => {
       const image = el("img");
       image.src = safeUrl(profile.photo);
-      image.alt = `${profile.name} 的头像`;
+      image.alt = `Portrait of ${profile.name}`;
       image.addEventListener("error", () => image.remove());
       node.append(image);
     });
@@ -163,28 +164,7 @@
     (profile.links || []).forEach(item => links.push(link(`${item.label} ↗`, item.url)));
     if (profile.cvUrl) links.push(link("Curriculum vitae ↗", profile.cvUrl));
     const visibleLinks = links.filter(Boolean);
-    node.replaceChildren(...(visibleLinks.length ? visibleLinks : [el("p", "muted-note", "联系方式待补充")]));
-  });
-
-  const toggle = document.querySelector(".menu-toggle");
-  const nav = document.querySelector(".site-nav");
-  function closeMenu() {
-    toggle.setAttribute("aria-expanded", "false");
-    nav.classList.remove("is-open");
-  }
-  toggle.addEventListener("click", () => {
-    const open = toggle.getAttribute("aria-expanded") !== "true";
-    toggle.setAttribute("aria-expanded", String(open));
-    nav.classList.toggle("is-open", open);
-  });
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
-      closeMenu();
-      toggle.focus();
-    }
-  });
-  nav.addEventListener("click", event => {
-    if (event.target.closest("a")) closeMenu();
+    node.replaceChildren(...(visibleLinks.length ? visibleLinks : [el("p", "muted-note", "Contact information coming soon.")]));
   });
 
   function publicationCard(paper) {
@@ -220,7 +200,7 @@
   if (page === "publications") {
     const list = document.getElementById("publication-list");
     if (!publications.length) {
-      list.replaceChildren(empty("论文即将更新", "研究成果将在这里按年份整理。"));
+      list.replaceChildren(empty("Publications coming soon", "Research publications will be listed here by year."));
     } else {
       const years = [...new Set(publications.map(item => item.year))];
       list.replaceChildren(...years.map(year => {
@@ -240,11 +220,11 @@
       document.getElementById("main").classList.add("article-layout");
       const article = document.getElementById("blog-article");
       article.hidden = false;
-      const back = link("← 所有文章", "blog.html", "back-link");
+      const back = link("← All posts", "blog.html", "back-link");
       const post = posts.find(item => item.slug === slug);
       if (!post) {
-        document.title = `文章未找到 · ${profile.name}`;
-        article.append(back, el("h1", "", "文章未找到"), el("p", "page-description", "这篇文章可能已被移除，或链接有误。可以返回博客查看其他文章。"));
+        document.title = `Post not found · ${profile.name}`;
+        article.append(back, el("h1", "", "Post not found"), el("p", "page-description", "This post may have been removed or the link may be incorrect. Return to the blog to browse other posts."));
         return;
       }
       document.title = `${post.title} · ${profile.name}`;
@@ -260,7 +240,7 @@
       body.append(...(post.paragraphs || []).map(text => el("p", "", text)));
       article.append(back, header, meta, body, el("div", "article-end"));
     } else {
-      document.getElementById("blog-list").replaceChildren(...(posts.length ? posts.map(item => postCard(item)) : [empty("文章即将更新", "一些想法，正在慢慢成形。") ]));
+      document.getElementById("blog-list").replaceChildren(...(posts.length ? posts.map(item => postCard(item)) : [empty("Posts coming soon", "Research notes and ideas will appear here.") ]));
     }
   }
 
