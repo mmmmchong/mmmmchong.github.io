@@ -1,0 +1,122 @@
+{
+  "folders": [
+    {
+      "name": "my_website",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "files.encoding": "utf8",
+    "files.eol": "\n",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "[html]": {
+      "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[css]": {
+      "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "预览网站",
+        "type": "process",
+        "command": "python3",
+        "windows": {
+          "command": "python"
+        },
+        "args": ["-u", "-m", "http.server", "8000", "--bind", "127.0.0.1"],
+        "options": {
+          "cwd": "${workspaceFolder:my_website}"
+        },
+        "isBackground": true,
+        "problemMatcher": {
+          "owner": "static-preview",
+          "pattern": {
+            "regexp": "^([^:]+):(\\d+):(\\d+):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^Starting HTTP server",
+            "endsPattern": "^Serving HTTP on "
+          }
+        },
+        "presentation": {
+          "reveal": "always",
+          "focus": false,
+          "panel": "dedicated"
+        },
+        "runOptions": {
+          "instanceLimit": 1
+        }
+      },
+      {
+        "label": "检查内容脚本",
+        "type": "process",
+        "command": "node",
+        "args": ["--check", "assets/js/content.js"],
+        "options": {
+          "cwd": "${workspaceFolder:my_website}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "检查页面脚本",
+        "type": "process",
+        "command": "node",
+        "args": ["--check", "assets/js/main.js"],
+        "options": {
+          "cwd": "${workspaceFolder:my_website}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "检查脚本",
+        "dependsOn": ["检查内容脚本", "检查页面脚本"],
+        "dependsOrder": "parallel",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "预览首页（启动服务）",
+        "type": "pwa-chrome",
+        "request": "launch",
+        "browserLaunchLocation": "ui",
+        "url": "http://localhost:8000/index.html",
+        "webRoot": "${workspaceFolder:my_website}",
+        "preLaunchTask": "预览网站"
+      },
+      {
+        "name": "打开现有预览",
+        "type": "pwa-chrome",
+        "request": "launch",
+        "browserLaunchLocation": "ui",
+        "url": "http://localhost:8000/index.html",
+        "webRoot": "${workspaceFolder:my_website}"
+      }
+    ]
+  }
+}
