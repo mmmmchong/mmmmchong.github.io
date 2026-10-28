@@ -5,7 +5,7 @@
  */
 window.SITE_CONTENT = {
   profile: {
-    name: "Xia zhewei", // 所有页面的姓名、标题和标识统一读取这里。
+    name: "Zhewei Xia", // 所有页面的姓名、标题和标识统一读取这里。
     nameZh: "夏哲炜", // 同一行时带括号，中文另起一行时不带；留空则只显示英文。
     role: "Ph.D. Student",
     department: "Faculty of Cybersecurity & Cryptology",

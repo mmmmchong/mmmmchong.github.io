@@ -2,7 +2,7 @@
 
 一个简约的个人学术网站框架，使用原生 HTML、CSS 和 JavaScript，不需要安装依赖或执行构建。包含首页、Publications 和 Blog 三个页面，并支持手机浏览。
 
-姓名已填写为 Xia zhewei（夏哲炜），首页照片下方显示中英文姓名，导航、页脚和浏览器标题使用英文名。HSPFuzzer 的论文资料与 PDF、代码和 DOI 链接已填写；博客仍为示例内容，发布前请替换为自己的文章。
+姓名已填写为 Zhewei Xia（夏哲炜），首页照片下方显示中英文姓名，导航、页脚和浏览器标题使用英文名。HSPFuzzer 的论文资料与 PDF、代码和 DOI 链接已填写；博客仍为示例内容，发布前请替换为自己的文章。
 
 ## 本地预览
 
@@ -53,7 +53,7 @@ code academic-homepage.code-workspace
 
 首页采用左侧个人资料、右侧简介及 Education 教育经历的简洁布局。论文和博客各自在独立页面直接展示列表，不设搜索和分类筛选。三个页面不显示装饰性小标题，论文和博客列表页也不显示大标题、介绍文字或数量统计。
 
-英文名填写在 `assets/js/content.js` 中的 `profile.name`，中文名填写在可选的 `profile.nameZh` 中，无需手动合并。首页左侧照片下方根据可用宽度显示姓名：同一行时为 `Xia zhewei（夏哲炜）`；空间不足时中文名另起一行，显示 `夏哲炜`，不加括号。中文名留空时只显示英文名。导航、页脚和浏览器标题统一使用 `profile.name`。
+英文名填写在 `assets/js/content.js` 中的 `profile.name`，中文名填写在可选的 `profile.nameZh` 中，无需手动合并。首页左侧照片下方根据可用宽度显示姓名：同一行时为 `Zhewei Xia（夏哲炜）`；空间不足时中文名另起一行，显示 `夏哲炜`，不加括号。中文名留空时只显示英文名。导航、页脚和浏览器标题统一使用 `profile.name`。
 
 首页英文简介维护在 `profile.intro` 中，身份表述为 `Ph.D. student`。简介中的 `{sunCong}`、`{zengYingpei}` 会使用 `profile.introLinks` 对应键下的 `{ label, url }` 配置显示导师姓名链接；更改导师姓名或主页地址时只需修改这份配置。
 
@@ -61,7 +61,7 @@ Education 位于首页简介之后，通过 `education` 数组维护，不显示
 
 `profile.email` 填写纯文本邮箱地址，首页会直接显示，不添加超链接；留空时隐藏。邮箱、学校和位置使用同款线条小图标。`profile.links` 中的其他联系方式仍显示为链接。
 
-头像缩写自动取英文名前两个单词的首字母，因此 `Xia zhewei` 显示为 `XZ`。如需自定义头像缩写，可在 `profile` 中设置 `initials` 字段。导航标识和浏览器图标使用英文名的首字母，随姓名自动更新。
+头像缩写自动取英文名前两个单词的首字母，因此 `Zhewei Xia` 显示为 `ZX`。如需自定义头像缩写，可在 `profile` 中设置 `initials` 字段。导航标识和浏览器图标使用英文名的首字母，随姓名自动更新。
 
 论文作者的 `authors` 字符串支持 `{name}` 占位符，例如 `authors: '{name}, 合作者'`，显示时自动替换为 `profile.name`。也可以直接填写完整作者字符串。
 
