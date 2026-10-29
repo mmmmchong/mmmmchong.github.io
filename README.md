@@ -29,7 +29,7 @@ code academic-homepage.code-workspace
 
 - **F5**：选择启动预览的 Chrome 配置，自动运行后台的“预览网站”任务并打开首页。
 - **Ctrl+Shift+P → Tasks: Run Task → 预览网站**：单独启动服务器，再访问 [首页预览](http://localhost:8000/index.html)。
-- **Ctrl+Shift+B**：运行组合任务“检查脚本”，检查 `content.js` 和页面脚本的 JavaScript 语法；也可以通过 Tasks: Run Task 分别选择“检查内容脚本”或“检查页面脚本”。
+- **Ctrl+Shift+B**：运行组合任务“检查脚本”，检查 `content.js`、`main.js` 和 `article.js` 的 JavaScript 语法；也可以通过 Tasks: Run Task 分别选择对应的检查任务。
 - 修改后保存文件，在浏览器刷新查看。语法检查之外，页面布局和交互可直接在浏览器确认。
 
 如果 8000 端口已有本项目的预览服务，可在“运行和调试”中选择“打开现有预览”配置后按 F5，复用已有服务；如要用工作区任务启动预览，请先关闭旧服务。预览任务持续运行，停止浏览器调试不会关闭服务器。在对应任务终端按 `Ctrl+C`，或使用 **Tasks: Terminate Task → 预览网站**，可停止工作区启动的服务。
@@ -40,6 +40,7 @@ code academic-homepage.code-workspace
 - `index.html`：首页结构。
 - `publications.html`：论文列表页结构。
 - `blog.html`：博客列表页结构。
+- `assets/js/article.js`：Markdown 解析、文章目录与章节跳转。
 - `assets/css/style.css`：调整字体、颜色、间距和响应式布局。
 
 `content.js` 中的 `window.SITE_CONTENT` 按以下字段组织：
@@ -78,7 +79,47 @@ links: [
 
 目前 HSPFuzzer 已配置 `[.pdf]`、`[code]` 和 `[doi]` 三个链接。PDF 使用本地文件 `assets/files/hspfuzzer.pdf`，随网站一起托管；文件原样下载自导师主页的公开地址 `https://zyingp.github.io/files/25-HSPFuzzer.pdf`。代码和 DOI 继续使用外部链接。
 
-论文的 `example: true` 表示示例内容，换成真实内容后可以改为 `false`。每篇博客使用唯一的 `slug`，在 `assets/js/content.js` 配置标题、日期、摘要和 `markdown` 路径，通过 `blog.html?post=<slug>` 阅读，无需创建额外路由文件。Markdown 正文和配图放在 `assets/posts/` 下；文章内的图片路径相对 Markdown 文件填写，例如 `pic/example.png`。链接和简历地址可在有真实资源后填写。
+论文的 `example: true` 表示示例内容，换成真实内容后可以改为 `false`。每篇博客使用唯一的 `slug`，在 `assets/js/content.js` 配置标题、日期、摘要和 `markdown` 路径，通过 `blog.html?post=<slug>` 阅读，无需创建额外路由文件。链接和简历地址可在有真实资源后填写。
+
+## 博客正文与目录
+
+正文使用本地附带的 [markdown-it](https://github.com/markdown-it/markdown-it) 解析，支持标题、表格、引用、列表及代码围栏。库文件与许可证保存在 `assets/js/vendor/`，无需安装 npm 依赖或执行构建。
+
+每篇文章在 `assets/posts/` 下使用独立目录，正文、图片和下载附件放在一起。例如，当前文章的 `markdown` 路径为 `assets/posts/dnn-binary-protection/index.md`：
+
+```text
+assets/posts/dnn-binary-protection/
+├── index.md
+├── binary.zip
+└── pic/
+    ├── tflite_struct.png
+    ├── netron.png
+    └── btd_binary.png
+```
+
+文章内的资源链接相对 `index.md` 所在目录填写，例如 `![示意图](pic/tflite_struct.png)`、`[下载附件](binary.zip)`。新增文章时创建另一个目录，再向 `content.js` 的 `posts` 数组添加对应配置。
+
+文章目录自动从 Markdown 的 `#` 标题层级生成，点击目录项可跳转到对应章节，阅读时会标出当前章节。与文章标题相同的首个一级标题不会重复显示。用 `##` 标记章节、`###` 标记子章节，目录会随正文标题更新，不需要手写目录；空行分隔的普通段落不会生成目录项。宽屏上目录显示在正文旁边，窄屏上放在正文上方。
+
+代码、汇编和 ASCII 调用链需要使用代码围栏保留缩进和换行；行内函数签名用反引号包裹，避免 `*`、`_` 等字符被解释成格式标记。例如：
+
+````markdown
+## Execution flow
+
+### Pooling
+
+Entry point: `MaxEval(TfLiteContext* context, TfLiteNode* node)`.
+
+```text
+Subgraph::Invoke
+    │
+    ▼
+MaxEval
+    │
+    ▼
+optimized_ops::MaxPool
+```
+````
 
 页面和静态资源使用相对 URL，因此既可以放在 `https://用户名.github.io/`，也可以放在 `https://用户名.github.io/仓库名/`，不需要修改部署路径。
 
@@ -93,7 +134,7 @@ links: [
 5. 选择 **main** 分支和 **/(root)** 文件夹，点击 **Save**。
 6. 等待 Pages 发布完成，访问该设置页显示的网站地址。后续更新 `main` 分支即可重新发布。
 
-`.nojekyll` 告诉 GitHub Pages 直接发布这些静态文件。仓库尚未配置或推送，此框架不会自行连接 GitHub 账户。分支发布步骤参考 [GitHub 官方发布来源文档](https://docs.github.com/zh/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。
+`.nojekyll` 告诉 GitHub Pages 直接发布这些静态文件。分支发布步骤参考 [GitHub 官方发布来源文档](https://docs.github.com/zh/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。
 
 ## 可选：使用 GitHub Actions
 

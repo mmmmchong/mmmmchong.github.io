@@ -46,7 +46,7 @@ TFLite 使用 Google 的 FlatBuffers 格式。它有公开的 Schema，定义了
 
 拿一个实际部署binary来说。
 
-```c++
+```cpp
 int __fastcall main(int argc, const char **argv, const char **envp)
 {
   int v4; // ebp
@@ -307,8 +307,10 @@ LABEL_13:
 
 这里传入的是：
 
+```text
 模型起始地址 = 0x831730;
 模型字节数   = 6518384;
+```
 
 它建立一个引用这些字节的 FlatBufferModel 对象。此时模型的 shape、算子属性、权重和连接关系主要仍在原始 FlatBuffer 中。
 
@@ -316,22 +318,27 @@ LABEL_13:
 
 它主要建立两张表：
 
+```text
 张量表：
 tensor编号 → TfLiteTensor
              ├─ shape
              ├─ dtype
              ├─ data指针
              └─ 量化等属性
+```
 
+```text
 算子表：
 node编号 → TfLiteNode + TfLiteRegistration
            ├─ 输入tensor编号
            ├─ 输出tensor编号
            ├─ 算子参数
            └─ prepare / invoke函数指针
+```
 
 例如，这个模型的第一层实际记录的是：
 
+```text
 node 0：CONV_2D
 
 输入：
@@ -341,13 +348,16 @@ node 0：CONV_2D
 
 输出：
   tensor 1：结果   [1,32,32,20]
+```
 
 Builder 从模型里读取这些编号和属性，建立对应对象，并通过算子注册表找到卷积实现。卷积的 padding、stride、激活等选项则被解析成 TfLiteConvParams，挂在 node->builtin_data 上。
 
 实际负责这些工作的函数是：
 
+```text
 0x4f1db0  ParseTensors
 0x4f0f40  ParseNodes
+```
 
 因此，连接关系可以是直接从模型图读取的。
 
@@ -355,6 +365,7 @@ Builder 从模型里读取这些编号和属性，建立对应对象，并通过
 
 它会调用算子的 prepare，检查类型和维度，确定输出及临时空间需求，再安排内存：
 
+```text
 权重、偏置：
     可以直接引用模型 buffer 中的常量
 
@@ -363,6 +374,7 @@ Builder 从模型里读取这些编号和属性，建立对应对象，并通过
 
 生命周期不重叠的中间结果：
     可以复用存储空间
+```
 
 完成后，TfLiteTensor.data 就能指向对应数据区域。
 
@@ -370,11 +382,13 @@ Builder 从模型里读取这些编号和属性，建立对应对象，并通过
 
 我们这个 host 将输入文件中的数据复制到输入 tensor，再调用：
 
+```cpp
 interpreter->Invoke();
+```
 
 内部调度逻辑可以简化为：
 
-```
+```cpp
 for (int node_id : execution_plan) {
     auto& node = nodes[node_id];
     auto& registration = registrations[node_id];
@@ -395,10 +409,12 @@ registration.invoke(&context, &node);
 
 这里的算子实现是static link进binary的，和interpreter一起，这个ELF里面有：
 
+```text
 model
 ├── 模型数据：拓扑、shape、算子属性、权重
 ├── Interpreter：准备内存、调度节点
 └── 原生算子代码：Conv、MaxPool、FullyConnected 等
+```
 
 #### 实际上的两层泄露
 
@@ -406,6 +422,7 @@ model
 
 在binary中：
 
+```text
 0x507630  Subgraph::Invoke：按执行计划调度
     │
     │ 0x507c9e: call rax
@@ -419,8 +436,9 @@ model
     │ 0x793742: call 0x7923c0
     ▼
 0x7923c0  optimized_ops::MaxPool：实际池化计算
+```
 
-MaxEval 的入口参数是：MaxEval(TfLiteContext* context, TfLiteNode* node);
+MaxEval 的入口参数是：`MaxEval(TfLiteContext* context, TfLiteNode* node);`
 
 它通过节点的输入、输出索引找到对应的 TfLiteTensor。信息分布如下：
 
@@ -445,7 +463,7 @@ CustomDLCoder 首先解析端侧 DL 模型及其计算结构，然后提取后�
 
 这就是我们期望看到的一种Standalone或者bundle的模式。
 
-```c++
+```cpp
 dlnktu *__fastcall coder(__int64 a1, int a2)
 {
   float *ThreadPoolDevice; // r12
@@ -488,6 +506,7 @@ dlnktu *__fastcall coder(__int64 a1, int a2)
 
 在binary中：
 
+```text
 0x4163e0  coder：整个模型的调度函数
     │
     │ 0x416431: call 0x4077a0
@@ -499,18 +518,23 @@ dlnktu *__fastcall coder(__int64 a1, int a2)
     │ 0x407835: call 0x41c680
     ▼
 0x41c680  optimized_ops::MaxPool：实际池化计算
+```
 
 外层调用相当于：
 
+```cpp
 output = pmzjpl(input_data);
+```
 
 但 pmzjpl 内部继续调用：
 
+```cpp
 MaxPool(
     pool_params,
     input_shape, input_data,
     output_shape, output_data
 );
+```
 
 **所以外层只有裸数据指针，内层仍然出现形状和算子参数。**只不过底层计算库已经静态链接进同一个 ELF。
 
@@ -583,24 +607,32 @@ MaxPool(
 
 下面这条指令把它的地址放进第一个参数寄存器 rdi：
 
+```assembly
 0x4077FE  lea rdi, [rsp+98h+var_88]
+```
 
 因为 var_88 = -0x88，所以：
 
+```text
 rsp + 0x98 - 0x88 = rsp + 0x10
+```
 
 相关初始化共有三组。
 
 第一组：设置四个 2，对应步长和窗口大小。
 
+```assembly
 0x4077CA  mov     ecx, 2
 0x4077DB  movd    xmm0, ecx
 0x4077EC  pshufd  xmm0, xmm0, 0
 0x4077F1  movups  [rsp+98h+var_7C], xmm0
+```
 
 pshufd 把这个整数复制成：
 
+```text
 xmm0 = [2, 2, 2, 2]       // 四个 int32
+```
 
 写入地址为 rsp+0x1c，也就是 pool_params+0x0c：
 
@@ -615,27 +647,36 @@ xmm0 = [2, 2, 2, 2]       // 四个 int32
 
 第二组：设置两个 padding 偏移为零。
 
+```assembly
 0x407818  mov dword ptr [rsp+98h+var_86], 0
+```
 
 目标为 rsp+0x12，即 pool_params+0x02。这次四字节写入覆盖两个连续的 int16：
 
+```text
 pool_params + 0x02：padding_values.width  = 0
 pool_params + 0x04：padding_values.height = 0
+```
 
 这里不是将整个 PoolParams 清零，只设置了这两个字段。
 
 第三组：设置浮点输出的上下界。
 
+```assembly
 0x4077D4  mov rdx, cs:qword_462728
 0x407803  mov [rsp+98h+var_64], rdx
+```
 
 目标为 rsp+0x34，即 pool_params+0x24。0x462728 的八字节已经核对为两个 FP32：
 
+```text
 pool_params + 0x24：float_activation_min = -FLT_MAX
 pool_params + 0x28：float_activation_max = +FLT_MAX
+```
 
 因此，这几组指令对应的代码可以整理成：
 
+```cpp
 PoolParams p;
 
 p.stride_height = 2;
@@ -650,6 +691,7 @@ p.float_activation_min = -FLT_MAX;
 p.float_activation_max = +FLT_MAX;
 
 MaxPool(p, input_shape, input_data, output_shape, output_data);
+```
 
 虽然可以分析，但是这种分析不好做，因为得是你先知道了这些是什么，所以虽然可以提升出一种模板化的匹配，但是从算子语义去分析在这里显得还是有意义的。
 
@@ -659,13 +701,17 @@ MaxPool(p, input_shape, input_data, output_shape, output_data);
 
 例如，通用池化函数内部可能这样计算输入坐标：
 
+```cpp
 input_row = output_row * stride_height - padding_top;
 input_col = output_col * stride_width  - padding_left;
+```
 
 同一个机器码函数可以被调用两次：
 
+```cpp
 MaxPool(X1, Y1, /* stride= */ 1, /* padding= */ 0);
 MaxPool(X2, Y2, /* stride= */ 2, /* padding= */ 1);
+```
 
 这样的信息如果要隐藏就必须针对一个计算上的描述去生成一个特定的kernel，通过指令常量、循环界限、寻址表达式等方法去表达，或者是混合的只泄露一部分。同样的，如tvm的高度优化和fusion就会生成这样的特定kernel，但是他也存在ABI-level的泄露，不过tvm的DLTensor泄露的信息更多。
 
@@ -692,7 +738,7 @@ int model_run(void* input, void* output) {
 
 甚至还可以去掉ABI-level的泄露。历史 Relay/microTVM 路线中，可以配置：
 
-```c
+```python
 executor = tvm.relay.backend.Executor(
     "aot",
     {
@@ -708,7 +754,7 @@ DnD(CCS'23)用的编译方法是正确的。
 
 至于GLOW提供了非常纯净的AOT的编译方法
 
-```c++
+```cpp
 int __fastcall lenet_mnist(_DWORD *constantWeight, int mutableWeight, int activations)
 {
   libjit_conv2d_f_0_specialized(activations, mutableWeight, (constantWeight + 48), constantWeight);

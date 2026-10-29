@@ -86,8 +86,18 @@
         "problemMatcher": []
       },
       {
+        "label": "检查文章脚本",
+        "type": "process",
+        "command": "node",
+        "args": ["--check", "assets/js/article.js"],
+        "options": {
+          "cwd": "${workspaceFolder:my_website}"
+        },
+        "problemMatcher": []
+      },
+      {
         "label": "检查脚本",
-        "dependsOn": ["检查内容脚本", "检查页面脚本"],
+        "dependsOn": ["检查内容脚本", "检查页面脚本", "检查文章脚本"],
         "dependsOrder": "parallel",
         "group": {
           "kind": "build",

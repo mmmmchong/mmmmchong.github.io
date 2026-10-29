@@ -63,7 +63,7 @@ window.SITE_CONTENT = {
       title: "Do DNN Binaries Really Need to Be Protected?",
       date: "2026-10-29", // YYYY-MM-DD；按日期倒序显示。
       excerpt: "A look at graph and ABI leakage in deployed DNN models, from TFLite interpreters to ahead-of-time compilers.",
-      markdown: "assets/posts/dnn-binary-protection.md"
+      markdown: "assets/posts/dnn-binary-protection/index.md"
     }
   ]
 };
