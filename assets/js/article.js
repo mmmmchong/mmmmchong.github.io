@@ -54,12 +54,31 @@
     const layout = article.closest(".article-layout");
     const navigation = node("nav", "article-toc");
     navigation.setAttribute("aria-label", "Article contents");
-    navigation.append(node("p", "toc-title", "Contents"));
+    const toggle = node("button", "toc-toggle");
+    toggle.type = "button";
+    toggle.setAttribute("aria-label", "Show table of contents");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-controls", "article-contents");
+    const marks = node("span", "toc-marks");
+    marks.setAttribute("aria-hidden", "true");
+    marks.style.setProperty("--toc-count", headings.length);
+    toggle.append(marks);
+    const panel = node("div", "toc-panel");
+    panel.id = "article-contents";
+    panel.inert = true;
+    panel.setAttribute("aria-hidden", "true");
+    const panelHeader = node("div", "toc-panel-header");
+    const closeButton = node("button", "toc-close", "×");
+    closeButton.type = "button";
+    closeButton.setAttribute("aria-label", "Close table of contents");
+    panelHeader.append(node("p", "toc-title", "Contents"), closeButton);
     const list = node("ol", "toc-list");
-    navigation.append(list);
+    panel.append(panelHeader, list);
+    navigation.append(toggle, panel);
     const usedIds = new Set([...document.querySelectorAll("[id]")].map(item => item.id));
     const stack = [];
     const links = [];
+    const indicators = [];
 
     headings.forEach(heading => {
       const baseId = `section-${headingSlug(heading.textContent)}`;
@@ -71,6 +90,10 @@
       heading.tabIndex = -1;
       const level = Number(heading.tagName.slice(1));
       while (stack.length && stack.at(-1).level >= level) stack.pop();
+      const mark = node("span", "toc-mark");
+      mark.style.setProperty("--toc-depth", Math.min(stack.length, 4));
+      marks.append(mark);
+      indicators.push(mark);
       let parent = list;
       if (stack.length) {
         const ancestor = stack.at(-1).item;
@@ -102,6 +125,55 @@
 
     const events = new AbortController();
     const options = { passive: true, signal: events.signal };
+    const eventOptions = { signal: events.signal };
+    let pointerInside = false;
+    let closeFrame;
+    let focusFrame;
+    function setOpen(open) {
+      navigation.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Hide table of contents" : "Show table of contents");
+      panel.inert = !open;
+      panel.setAttribute("aria-hidden", String(!open));
+    }
+    navigation.addEventListener("pointerenter", event => {
+      if (event.pointerType === "touch") return;
+      pointerInside = true;
+      setOpen(true);
+    }, options);
+    navigation.addEventListener("pointerleave", event => {
+      if (event.pointerType === "touch") return;
+      pointerInside = false;
+      if (!panel.contains(document.activeElement)) setOpen(false);
+    }, options);
+    toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"), eventOptions);
+    closeButton.addEventListener("click", () => {
+      setOpen(false);
+      toggle.focus({ preventScroll: true });
+    }, eventOptions);
+    navigation.addEventListener("focusout", event => {
+      if (navigation.contains(event.relatedTarget)) return;
+      if (focusFrame !== undefined) cancelAnimationFrame(focusFrame);
+      focusFrame = requestAnimationFrame(() => {
+        focusFrame = undefined;
+        if (!events.signal.aborted && !pointerInside && !navigation.contains(document.activeElement)) setOpen(false);
+      });
+    }, options);
+    document.addEventListener("pointerdown", event => {
+      if (!navigation.contains(event.target)) setOpen(false);
+    }, options);
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Escape" || !navigation.classList.contains("is-open")) return;
+      event.preventDefault();
+      const returnFocus = navigation.contains(document.activeElement);
+      setOpen(false);
+      if (returnFocus) toggle.focus({ preventScroll: true });
+    }, eventOptions);
+    list.addEventListener("click", event => {
+      if (!event.target.closest("a")) return;
+      // Let the native anchor move focus and update history before hiding its panel.
+      closeFrame = requestAnimationFrame(() => setOpen(false));
+    }, eventOptions);
     let frame;
     let active = -1;
     function updateCurrentSection() {
@@ -112,10 +184,14 @@
       }
       if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) current = headings.length - 1;
       if (current === active) return;
-      if (active >= 0) links[active].removeAttribute("aria-current");
+      if (active >= 0) {
+        links[active].removeAttribute("aria-current");
+        indicators[active].classList.remove("is-current");
+      }
       active = current;
       const anchor = links[active];
       anchor.setAttribute("aria-current", "location");
+      indicators[active].classList.add("is-current");
       const bounds = list.getBoundingClientRect();
       const itemBounds = anchor.getBoundingClientRect();
       if (itemBounds.top < bounds.top) list.scrollTop += itemBounds.top - bounds.top;
@@ -157,6 +233,8 @@
     disposeOutline = () => {
       events.abort();
       if (frame !== undefined) cancelAnimationFrame(frame);
+      if (closeFrame !== undefined) cancelAnimationFrame(closeFrame);
+      if (focusFrame !== undefined) cancelAnimationFrame(focusFrame);
       navigation.remove();
       layout.classList.remove("has-toc");
     };
