@@ -95,6 +95,22 @@ h1 { font-family: var(--serif); font-size: clamp(46px, 5vw, 66px); line-height: 
 .article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 13px; font-size: 12px; color: var(--muted); padding-bottom: 25px; border-bottom: 1px solid var(--line); margin-bottom: 30px; }
 .article-meta .example-label { margin-bottom: 0; }
 .article-body p { line-height: 2.1; margin-bottom: 24px; }
+.article-body h2, .article-body h3, .article-body h4 { font-family: var(--serif); font-weight: 400; line-height: 1.5; margin: 38px 0 14px; }
+.article-body h2 { font-size: 27px; }
+.article-body h3 { font-size: 22px; }
+.article-body h4 { font-size: 18px; }
+.article-body ul, .article-body ol { padding-left: 25px; margin: 0 0 24px; line-height: 1.9; }
+.article-body li { padding-left: 4px; margin: 3px 0; }
+.article-body pre { overflow-x: auto; margin: 0 0 24px; padding: 17px 19px; background: var(--wash); border: 1px solid var(--line); border-radius: 3px; line-height: 1.65; }
+.article-body pre code { color: var(--ink); font-size: 12px; white-space: pre; }
+.article-body p code, .article-body td code { padding: 1px 4px; background: var(--wash); border-radius: 2px; font-size: .9em; }
+.article-body table { display: block; width: 100%; overflow-x: auto; margin: 0 0 26px; border-collapse: collapse; font-size: 13px; line-height: 1.7; }
+.article-body th, .article-body td { padding: 8px 11px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.article-body th { background: var(--wash); font-weight: 500; }
+.article-body img { display: block; max-width: 100%; height: auto; margin: 22px auto; border: 1px solid var(--line); border-radius: 2px; }
+.article-body .math-block { margin: 0 0 24px; padding: 14px; background: var(--wash); text-align: center; font-family: var(--serif); font-size: 19px; }
+.article-body .inline-math { font-family: var(--serif); }
+.article-body hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
 .article-end { width: 40px; height: 2px; background: var(--accent); margin: 45px 0 0; }
 .empty-state { padding: 36px 20px; text-align: center; background: var(--wash); border-radius: 3px; }
 .empty-state h2, .empty-state h3 { font-size: 17px; font-weight: 500; margin-bottom: 8px; }

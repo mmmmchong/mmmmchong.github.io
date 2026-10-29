@@ -1,6 +1,6 @@
 /*
  * 网站内容：修改这里即可更新所有页面。
- * 个人资料、教育经历与 HSPFuzzer 论文已填写；博客仍为占位示例。
+ * 个人资料、教育经历、HSPFuzzer 论文和第一篇博客已填写。
  * 留空的 email、photo、cvUrl 和链接不会显示。
  */
 window.SITE_CONTENT = {
@@ -59,16 +59,11 @@ window.SITE_CONTENT = {
   ],
   posts: [
     {
-      slug: "hello-world",
-      title: "Research notes start here",
-      date: "2026-10-09", // YYYY-MM-DD；按日期倒序显示。
-      excerpt: "Notes on papers, experiments, and questions still waiting for answers.",
-      example: true,
-      paragraphs: [
-        "This is the first sample post on this blog. Alongside published research, I hope to share ideas that are still taking shape.",
-        "Research often starts with a question: Why does this happen? Where do current methods fall short? Is there a simpler explanation? Writing these questions down helps organize my thinking.",
-        "This space may grow into a collection of paper notes, experiment logs, technical posts, and observations from everyday learning. Ideas can develop over time, without rushing to a conclusion."
-      ]
+      slug: "dnn-binary-protection",
+      title: "Do DNN Binaries Really Need to Be Protected?",
+      date: "2026-10-29", // YYYY-MM-DD；按日期倒序显示。
+      excerpt: "A look at graph and ABI leakage in deployed DNN models, from TFLite interpreters to ahead-of-time compilers.",
+      markdown: "assets/posts/dnn-binary-protection.md"
     }
   ]
 };

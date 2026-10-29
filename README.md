@@ -2,7 +2,7 @@
 
 一个简约的个人学术网站框架，使用原生 HTML、CSS 和 JavaScript，不需要安装依赖或执行构建。包含首页、Publications 和 Blog 三个页面，并支持手机浏览。
 
-姓名已填写为 Zhewei Xia（夏哲炜），首页照片下方显示中英文姓名，导航、页脚和浏览器标题使用英文名。HSPFuzzer 的论文资料与 PDF、代码和 DOI 链接已填写；博客仍为示例内容，发布前请替换为自己的文章。
+姓名已填写为 Zhewei Xia（夏哲炜），首页照片下方显示中英文姓名，导航、页脚和浏览器标题使用英文名。HSPFuzzer 的论文资料与 PDF、代码和 DOI 链接已填写。Blog 已加入第一篇文章，可继续在 `assets/posts/` 中维护 Markdown 正文及配图。
 
 ## 本地预览
 
@@ -49,7 +49,7 @@ code academic-homepage.code-workspace
 | `profile` | 姓名、职位、单位、简介及导师链接、头像、邮箱、研究方向和外部链接 |
 | `education` | 教育经历的学校、学院、学位、专业及时间 |
 | `publications` | 论文标题、作者、会议或期刊、年份和资源链接 |
-| `posts` | 博客标题、日期、摘要及正文段落 |
+| `posts` | 博客标题、日期、摘要及 Markdown 正文路径 |
 
 首页采用左侧个人资料、右侧简介及 Education 教育经历的简洁布局。论文和博客各自在独立页面直接展示列表，不设搜索和分类筛选。三个页面不显示装饰性小标题，论文和博客列表页也不显示大标题、介绍文字或数量统计。
 
@@ -78,7 +78,7 @@ links: [
 
 目前 HSPFuzzer 已配置 `[.pdf]`、`[code]` 和 `[doi]` 三个链接。PDF 使用本地文件 `assets/files/hspfuzzer.pdf`，随网站一起托管；文件原样下载自导师主页的公开地址 `https://zyingp.github.io/files/25-HSPFuzzer.pdf`。代码和 DOI 继续使用外部链接。
 
-论文的 `example: true` 表示示例内容，换成真实内容后可以改为 `false`。博客同样用 `example` 标记示例。每篇博客使用唯一的 `slug`，正文写入 `paragraphs` 数组，通过 `blog.html?post=<slug>` 阅读，无需创建额外路由文件。链接和简历地址可在有真实资源后填写。
+论文的 `example: true` 表示示例内容，换成真实内容后可以改为 `false`。每篇博客使用唯一的 `slug`，在 `assets/js/content.js` 配置标题、日期、摘要和 `markdown` 路径，通过 `blog.html?post=<slug>` 阅读，无需创建额外路由文件。Markdown 正文和配图放在 `assets/posts/` 下；文章内的图片路径相对 Markdown 文件填写，例如 `pic/example.png`。链接和简历地址可在有真实资源后填写。
 
 页面和静态资源使用相对 URL，因此既可以放在 `https://用户名.github.io/`，也可以放在 `https://用户名.github.io/仓库名/`，不需要修改部署路径。
 

@@ -83,6 +83,168 @@
     return date.replaceAll("-", ".");
   }
 
+  function inlineMarkdown(text, baseUrl) {
+    const fragment = document.createDocumentFragment();
+    const pattern = /!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)|\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)|`([^`]+)`|\*\*(.+?)\*\*|\*([^*]+)\*|_([^_]+)_|\$([^$]+)\$/g;
+    let cursor = 0;
+    for (const match of String(text).matchAll(pattern)) {
+      fragment.append(document.createTextNode(text.slice(cursor, match.index)));
+      if (match[1] !== undefined) {
+        const imageUrl = safeUrl(new URL(match[2], baseUrl).href);
+        if (imageUrl) {
+          const image = el("img");
+          image.src = imageUrl;
+          image.alt = match[1];
+          image.loading = "lazy";
+          fragment.append(image);
+        } else {
+          fragment.append(document.createTextNode(match[0]));
+        }
+      } else if (match[3] !== undefined) {
+        const target = safeUrl(new URL(match[4], baseUrl).href);
+        const anchor = target && link(match[3], target);
+        fragment.append(anchor || document.createTextNode(match[0]));
+      } else if (match[5] !== undefined) {
+        fragment.append(el("code", "", match[5]));
+      } else if (match[6] !== undefined) {
+        fragment.append(el("strong", "", match[6]));
+      } else if (match[7] !== undefined || match[8] !== undefined) {
+        fragment.append(el("em", "", match[7] ?? match[8]));
+      } else {
+        fragment.append(el("span", "inline-math", match[9]));
+      }
+      cursor = match.index + match[0].length;
+    }
+    fragment.append(document.createTextNode(text.slice(cursor)));
+    return fragment;
+  }
+
+  function renderMarkdown(source, baseUrl, articleTitle) {
+    const lines = source.replaceAll("\r\n", "\n").split("\n");
+    const fragment = document.createDocumentFragment();
+    const isTableRule = line => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+    let i = 0;
+
+    while (i < lines.length) {
+      const line = lines[i];
+      if (!line.trim()) { i++; continue; }
+
+      if (/^```/.test(line.trim())) {
+        const language = line.trim().slice(3).trim();
+        const code = [];
+        i++;
+        while (i < lines.length && !/^```\s*$/.test(lines[i].trim())) code.push(lines[i++]);
+        if (i < lines.length) i++;
+        const pre = el("pre", language ? `language-${language}` : "");
+        pre.append(el("code", "", code.join("\n")));
+        fragment.append(pre);
+        continue;
+      }
+
+      if (/^\s*\$\$\s*$/.test(line)) {
+        const math = [];
+        i++;
+        while (i < lines.length && !/^\s*\$\$\s*$/.test(lines[i])) math.push(lines[i++]);
+        if (i < lines.length) i++;
+        const expression = math.join(" ")
+          .replace(/\\operatorname\{([^}]+)\}/g, "$1")
+          .replace(/[{}]/g, "")
+          .replace(/\s+/g, " ").trim();
+        fragment.append(el("div", "math-block", expression));
+        continue;
+      }
+
+      const heading = line.match(/^(#{1,6})\s+(.+?)\s*#*\s*$/);
+      if (heading) {
+        if (heading[1].length === 1 && heading[2] === articleTitle) {
+          i++;
+          continue;
+        }
+        const node = el(`h${heading[1].length}`);
+        node.append(inlineMarkdown(heading[2], baseUrl));
+        fragment.append(node);
+        i++;
+        continue;
+      }
+
+      if (/^\s*([-*_])\1\1+\s*$/.test(line)) {
+        fragment.append(el("hr"));
+        i++;
+        continue;
+      }
+
+      if (i + 1 < lines.length && line.includes("|") && isTableRule(lines[i + 1])) {
+        const cells = value => value.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(cell => cell.trim());
+        const table = el("table");
+        const head = el("thead");
+        const headerRow = el("tr");
+        cells(line).forEach(value => {
+          const cell = el("th");
+          cell.append(inlineMarkdown(value, baseUrl));
+          headerRow.append(cell);
+        });
+        head.append(headerRow);
+        table.append(head);
+        i += 2;
+        const body = el("tbody");
+        while (i < lines.length && lines[i].includes("|") && lines[i].trim()) {
+          const row = el("tr");
+          cells(lines[i++]).forEach(value => {
+            const cell = el("td");
+            cell.append(inlineMarkdown(value, baseUrl));
+            row.append(cell);
+          });
+          body.append(row);
+        }
+        table.append(body);
+        fragment.append(table);
+        continue;
+      }
+
+      if (/^\s*[-*+]\s+/.test(line) || /^\s*\d+[.)]\s+/.test(line)) {
+        const ordered = /^\s*\d+[.)]\s+/.test(line);
+        const list = el(ordered ? "ol" : "ul");
+        const pattern = ordered ? /^\s*\d+[.)]\s+/ : /^\s*[-*+]\s+/;
+        while (i < lines.length && pattern.test(lines[i])) {
+          const item = el("li");
+          item.append(inlineMarkdown(lines[i++].replace(pattern, ""), baseUrl));
+          list.append(item);
+        }
+        fragment.append(list);
+        continue;
+      }
+
+      if (/^    /.test(line)) {
+        const code = [];
+        while (i < lines.length && (/^    /.test(lines[i]) || !lines[i].trim())) {
+          code.push(lines[i].startsWith("    ") ? lines[i].slice(4) : "");
+          i++;
+        }
+        while (code.length && !code.at(-1)) code.pop();
+        const pre = el("pre");
+        pre.append(el("code", "", code.join("\n")));
+        fragment.append(pre);
+        continue;
+      }
+
+      const paragraph = [];
+      while (i < lines.length && lines[i].trim() &&
+        !/^```|^\s*\$\$\s*$|^#{1,6}\s|^\s*([-*_])\1\1+\s*$/.test(lines[i]) &&
+        !(i + 1 < lines.length && lines[i].includes("|") && isTableRule(lines[i + 1])) &&
+        !/^\s*[-*+]\s+/.test(lines[i]) && !/^\s*\d+[.)]\s+/.test(lines[i]) && !/^    /.test(lines[i])) {
+        paragraph.push(lines[i++].trim());
+      }
+      if (paragraph.length) {
+        const node = el("p", "");
+        node.append(inlineMarkdown(paragraph.join(" "), baseUrl));
+        fragment.append(node);
+      } else {
+        i++;
+      }
+    }
+    return fragment;
+  }
+
   document.title = `${profile.name} · ${pageNames[page] || "Home"}`;
   document.querySelectorAll("[data-profile]").forEach(node => {
     node.textContent = profile[node.dataset.profile] || "";
@@ -237,8 +399,22 @@
       meta.append(time);
       if (post.example) meta.append(sampleLabel());
       const body = el("div", "article-body");
-      body.append(...(post.paragraphs || []).map(text => el("p", "", text)));
       article.append(back, header, meta, body, el("div", "article-end"));
+      if (post.markdown) {
+        const sourceUrl = safeUrl(post.markdown);
+        if (!sourceUrl) {
+          body.append(el("p", "muted-note", "This post could not be loaded."));
+        } else {
+          fetch(sourceUrl).then(response => {
+            if (!response.ok) throw new Error("Post request failed");
+            return response.text();
+          }).then(source => body.append(renderMarkdown(source, sourceUrl, post.title))).catch(() => {
+            body.append(el("p", "muted-note", "This post could not be loaded."));
+          });
+        }
+      } else {
+        body.append(...(post.paragraphs || []).map(text => el("p", "", text)));
+      }
     } else {
       document.getElementById("blog-list").replaceChildren(...(posts.length ? posts.map(item => postCard(item)) : [empty("Posts coming soon", "Research notes and ideas will appear here.") ]));
     }
