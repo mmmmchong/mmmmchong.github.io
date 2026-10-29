@@ -384,10 +384,12 @@ registration.invoke(&context, &node);
 
 在当前 binary 中，真正调用算子的位置是：
 
+```assembly
 0x507c84  mov rax, [r9 + 0x68]   ; 取得 invoke 函数指针
 ...
 0x507c96  mov rsi, r9            ; node
 0x507c9e  call rax               ; 调用该节点的算子实现
+```
 
 卷积实现收到 context 和 node 后，按照输入输出编号取出张量，读取参数，再调用底层计算代码。
 
@@ -677,17 +679,20 @@ CustomDLCoder 引入的interpret-less这种也算是混合的表达，因为攻�
 
 可以类似下面这样，具体函数签名取决于导出配置：
 
+```c
 int model_run(void* input, void* output) {
     kernel_0(input, workspace_0);
     kernel_1(workspace_0, weights_0, workspace_1);
     kernel_2(workspace_1, output);
     return 0;
 }
+```
 
 因此，不需要把 graph JSON 带进最终固件，拓扑仍然体现在函数调用与内存数据流中。
 
 甚至还可以去掉ABI-level的泄露。历史 Relay/microTVM 路线中，可以配置：
 
+```c
 executor = tvm.relay.backend.Executor(
     "aot",
     {
@@ -695,6 +700,7 @@ executor = tvm.relay.backend.Executor(
         "unpacked-api": True,
     },
 )
+```
 
 其中：unpacked-api=True  使用解包后的参数调用形式，避免内部仍依赖 packed 调用约定。
 
